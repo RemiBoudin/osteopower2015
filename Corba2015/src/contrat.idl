@@ -50,7 +50,7 @@ module MonAppliMessagerie {
 	};
 
 	interface User {	
-		string afficherMessage(in string message, in boolean chiffré);
+		string afficherMessage(in string message, in boolean chiffred);
 	};
 
 	interface Porteur {	
@@ -60,4 +60,5 @@ module MonAppliMessagerie {
 		void afficherMessage(in string message); 
 	};
 
-} // Fin Module
+};
+// Fin Module
