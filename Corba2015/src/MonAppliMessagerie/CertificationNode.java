@@ -29,6 +29,8 @@ public class CertificationNode {
 
 		AV.initServer();
 		AV.initClient();
+		
+		//Dialogues
 	}
 
 }
