@@ -1,0 +1,15 @@
+/************************************
+* Contrat IDL de convertisseur Euro *
+************************************/
+
+module Convertisseur {
+
+    interface Euro {
+
+       attribute double taux;
+       attribute string devise;
+       double toEuro(in double devise);
+       double toDevise(in double euro);
+    };
+};
+
