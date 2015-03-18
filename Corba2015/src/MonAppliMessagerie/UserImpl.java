@@ -14,9 +14,9 @@ public class UserImpl extends UserPOA {
 		// TODO Auto-generated method stub
 		
 		if (chiffred)
-			System.out.println("Message chiffred reçu : ["+message+"]");
+			System.out.println("UserImpl::afficherMessage() : Message chiffred reçu : ["+message+"]");
 		else
-			System.out.println("Message reçu : ["+message+"]");
+			System.out.println("UserImpl::afficherMesssage() : Message reçu : ["+message+"]");
 			
 		return null;
 	}
