@@ -5,5 +5,5 @@ public class CorbaMain {
 		// TODO Auto-generated method stub
 		Premier prems = new Premier();
 	}
-
+	
 }
