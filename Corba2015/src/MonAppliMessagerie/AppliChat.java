@@ -40,11 +40,11 @@ public class AppliChat {
         if (idObj.equals("serveur"))
 		//porteur.initServer();
         	user.initServer(args);
-        else
+        else {
         	porteur.initClient();
+        	porteur.envoyerMesssage("FEDEX TV");
 		//user.initClient();
-		
-		porteur.envoyerMesssage("GROSSE BITE MOLLE !!!!!!!!!");
+        }
 		
 	}
 
