@@ -41,8 +41,7 @@ public class AppliChat {
 		//porteur.initServer();
         	user.initServer(args);
         else {
-        	porteur.initClient();
-        	porteur.envoyerMesssage("FEDEX TV");
+        	porteur.init(args);
 		//user.initClient();
         }
 		

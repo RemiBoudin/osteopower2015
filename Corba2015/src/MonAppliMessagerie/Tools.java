@@ -8,7 +8,7 @@ package MonAppliMessagerie;
  *
  */
 public class Tools {
-	public String convertName(String username, EntityName entity) {
+	public static String convertName(String username, EntityName entity) {
 		switch (entity) {
 		
 		
