@@ -3,6 +3,10 @@
  */
 package MonAppliMessagerie;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 
 /**
  * @author jeremy
@@ -21,13 +25,26 @@ public class AppliChat {
 		AppliUser user = new AppliUser();
 		
 		// Initialiser les clients et serveurs
-		porteur.initServer();
-		user.initServer();
 		
-		porteur.initClient();
-		user.initClient();
+		// Saisie du nom de l'objet (si utilisation du service de nommage)
+        System.out.println("AppliChat::main() : Mode du programme (serveur) (client) ?");
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String idObj = null; 
+        try {
+			idObj = in.readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+        if (idObj.equals("serveur"))
+		//porteur.initServer();
+        	user.initServer(args);
+        else
+        	porteur.initClient();
+		//user.initClient();
 		
+		porteur.envoyerMesssage("GROSSE BITE MOLLE !!!!!!!!!");
 		
 	}
 

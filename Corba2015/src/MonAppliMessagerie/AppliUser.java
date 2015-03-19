@@ -21,8 +21,7 @@ public class AppliUser {
 		
 	}
 	
-	public void initServer() {
-		String[] args = null;
+	public void initServer(String[] args) {
 		try {
 	        // Intialisation de l'ORB
 	        //************************

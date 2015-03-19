@@ -18,7 +18,7 @@ public class UserImpl extends UserPOA {
 		else
 			System.out.println("UserImpl::afficherMesssage() : Message reçu : ["+message+"]");
 			
-		return null;
+		return "ok";
 	}
 
 }

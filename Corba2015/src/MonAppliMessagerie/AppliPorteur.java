@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
  */
 public class AppliPorteur {
 	
-	User objDistantUser = null;
+	public static User objDistantUser = null;
 
 	public void initClient() {
 		String[] args = null;
@@ -58,8 +58,9 @@ public class AppliPorteur {
 	
 	public void envoyerMesssage(String message) {
 		 // Envoi du message
-        String ack=this.objDistantUser.afficherMessage(message, false);
-        System.out.println("AppliPorteur::envoyerMesssage() : ACK reçu : [" +ack+"]");
+        //String ack=this.objDistantUser.afficherMessage(message, false);
+		this.objDistantUser.afficherMessage(message, false);
+        //System.out.println("AppliPorteur::envoyerMesssage() : ACK reçu : [" +ack+"]");
 	}
 	
 }
