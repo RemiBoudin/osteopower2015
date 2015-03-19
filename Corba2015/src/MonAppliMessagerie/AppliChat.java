@@ -21,10 +21,12 @@ public class AppliChat {
 		AppliUser user = new AppliUser();
 		
 		// Initialiser les clients et serveurs
-		porteur.initClient();
 		porteur.initServer();
-		user.initClient();
 		user.initServer();
+		
+		porteur.initClient();
+		user.initClient();
+		
 		
 		
 	}
