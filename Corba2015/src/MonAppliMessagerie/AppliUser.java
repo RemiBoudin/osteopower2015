@@ -8,6 +8,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import org.omg.CosNaming.NamingContext;
+import org.omg.CosNaming.NamingContextPackage.CannotProceed;
+import org.omg.CosNaming.NamingContextPackage.InvalidName;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAHelper;
 
@@ -16,6 +19,9 @@ import org.omg.PortableServer.POAHelper;
  *
  */
 public class AppliUser {
+	
+	public static org.omg.CORBA.ORB objDistantORB = null;
+	public static org.omg.CosNaming.NamingContext objDistantNamingService = null;
 
 	public void initClient() {
 		
@@ -72,4 +78,59 @@ public class AppliUser {
 			e.printStackTrace();
 		}
 	}
+
+	private org.omg.CORBA.Object findObjByORBName(String name, EntityName entity) {
+		// Conversion du destinataire en nom ORB
+		String receiverORBName = Tools.convertName(name, EntityName.PORTEUR_SERVER);
+		
+        // Construction du nom a rechercher
+        org.omg.CosNaming.NameComponent[] nameToFind = new org.omg.CosNaming.NameComponent[1];
+         nameToFind[0] = new org.omg.CosNaming.NameComponent(receiverORBName,"");
+
+        // Recherche de l'objet aupres du naming service
+        org.omg.CORBA.Object distantObj = null;
+		try {
+			distantObj = this.objDistantNamingService.resolve(nameToFind);
+		} catch (NotFound | CannotProceed | InvalidName e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        System.out.println("AppliPorteur::findObjByORBName() : Objet '" + name + "' trouvé auprès du service de noms.");
+        
+        return distantObj;
+	}
+	
+	public void repondreToUser(String message, String receiverName) {
+
+		// #################################################################
+		// ## DEMANDE DU CERTIFICAT AU SERVEUR DU PORTEUR DU DESTINATAIRE ##
+		// #################################################################
+		
+		// Recherche du (serveur du porteur) du (destinataire)
+		org.omg.CORBA.Object objDistant = this.findObjByORBName(receiverName, EntityName.PORTEUR_SERVER);
+		
+        // Cast de l'objet distant au format Porteur
+        Porteur objDistantPorteurServer = PorteurHelper.narrow(objDistant);
+		
+        // Demande du certificat au porteur
+        Certificat certificatPorteur = objDistantPorteurServer.getCertificatPorteur();
+
+		// ##################################################################
+		// ## CHECK DE LA PERIODE DU CERTIFICAT DU PORTEUR DU DESTINATAIRE ##
+		// ##################################################################
+
+
+		// ###############################################################
+		// ## CHECK DE L'USAGE DU CERTIFICAT DU PORTEUR DU DESTINATAIRE ##
+		// ###############################################################
+        
+        
+	}
+	
+	public Certificat getCertificat() {
+		
+		return null;
+
+}
+	
 }
