@@ -24,7 +24,7 @@ public class ACimpl extends ACPOA{
 		this.idAVsrv=Tools.convertNameToId(username,EntityName.AV_SERVER);
 		this.idAVsrv=Tools.convertNameToId(username,EntityName.AE_SERVER);
 		
-		this.certificat = new Certificat(null,(short) 1,Tools.getDate(),"never",this.publicKey,"",Tools.genererSignature(this.id));
+		this.certificat = new Certificat(this.id,null,(short) 1,Tools.getDate(),"never",this.publicKey,"",Tools.genererSignature(this.id));
 		
 		this.listeCertificats = new Hashtable<Integer,Certificat>();
 		this.listeCertificats.put(1, this.certificat);
@@ -41,7 +41,7 @@ public class ACimpl extends ACPOA{
 	 */
 	private Certificat creerCertificat(String publicKey,String id, String dateExp, String date, String usage){
 		int nbCertificats = this.listeCertificats.size();
-		Certificat newCertif = new Certificat(this.idAVsrv,(short) (nbCertificats+1),date,dateExp,publicKey,usage,Tools.genererSignature(id));
+		Certificat newCertif = new Certificat(id,this.idAVsrv,(short) (nbCertificats+1),date,dateExp,publicKey,usage,Tools.genererSignature(id));
 		return newCertif;
 	}
 	
@@ -54,19 +54,6 @@ public class ACimpl extends ACPOA{
 		return this.certificat;
 	}
 
-	@Override
-	/**
-	 * Lance l'enregistrement d'un certificat, suite à une demande
-	 */
-	public void enregistrer(String clePublique, short idPorteur, String dateExpiration, String usage) {
-		
-		// Création du certificat
-		Certificat newCertif = this.creerCertificat(usage, clePublique, dateExpiration, Tools.getDate(), usage);
-		
-		// Stockage du certificat dans la base de certificat de l'AC
-		this.stockerCertificat(newCertif);
-		
-	}
 
 	/**
 	 * Stocke un certificat dans la liste des certificats
@@ -78,14 +65,27 @@ public class ACimpl extends ACPOA{
 		this.listeCertificats.put(nbCertificats+1,newCertif);
 	}
 
+
 	@Override
-	/**
-	 * Fait la demande de révocation d'un certificat auprès de l'AV correspondante
-	 */
-	public void revoquerCertificat(Certificat certificatPorteur, short id, String periode) throws certif_revoque {
+	public void enregistrer(String clePublique, String proprietaire,
+			String dateExpiration, String usage) {
+		// TODO Auto-generated method stub
+		
+		// Création du certificat
+		Certificat newCertif = this.creerCertificat(usage, clePublique, dateExpiration, Tools.getDate(), usage);
+		
+		// Stockage du certificat dans la base de certificat de l'AC
+		this.stockerCertificat(newCertif);
+		
+	}
+
+	@Override
+	public void revoquerCertificat(Certificat certificatPorteur, String periode)
+			throws certif_revoque {
 		// revoquer certificat sur l'AV
 		
-		// en fonction du retour, faire le retour
+				// en fonction du retour, faire le retour
+		
 	}
 
 }

@@ -22,37 +22,8 @@ public class AEimpl extends AEPOA {
 
 	}
 
-	/**
-	 * Permet de lancer la procédure de création d'un certificat, puis retourne ce nouveau certificat
-	 */
-	@Override
-	public Certificat saveCertificat(String clepublique, short user, String mdp,
-			String dateExpiration, String usage) throws erreur_authent {
-		// Envoi de la demande à l'AC supérieure
-		Certificat newCertif = null;
-		
-		if(!this.authentifier(user, mdp)){
-			// faire afficher "ERR - Enregistrement - Echec d'authentification"
-		} else {
-			// faire enregistrer sur l'AC distant
-		}
-		
-		
-		return null;
-	}
 
-	/**
-	 * Permet de révoquer un certificat donné à la date d'effet souhaitée
-	 */
-	@Override
-	public void revoquer(Certificat certificatPorteur, short user, String mdp,
-			String periode) {
-		if(!this.authentifier(user, mdp)){
-			// faire afficher "ERR - Revocation - Echec d'authentification"
-		} else {
-			// faire révoquer sur l'AC
-		}
-	}
+
 
 	/**
 	 * 
@@ -94,6 +65,34 @@ public class AEimpl extends AEPOA {
 			return true;	
 		} else {
 			return false;
+		}
+	}
+
+	@Override
+	public Certificat saveCertificat(String clepublique, String proprietaire,
+			String mdp, String dateExpiration, String usage)
+			throws erreur_authent {
+		// Envoi de la demande à l'AC supérieure
+				Certificat newCertif = null;
+				
+				if(!this.authentifier(proprietaire, mdp)){
+					// faire afficher "ERR - Enregistrement - Echec d'authentification"
+				} else {
+					// faire enregistrer sur l'AC distant
+				}
+				
+				
+				return null;
+	}
+
+	@Override
+	public void revoquer(Certificat certificatPorteur, String mdp,
+			String periode) {
+		// TODO Auto-generated method stub
+		if(!this.authentifier(certificatPorteur.proprietaire, mdp)){
+			// faire afficher "ERR - Revocation - Echec d'authentification"
+		} else {
+			// faire révoquer sur l'AC
 		}
 	}
 	
