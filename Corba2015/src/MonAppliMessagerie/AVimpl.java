@@ -9,14 +9,14 @@ public class AVimpl extends AVPOA
 	private Certificat certificatAC;
 	private String idACsrv;
 	private String id;
-	private Hashtable<String, Certificat> listeCertifSuspendus;
+	private Hashtable<Short, Certificat> listeCertifSuspendus;
 
 	public AVimpl(String username)
 	{
 		this.id = Tools.convertNameToId(username, EntityName.AV_SERVER);
 		this.idACsrv = Tools.convertNameToId(username, EntityName.AC_SERVER);
 		this.listeCertifRevoque = new Hashtable<Short, Certificat>();
-		this.listeCertifSuspendus = new Hashtable<String, Certificat>();
+		this.listeCertifSuspendus = new Hashtable<Short, Certificat>();
 	}
 	@Override
 	public Certificat getCertificatAC() {
@@ -53,19 +53,18 @@ public class AVimpl extends AVPOA
 	}
 
 	@Override
-	public void revoquerCertificat(Certificat certificatPorteur, short id,
-			String periode) 
+	public void revoquerCertificat(Certificat certificatPorteur,String periode) 
 	{
 		// TODO Auto-generated method stub
-		if (!listeCertifRevoque.containsKey(id)) 
+		if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique)) 
 		{
-			listeCertifRevoque.put(id, certificatPorteur);
+			listeCertifRevoque.put(certificatPorteur.Num_Unique, certificatPorteur);
 		}
 		
-		else if (!listeCertifRevoque.containsKey(id) && listeCertifSuspendus.containsKey(id))
+		else if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique) && listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique))
 		{
-			listeCertifSuspendus.remove(id);
-			listeCertifRevoque.put(id, certificatPorteur);
+			listeCertifSuspendus.remove(certificatPorteur.Num_Unique);
+			listeCertifRevoque.put(certificatPorteur.Num_Unique, certificatPorteur);
 		}
 		else
 		{
