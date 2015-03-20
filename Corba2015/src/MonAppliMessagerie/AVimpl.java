@@ -32,14 +32,7 @@ public class AVimpl extends AVPOA
 		
 		if (listeCertifRevoque.containsKey(certifCourant.Num_Unique))
 		{
-			System.out.println("Certificat Valide");
-			
-			if (certificatAC.IOR_AV == null)
-			{
-				System.out.println(certificatAC.IOR_AV); // A envoyer à l'user
-				System.out.println("AC Racine"); // signaler qu'on est à l'AC racine donc fin de vérification
-			}
-			
+			System.out.println("Certificat Revoque");		
 		}
 		
 		else if (listeCertifSuspendus.containsKey(certifCourant.Num_Unique))
@@ -49,6 +42,16 @@ public class AVimpl extends AVPOA
 		else
 		{
 			System.out.println("Certificat non Revoque");
+			
+			if (certificatAC.IOR_AV == null) //Vérif Si AC RACINE
+			{
+				System.out.println("AC Racine"); // signaler qu'on est à l'AC racine donc fin de vérification
+			}
+			
+			else
+			{
+				System.out.println(certificatAC.IOR_AV); // A envoyer à l'user
+			}
 		}
 	}
 
@@ -56,15 +59,20 @@ public class AVimpl extends AVPOA
 	public void revoquerCertificat(Certificat certificatPorteur,String periode) 
 	{
 		// TODO Auto-generated method stub
-		if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique)) 
+		if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique) && periode == null) 
 		{
 			listeCertifRevoque.put(certificatPorteur.Num_Unique, certificatPorteur);
 		}
 		
-		else if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique) && listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique))
+		else if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique) && listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique) && periode == null)
 		{
 			listeCertifSuspendus.remove(certificatPorteur.Num_Unique);
 			listeCertifRevoque.put(certificatPorteur.Num_Unique, certificatPorteur);
+		}
+		
+		else if (!listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique) && periode != null)
+		{
+			listeCertifSuspendus.put(certificatPorteur.Num_Unique, certificatPorteur);
 		}
 		else
 		{
