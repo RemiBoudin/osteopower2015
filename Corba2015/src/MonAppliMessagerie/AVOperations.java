@@ -15,12 +15,12 @@ public interface AVOperations
     /**
      * Operation verifierRevocation
      */
-    public void verifierRevocation(MonAppliMessagerie.Certificat certifCourant)
+    public String verifierRevocation(MonAppliMessagerie.Certificat certifCourant)
         throws MonAppliMessagerie.erreur_certif, MonAppliMessagerie.certif_revoque;
 
     /**
      * Operation revoquerCertificat
      */
-    public void revoquerCertificat(MonAppliMessagerie.Certificat certificatPorteur, String periode);
+    public boolean revoquerCertificat(MonAppliMessagerie.Certificat certificatPorteur, String periode);
 
 }

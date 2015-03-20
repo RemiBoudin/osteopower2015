@@ -110,7 +110,7 @@ public class ACimpl extends ACPOA {
 	 * Revoque un certificat aupr�s de l'AE et fait le retour au porteur
 	 */
 	@Override
-	public void revoquerCertificat(Certificat certificatPorteur, String periode)
+	public boolean revoquerCertificat(Certificat certificatPorteur, String periode)
 			throws certif_revoque {
 		// revoquer certificat sur l'AV
 		AV av = (AV)findObjByORBName(this.nodeName, EntityName.AV_SERVER);

@@ -30,7 +30,7 @@ module MonAppliMessagerie {
 		Certificat saveCertificat(in string clepublique, in string proprietaire, in string mdp, in string dateExpiration, in string usage) raises (erreur_authent);
 		
 		// l'AE authentifie puis relaye la demande de revocation
-		void revoquer(in Certificat certificatPorteur, in string mdp, in string periode);
+		boolean revoquer(in Certificat certificatPorteur, in string mdp, in string periode);
 		
 		// l'AE renvoi le certificat créé à l'appli Porteur qui avait demandé l'enregistrement
 		void publier(in Certificat certificatPorteur); 
@@ -38,16 +38,16 @@ module MonAppliMessagerie {
 
 	interface AV {
 		Certificat getCertificatAC();
-		void verifierRevocation(in Certificat certifCourant) raises(erreur_certif, certif_revoque);
+		string verifierRevocation(in Certificat certifCourant) raises(erreur_certif, certif_revoque);
 
 		// AC pousse à l'AV la mise à jour de la LCR
-		void revoquerCertificat(in Certificat certificatPorteur, in string periode); 
+		boolean revoquerCertificat(in Certificat certificatPorteur, in string periode); 
 	};
 
 	interface AC {
 		Certificat getCertificat();
 		void enregistrer (in string clePublique, in string proprietaire, in string dateExpiration, in string usage);
-		void revoquerCertificat (in Certificat certificatPorteur, in string periode) raises(certif_revoque);	
+		boolean revoquerCertificat (in Certificat certificatPorteur, in string periode) raises(certif_revoque);	
 	};
 
 	interface User {	
@@ -58,7 +58,9 @@ module MonAppliMessagerie {
 		Certificat getCertificatPorteur();	
 		
 		// cette méthode affiche les retours liés aux certifications
-		void afficherMessage(in string message); 
+		void afficherMessage(in string message);
+		
+		void receiveNewCertificat(in Certificat newCertif); 
 	};
 
 };

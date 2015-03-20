@@ -79,9 +79,10 @@ public abstract class AEPOA extends org.omg.PortableServer.Servant
         String arg1_in = _is.read_string();
         String arg2_in = _is.read_string();
 
-        revoquer(arg0_in, arg1_in, arg2_in);
+        boolean _arg_result = revoquer(arg0_in, arg1_in, arg2_in);
 
         _output = handler.createReply();
+        _output.write_boolean(_arg_result);
 
         return _output;
     }

@@ -125,7 +125,7 @@ public class _ACStub extends org.omg.CORBA.portable.ObjectImpl
     /**
      * Operation revoquerCertificat
      */
-    public void revoquerCertificat(MonAppliMessagerie.Certificat certificatPorteur, String periode)
+    public boolean revoquerCertificat(MonAppliMessagerie.Certificat certificatPorteur, String periode)
         throws MonAppliMessagerie.certif_revoque
     {
         while(true)
@@ -139,7 +139,8 @@ public class _ACStub extends org.omg.CORBA.portable.ObjectImpl
                     MonAppliMessagerie.CertificatHelper.write(_output,certificatPorteur);
                     _output.write_string(periode);
                     _input = this._invoke(_output);
-                    return;
+                    boolean _arg_ret = _input.read_boolean();
+                    return _arg_ret;
                 }
                 catch(org.omg.CORBA.portable.RemarshalException _exception)
                 {
@@ -168,8 +169,7 @@ public class _ACStub extends org.omg.CORBA.portable.ObjectImpl
                 MonAppliMessagerie.ACOperations _self = (MonAppliMessagerie.ACOperations) _so.servant;
                 try
                 {
-                    _self.revoquerCertificat( certificatPorteur,  periode);
-                    return;
+                    return _self.revoquerCertificat( certificatPorteur,  periode);
                 }
                 finally
                 {
