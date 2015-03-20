@@ -62,17 +62,21 @@ public class AVimpl extends AVPOA
 		if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique) && periode == null) 
 		{
 			listeCertifRevoque.put(certificatPorteur.Num_Unique, certificatPorteur);
+			System.out.println(this.id + " - INFO - Certificat de" + certificatPorteur.proprietaire + "ajouté dans la LCR");
 		}
 		
 		else if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique) && listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique) && periode == null)
 		{
 			listeCertifSuspendus.remove(certificatPorteur.Num_Unique);
+			System.out.println(this.id + " - INFO - Certificat de" + certificatPorteur.proprietaire + "supprimé de la LCS");
 			listeCertifRevoque.put(certificatPorteur.Num_Unique, certificatPorteur);
+			System.out.println(this.id + " - INFO - Certificat de" + certificatPorteur.proprietaire + "ajouté dans la LCR après suppr LCS");
 		}
 		
 		else if (!listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique) && periode != null)
 		{
 			listeCertifSuspendus.put(certificatPorteur.Num_Unique, certificatPorteur);
+			System.out.println(this.id + " - INFO - Certificat de" + certificatPorteur.proprietaire + "ajouté dans la LCS");
 		}
 		else
 		{
