@@ -78,27 +78,6 @@ public class AppliUser {
 			e.printStackTrace();
 		}
 	}
-
-	private org.omg.CORBA.Object findObjByORBName(String name, EntityName entity) {
-		// Conversion du destinataire en nom ORB
-		String receiverORBName = Tools.convertName(name, EntityName.PORTEUR_SERVER);
-		
-        // Construction du nom a rechercher
-        org.omg.CosNaming.NameComponent[] nameToFind = new org.omg.CosNaming.NameComponent[1];
-         nameToFind[0] = new org.omg.CosNaming.NameComponent(receiverORBName,"");
-
-        // Recherche de l'objet aupres du naming service
-        org.omg.CORBA.Object distantObj = null;
-		try {
-			distantObj = this.objDistantNamingService.resolve(nameToFind);
-		} catch (NotFound | CannotProceed | InvalidName e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        System.out.println("AppliPorteur::findObjByORBName() : Objet '" + name + "' trouvé auprès du service de noms.");
-        
-        return distantObj;
-	}
 	
 	public void repondreToUser(String message, String receiverName) {
 
@@ -118,19 +97,42 @@ public class AppliUser {
 		// ##################################################################
 		// ## CHECK DE LA PERIODE DU CERTIFICAT DU PORTEUR DU DESTINATAIRE ##
 		// ##################################################################
-
+        if (!this.checkPeriode(certificatPorteur)){
+        	return;
+        }
 
 		// ###############################################################
 		// ## CHECK DE L'USAGE DU CERTIFICAT DU PORTEUR DU DESTINATAIRE ##
 		// ###############################################################
-        
+        if (!this.checkUsage(certificatPorteur)) {
+        	System.out.println("ERR:Usage_Incorrect");
+        	return;
+        }
+
+		// ###############################################################################
+		// ## CHECK DU CHEMIN DE CERTIFICATION DU CERTIFICAT DU PORTEUR DU DESTINATAIRE ##
+		// ###############################################################################
+        if (this.checkCheminCertification(certificatPorteur)) {
+        	return;
+        }
         
 	}
 	
 	public Certificat getCertificat() {
 		
 		return null;
-
-}
+	}
+	
+	private boolean checkPeriode(Certificat cert) {
+		return true;
+	}
+	
+	private boolean checkUsage(Certificat cert) {
+		return true;
+	}
+	
+	private boolean checkCheminCertification(Certificat cert) {
+		return true;
+	}
 	
 }
