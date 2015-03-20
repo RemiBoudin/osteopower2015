@@ -83,7 +83,7 @@ public class _AEStub extends org.omg.CORBA.portable.ObjectImpl
     /**
      * Operation revoquer
      */
-    public void revoquer(MonAppliMessagerie.Certificat certificatPorteur, String mdp, String periode)
+    public boolean revoquer(MonAppliMessagerie.Certificat certificatPorteur, String mdp, String periode)
     {
         while(true)
         {
@@ -97,7 +97,8 @@ public class _AEStub extends org.omg.CORBA.portable.ObjectImpl
                     _output.write_string(mdp);
                     _output.write_string(periode);
                     _input = this._invoke(_output);
-                    return;
+                    boolean _arg_ret = _input.read_boolean();
+                    return _arg_ret;
                 }
                 catch(org.omg.CORBA.portable.RemarshalException _exception)
                 {
@@ -121,8 +122,7 @@ public class _AEStub extends org.omg.CORBA.portable.ObjectImpl
                 MonAppliMessagerie.AEOperations _self = (MonAppliMessagerie.AEOperations) _so.servant;
                 try
                 {
-                    _self.revoquer( certificatPorteur,  mdp,  periode);
-                    return;
+                    return _self.revoquer( certificatPorteur,  mdp,  periode);
                 }
                 finally
                 {

@@ -28,13 +28,7 @@ public class AEimpl extends AEPOA {
 	 */
 	@Override
 	public void publier(Certificat certificatPorteur) {
-		Porteur porteur = (Porteur)findObjByORBName(certificatPorteur.proprietaire, EntityName.PORTEUR_SERVER);
-		porteur.
-		
-		User user = (User)findObjByORBName(certificatPorteur.proprietaire, EntityName.USER_SERVER);
-		user.afficherMessage("INFO - Enregistrement - Enregistrement OK", false);
-		System.out.println(this.nodeName + " - INFO - Certificat de "
-				+ certificatPorteur.proprietaire + " publi� !");
+
 
 	}
 
@@ -112,7 +106,7 @@ public class AEimpl extends AEPOA {
 					+ " Enregistrement aupr�s de l'AC");
 		}
 
-		return null;
+		return newCertif;
 	}
 
 	/**

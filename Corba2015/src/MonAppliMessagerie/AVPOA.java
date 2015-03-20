@@ -66,9 +66,10 @@ public abstract class AVPOA extends org.omg.PortableServer.Servant
 
         try
         {
-            verifierRevocation(arg0_in);
+            String _arg_result = verifierRevocation(arg0_in);
 
             _output = handler.createReply();
+            _output.write_string(_arg_result);
 
         }
         catch (MonAppliMessagerie.erreur_certif _exception)
@@ -91,9 +92,10 @@ public abstract class AVPOA extends org.omg.PortableServer.Servant
         MonAppliMessagerie.Certificat arg0_in = MonAppliMessagerie.CertificatHelper.read(_is);
         String arg1_in = _is.read_string();
 
-        revoquerCertificat(arg0_in, arg1_in);
+        boolean _arg_result = revoquerCertificat(arg0_in, arg1_in);
 
         _output = handler.createReply();
+        _output.write_boolean(_arg_result);
 
         return _output;
     }

@@ -17,4 +17,9 @@ public interface PorteurOperations
      */
     public void afficherMessage(String message);
 
+    /**
+     * Operation receiveNewCertificat
+     */
+    public void receiveNewCertificat(MonAppliMessagerie.Certificat newCertif);
+
 }
