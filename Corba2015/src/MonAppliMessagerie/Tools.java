@@ -14,7 +14,7 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 /**
  * @author jeremy Classe faisant office de "bo�te � outils" pour les diff�rentes
  *         entit�s du syst�me global. Elle contient les m�thodes utiles et
- *         communes. BITE MOLLE.
+ *         communes.
  */
 public class Tools {
 	
