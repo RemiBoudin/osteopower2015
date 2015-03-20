@@ -100,7 +100,7 @@ public class ACimpl extends ACPOA {
 
 		// Publier aupr�s de l'AE
 		
-		AE ae = (AE)findObjByORBName(this.nodeName, EntityName.AE_SERVER);
+		AE ae = AEHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AE_SERVER, this.namingService));
 		ae.publier(newCertif);
 		System.out.println(this.nodeName + " - INFO - " + proprietaire
 				+ " Publication du certificat aupr�s de l'AE");
@@ -110,19 +110,23 @@ public class ACimpl extends ACPOA {
 	 * Revoque un certificat aupr�s de l'AE et fait le retour au porteur
 	 */
 	@Override
-	public void revoquerCertificat(Certificat certificatPorteur, String periode)
+	public boolean revoquerCertificat(Certificat certificatPorteur, String periode)
 			throws certif_revoque {
 		// revoquer certificat sur l'AV
-		AV av = (AV)findObjByORBName(this.nodeName, EntityName.AV_SERVER);
-		av.revoquerCertificat(certificatPorteur, periode);
+		AV av = AVHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AV_SERVER, this.namingService));
+		if(av.revoquerCertificat(certificatPorteur, periode)){
 		
 		System.out.println(this.nodeName + " - INFO - "
 				+ certificatPorteur.proprietaire
 				+ " Demande de r�vocation aurp�s de l'AV");
-
+		
 		System.out.println(this.nodeName + " - INFO - "
 				+ certificatPorteur.proprietaire
 				+ " R�sultat de la r�vocation envoy�e � l'AE");
+		return true;
+		} else {
+			return false;
+		}
 	}
 
 }

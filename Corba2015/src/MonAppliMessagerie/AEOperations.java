@@ -16,7 +16,7 @@ public interface AEOperations
     /**
      * Operation revoquer
      */
-    public void revoquer(MonAppliMessagerie.Certificat certificatPorteur, String mdp, String periode);
+    public boolean revoquer(MonAppliMessagerie.Certificat certificatPorteur, String mdp, String periode);
 
     /**
      * Operation publier

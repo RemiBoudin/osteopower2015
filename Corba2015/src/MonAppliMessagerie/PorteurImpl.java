@@ -4,7 +4,7 @@
 package MonAppliMessagerie;
 
 /**
- * @author Rémi
+ * @author Rï¿½mi
  *
  */
 public class PorteurImpl  extends PorteurPOA{
@@ -17,6 +17,12 @@ public class PorteurImpl  extends PorteurPOA{
 
 	@Override
 	public void afficherMessage(String message) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void receiveNewCertificat(Certificat newCertif) {
 		// TODO Auto-generated method stub
 		
 	}

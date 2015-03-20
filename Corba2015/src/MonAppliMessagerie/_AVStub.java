@@ -72,7 +72,7 @@ public class _AVStub extends org.omg.CORBA.portable.ObjectImpl
     /**
      * Operation verifierRevocation
      */
-    public void verifierRevocation(MonAppliMessagerie.Certificat certifCourant)
+    public String verifierRevocation(MonAppliMessagerie.Certificat certifCourant)
         throws MonAppliMessagerie.erreur_certif, MonAppliMessagerie.certif_revoque
     {
         while(true)
@@ -85,7 +85,8 @@ public class _AVStub extends org.omg.CORBA.portable.ObjectImpl
                     org.omg.CORBA.portable.OutputStream _output = this._request("verifierRevocation",true);
                     MonAppliMessagerie.CertificatHelper.write(_output,certifCourant);
                     _input = this._invoke(_output);
-                    return;
+                    String _arg_ret = _input.read_string();
+                    return _arg_ret;
                 }
                 catch(org.omg.CORBA.portable.RemarshalException _exception)
                 {
@@ -119,8 +120,7 @@ public class _AVStub extends org.omg.CORBA.portable.ObjectImpl
                 MonAppliMessagerie.AVOperations _self = (MonAppliMessagerie.AVOperations) _so.servant;
                 try
                 {
-                    _self.verifierRevocation( certifCourant);
-                    return;
+                    return _self.verifierRevocation( certifCourant);
                 }
                 finally
                 {
@@ -133,7 +133,7 @@ public class _AVStub extends org.omg.CORBA.portable.ObjectImpl
     /**
      * Operation revoquerCertificat
      */
-    public void revoquerCertificat(MonAppliMessagerie.Certificat certificatPorteur, String periode)
+    public boolean revoquerCertificat(MonAppliMessagerie.Certificat certificatPorteur, String periode)
     {
         while(true)
         {
@@ -146,7 +146,8 @@ public class _AVStub extends org.omg.CORBA.portable.ObjectImpl
                     MonAppliMessagerie.CertificatHelper.write(_output,certificatPorteur);
                     _output.write_string(periode);
                     _input = this._invoke(_output);
-                    return;
+                    boolean _arg_ret = _input.read_boolean();
+                    return _arg_ret;
                 }
                 catch(org.omg.CORBA.portable.RemarshalException _exception)
                 {
@@ -170,8 +171,7 @@ public class _AVStub extends org.omg.CORBA.portable.ObjectImpl
                 MonAppliMessagerie.AVOperations _self = (MonAppliMessagerie.AVOperations) _so.servant;
                 try
                 {
-                    _self.revoquerCertificat( certificatPorteur,  periode);
-                    return;
+                    return _self.revoquerCertificat( certificatPorteur,  periode);
                 }
                 finally
                 {

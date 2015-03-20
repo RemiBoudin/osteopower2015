@@ -25,7 +25,7 @@ public class AVimpl extends AVPOA
 	}
 
 	@Override
-	public void verifierRevocation(Certificat certifCourant)
+	public String verifierRevocation(Certificat certifCourant)
 			throws erreur_certif, certif_revoque 
 	{
 		// TODO Auto-generated method stub
@@ -33,13 +33,15 @@ public class AVimpl extends AVPOA
 		if (listeCertifRevoque.containsKey(certifCourant.Num_Unique))
 		{
 			System.out.println("Certificat Revoque");
-			User user= (User)findObjByORBName(certifCourant.proprietaire, EntityName.USER_SERVER);
+			User user= UserHelper.narrow(Tools.findObjByORBName(certifCourant.proprietaire, EntityName.USER_SERVER, this.NamingService));
 			user.afficherMessage("ERR CERT : certificat revoque", false);
+			return null;
 		}
 		
 		else if (listeCertifSuspendus.containsKey(certifCourant.Num_Unique))
 		{
 			System.out.println("Certificat Suspendu");
+			return null;
 		}
 		else
 		{
@@ -48,42 +50,48 @@ public class AVimpl extends AVPOA
 			if (certificatAC.IOR_AV == null) //V�rif Si AC RACINE
 			{
 				System.out.println("AC Racine"); // signaler qu'on est � l'AC racine donc fin de v�rification
+				return null;
 			}
 			
 			else
 			{
 				System.out.println(certificatAC.IOR_AV); // A envoyer � l'user
+				return certificatAC.IOR_AV;
 			}
 		}
 	}
 
 	@Override
-	public void revoquerCertificat(Certificat certificatPorteur,String periode) 
+	public boolean revoquerCertificat(Certificat certificatPorteur,String periode) 
 	{
 		// TODO Auto-generated method stub
 		if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique) && periode == null) 
 		{
 			listeCertifRevoque.put(certificatPorteur.Num_Unique, certificatPorteur);
-			System.out.println(this.id + " - INFO - Certificat de" + certificatPorteur.proprietaire + "ajout� dans la LCR");
+			System.out.println(this.nodename + "AV - INFO - Certificat de" + certificatPorteur.proprietaire + "ajout� dans la LCR");
+			return true;
 		}
 		
 		else if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique)
 				&& listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique) && periode == null)
 		{
 			listeCertifSuspendus.remove(certificatPorteur.Num_Unique);
-			System.out.println(this.id + " - INFO - Certificat de" + certificatPorteur.proprietaire + "supprim� de la LCS");
+			System.out.println(this.nodename + "AV - INFO - Certificat de" + certificatPorteur.proprietaire + "supprim� de la LCS");
 			listeCertifRevoque.put(certificatPorteur.Num_Unique, certificatPorteur);
-			System.out.println(this.id + " - INFO - Certificat de" + certificatPorteur.proprietaire + "ajout� dans la LCR apr�s suppr LCS");
+			System.out.println(this.nodename + "AV - INFO - Certificat de" + certificatPorteur.proprietaire + "ajout� dans la LCR apr�s suppr LCS");
+			return true;
 		}
 		
 		else if (!listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique) && periode != null)
 		{
 			listeCertifSuspendus.put(certificatPorteur.Num_Unique, certificatPorteur);
-			System.out.println(this.id + " - INFO - Certificat de" + certificatPorteur.proprietaire + "ajout� dans la LCS");
+			System.out.println(this.nodename + "AV - INFO - Certificat de" + certificatPorteur.proprietaire + "ajout� dans la LCS");
+			return true;
 		}
 		else
 		{
 			System.out.println("Certificat d�j� r�voqu�");
+			return true;
 		}
 	}
 
