@@ -10,7 +10,7 @@ package MonAppliMessagerie;
 
 public final class Certificat implements org.omg.CORBA.portable.IDLEntity
 {
-  public String IOR_AV = null;
+  public String IOR_AV = null; // IOR AV supérieur
   public short Num_Unique = (short)0;
   public String ValiditeDebut = null;
   public String ValiditeFin = null;
