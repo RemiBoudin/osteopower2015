@@ -7,21 +7,30 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.omg.CosNaming.NamingContextPackage.CannotProceed;
+import org.omg.CosNaming.NamingContextPackage.InvalidName;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
+
 /**
- * @author jeremy Classe faisant office de "boîte à outils" pour les différentes
- *         entités du système global. Elle contient les méthodes utiles et
- *         communes.
+ * @author jeremy Classe faisant office de "boï¿½te ï¿½ outils" pour les diffï¿½rentes
+ *         entitï¿½s du systï¿½me global. Elle contient les mï¿½thodes utiles et
+ *         communes. BITE MOLLE.
  */
 public class Tools {
+	
+	public static org.omg.CosNaming.NamingContext objDistantNamingService = null;
+	
+	public void init() {
+	}
 	/**
-	 * Donne l'identifiant CORBA normalisé d'une entité à partir de son nom et
-	 * du type d'entité
+	 * Donne l'identifiant CORBA normalisï¿½ d'une entitï¿½ ï¿½ partir de son nom et
+	 * du type d'entitï¿½
 	 * 
 	 * @param username
-	 *            nom personnalisé de l'entité
+	 *            nom personnalisï¿½ de l'entitï¿½
 	 * @param entity
-	 *            type d'entité (AC, AV, Client ...)
-	 * @return le nom CORBA normalisé de l'entité
+	 *            type d'entitï¿½ (AC, AV, Client ...)
+	 * @return le nom CORBA normalisï¿½ de l'entitï¿½
 	 */
 	public static String convertNameToId(String username, EntityName entity) {
 		return (username + "_" + entity.toString());
@@ -39,55 +48,77 @@ public class Tools {
 	}
 
 	/**
-	 * Donne la signature d'une entité à partir de son identifiant CORBA
-	 * normalisé
+	 * Donne la signature d'une entitï¿½ ï¿½ partir de son identifiant CORBA
+	 * normalisï¿½
 	 * 
 	 * @param id
-	 *            identifiant CORBA normalisé
-	 * @return signature de l'entité
+	 *            identifiant CORBA normalisï¿½
+	 * @return signature de l'entitï¿½
 	 */
 	public static String genererSignature(String id) {
 		return id;
 	}
 
 	/**
-	 * Chiffre un message à partir d'une clé publique
+	 * Chiffre un message ï¿½ partir d'une clï¿½ publique
 	 * 
 	 * @param message
-	 *            message en clair à chiffrer
+	 *            message en clair ï¿½ chiffrer
 	 * @param publicKey
-	 *            clé de chiffrement
-	 * @return message chiffré
+	 *            clï¿½ de chiffrement
+	 * @return message chiffrï¿½
 	 */
 	public static String chiffrerMessage(String message, String publicKey) {
-		return "[crypté]" + message;
+		return "[cryptï¿½]" + message;
 	}
 
 	/**
-	 * Déchiffre un message à partir d'une clé privée
+	 * Dï¿½chiffre un message ï¿½ partir d'une clï¿½ privï¿½e
 	 * 
 	 * @param message
-	 *            message chiffré à déchiffrer
+	 *            message chiffrï¿½ ï¿½ dï¿½chiffrer
 	 * @param privateKey
-	 *            clé de déchiffrement
-	 * @return message déchiffré, en clair
+	 *            clï¿½ de dï¿½chiffrement
+	 * @return message dï¿½chiffrï¿½, en clair
 	 */
 	public static String dechiffrerMessage(String message, String privateKey) {
 		return message.substring(8);
 	}
 
+	public static org.omg.CORBA.Object findObjByORBName(String name, EntityName entity, org.omg.CosNaming.NamingContext objDistantNamingService) {
+		// Conversion du destinataire en nom ORB
+		String receiverORBName = Tools.convertNameToId(name, EntityName.PORTEUR_SERVER);
+		
+        // Construction du nom a rechercher
+        org.omg.CosNaming.NameComponent[] nameToFind = new org.omg.CosNaming.NameComponent[1];
+         nameToFind[0] = new org.omg.CosNaming.NameComponent(receiverORBName,"");
+
+        // Recherche de l'objet aupres du naming service
+        org.omg.CORBA.Object distantObj = null;
+		try {
+			distantObj = objDistantNamingService.resolve(nameToFind);
+	        System.out.println("Tools::findObjByORBName() : Objet '" + name + "' trouvÃ© auprÃ¨s du service de noms.");
+		} catch (NotFound | CannotProceed | InvalidName e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+	        System.out.println("Tools::findObjByORBName() : ERR : Objet '" + name + "' non trouvÃ© auprÃ¨s du service de noms.");
+		}
+        
+        return distantObj;
+	}
+
 	/**
-	 * Génère le jeu de clé publique/privée à partir de l'identifiant CORBA
+	 * Gï¿½nï¿½re le jeu de clï¿½ publique/privï¿½e ï¿½ partir de l'identifiant CORBA
 	 * 
 	 * @param id
-	 *            identifiant CORBA de l'entité générant son jeu de clé
-	 * @return tableau contenant les clés générées [0]= clé publique et [1]=clé
-	 *         privée
+	 *            identifiant CORBA de l'entitï¿½ gï¿½nï¿½rant son jeu de clï¿½
+	 * @return tableau contenant les clï¿½s gï¿½nï¿½rï¿½es [0]= clï¿½ publique et [1]=clï¿½
+	 *         privï¿½e
 	 */
 	public static String[] generateKeys(String id) {
 		String[] keys = new String[2];
-		keys[0] = "abc" + id; // Generation de la clé public
-		keys[1] = "cba" + id; // Generation de la clé privée
+		keys[0] = "abc" + id; // Generation de la clï¿½ public
+		keys[1] = "cba" + id; // Generation de la clï¿½ privï¿½e
 		return keys;
 	}
 }
