@@ -7,16 +7,16 @@ public class AVimpl extends AVPOA
 	
 	private Hashtable <Short, Certificat> listeCertifRevoque;
 	private Certificat certificatAC;
-	private String idACsrv;
-	private String id;
+	private String nodename;
 	private Hashtable<Short, Certificat> listeCertifSuspendus;
+	public static org.omg.CosNaming.NamingContext NamingService;
 
-	public AVimpl(String username)
+	public AVimpl(String nodename, org.omg.CosNaming.NamingContext NamingService)
 	{
-		this.id = Tools.convertNameToId(username, EntityName.AV_SERVER);
-		this.idACsrv = Tools.convertNameToId(username, EntityName.AC_SERVER);
+		
 		this.listeCertifRevoque = new Hashtable<Short, Certificat>();
 		this.listeCertifSuspendus = new Hashtable<Short, Certificat>();
+		this.NamingService= NamingService;
 	}
 	@Override
 	public Certificat getCertificatAC() {
@@ -32,7 +32,9 @@ public class AVimpl extends AVPOA
 		
 		if (listeCertifRevoque.containsKey(certifCourant.Num_Unique))
 		{
-			System.out.println("Certificat Revoque");		
+			System.out.println("Certificat Revoque");
+			User user= (User)findObjByORBName(certifCourant.proprietaire, EntityName.USER_SERVER);
+			user.afficherMessage("ERR CERT : certificat revoque", false);
 		}
 		
 		else if (listeCertifSuspendus.containsKey(certifCourant.Num_Unique))
@@ -43,14 +45,14 @@ public class AVimpl extends AVPOA
 		{
 			System.out.println("Certificat non Revoque");
 			
-			if (certificatAC.IOR_AV == null) //Vérif Si AC RACINE
+			if (certificatAC.IOR_AV == null) //Vï¿½rif Si AC RACINE
 			{
-				System.out.println("AC Racine"); // signaler qu'on est à l'AC racine donc fin de vérification
+				System.out.println("AC Racine"); // signaler qu'on est ï¿½ l'AC racine donc fin de vï¿½rification
 			}
 			
 			else
 			{
-				System.out.println(certificatAC.IOR_AV); // A envoyer à l'user
+				System.out.println(certificatAC.IOR_AV); // A envoyer ï¿½ l'user
 			}
 		}
 	}
@@ -62,25 +64,26 @@ public class AVimpl extends AVPOA
 		if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique) && periode == null) 
 		{
 			listeCertifRevoque.put(certificatPorteur.Num_Unique, certificatPorteur);
-			System.out.println(this.id + " - INFO - Certificat de" + certificatPorteur.proprietaire + "ajouté dans la LCR");
+			System.out.println(this.id + " - INFO - Certificat de" + certificatPorteur.proprietaire + "ajoutï¿½ dans la LCR");
 		}
 		
-		else if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique) && listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique) && periode == null)
+		else if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique)
+				&& listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique) && periode == null)
 		{
 			listeCertifSuspendus.remove(certificatPorteur.Num_Unique);
-			System.out.println(this.id + " - INFO - Certificat de" + certificatPorteur.proprietaire + "supprimé de la LCS");
+			System.out.println(this.id + " - INFO - Certificat de" + certificatPorteur.proprietaire + "supprimï¿½ de la LCS");
 			listeCertifRevoque.put(certificatPorteur.Num_Unique, certificatPorteur);
-			System.out.println(this.id + " - INFO - Certificat de" + certificatPorteur.proprietaire + "ajouté dans la LCR après suppr LCS");
+			System.out.println(this.id + " - INFO - Certificat de" + certificatPorteur.proprietaire + "ajoutï¿½ dans la LCR aprï¿½s suppr LCS");
 		}
 		
 		else if (!listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique) && periode != null)
 		{
 			listeCertifSuspendus.put(certificatPorteur.Num_Unique, certificatPorteur);
-			System.out.println(this.id + " - INFO - Certificat de" + certificatPorteur.proprietaire + "ajouté dans la LCS");
+			System.out.println(this.id + " - INFO - Certificat de" + certificatPorteur.proprietaire + "ajoutï¿½ dans la LCS");
 		}
 		else
 		{
-			System.out.println("Certificat déjà révoqué");
+			System.out.println("Certificat dï¿½jï¿½ rï¿½voquï¿½");
 		}
 	}
 
