@@ -9,7 +9,7 @@ public class AppliCertificationNode {
 	public static void main(String[] args) {
 
 		// Saisie du nom du noeud courant
-        System.out.println("AppliNode - Quel est le nom du noeud à créer?");
+        System.out.println("AppliNode - Quel est le nom du noeud ï¿½ crï¿½er?");
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String nodeName = null; 
         try {
@@ -22,17 +22,17 @@ public class AppliCertificationNode {
         // initialisation de l'AC
         AppliAC ac = new AppliAC(nodeName);
         ac.initClient();
-        ac.initServer();
+        ac.initServer(args);
 		
         // initialisation de l'AE
         AppliAE ae = new AppliAE(nodeName);
         ae.initClient();
-        ae.initServer();
+        ae.initServer(args);
         
         // initialisation de l'AV
         AppliAV av = new AppliAV(nodeName);
         av.initClient();
-        av.initServer();
+        av.initServer(args);
 	}
 
 }
