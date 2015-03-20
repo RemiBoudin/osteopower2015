@@ -16,13 +16,13 @@ public class ACimpl extends ACPOA{
 	/**
 	 * Constructeur de la classe ACimpl
 	 */
-	public ACimpl(){
+	public ACimpl(String username){
 		this.publicKey=(Tools.generateKeys(this.id))[0];
 		this.privateKey=(Tools.generateKeys(this.id))[1];
 		
-		this.id=Tools.convertNameToId("lvl1",EntityName.AC_SERVER);
-		this.idAVsrv=Tools.convertNameToId("lvl1",EntityName.AV_SERVER);
-		this.idAVsrv=Tools.convertNameToId("lvl1",EntityName.AE_SERVER);
+		this.id=Tools.convertNameToId(username,EntityName.AC_SERVER);
+		this.idAVsrv=Tools.convertNameToId(username,EntityName.AV_SERVER);
+		this.idAVsrv=Tools.convertNameToId(username,EntityName.AE_SERVER);
 		
 		this.certificat = new Certificat(null,(short) 1,Tools.getDate(),"never",this.publicKey,"",Tools.genererSignature(this.id));
 		
