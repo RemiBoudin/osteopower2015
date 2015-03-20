@@ -21,7 +21,7 @@ import org.omg.PortableServer.POAHelper;
 public class AppliUser {
 	
 	public static org.omg.CORBA.ORB objDistantORB = null;
-	public static org.omg.CosNaming.NamingContext objDistantNamingService = null;
+	public static org.omg.CosNaming.NamingContext objDistantNamingService = null; // Comm
 
 	public void initClient() {
 		
