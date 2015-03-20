@@ -5,18 +5,17 @@ import java.util.Hashtable;
 public class AEimpl extends AEPOA {
 
 	private Hashtable<String, String> listeIdClientPorteur;
-	private String idACsrv;
-	private String id;
-
+	private String nodeName;
+	private org.omg.CosNaming.NamingContext namingService;
 	/**
 	 * Constructeur de la classe AE
 	 * 
 	 * @param username
-	 *            nom à donner à l'AE
+	 *            nom ï¿½ donner ï¿½ l'AE
 	 */
-	public AEimpl(String username) {
-		this.id = Tools.convertNameToId(username, EntityName.AE_SERVER);
-		this.idACsrv = Tools.convertNameToId(username, EntityName.AC_SERVER);
+	public AEimpl(String nodeName, org.omg.CosNaming.NamingContext namingService) {
+		this.namingService=namingService;
+		this.nodeName = nodeName;
 		this.listeIdClientPorteur = new Hashtable<String, String>();
 
 		this.listeIdClientPorteur.put("titi", "titi");
@@ -29,15 +28,18 @@ public class AEimpl extends AEPOA {
 	 */
 	@Override
 	public void publier(Certificat certificatPorteur) {
-		// faire afficher "INFO - Enregistrement - Enregistrement OK" sur le
-		// client
-		System.out.println(this.id + " - INFO - Certificat de "
-				+ certificatPorteur.proprietaire + " publié !");
+		Porteur porteur = (Porteur)findObjByORBName(certificatPorteur.proprietaire, EntityName.PORTEUR_SERVER);
+		porteur.
+		
+		User user = (User)findObjByORBName(certificatPorteur.proprietaire, EntityName.USER_SERVER);
+		user.afficherMessage("INFO - Enregistrement - Enregistrement OK", false);
+		System.out.println(this.nodeName + " - INFO - Certificat de "
+				+ certificatPorteur.proprietaire + " publiï¿½ !");
 
 	}
 
 	/**
-	 * Vérifie la combinaison identifiant/mot de passe dans la base
+	 * Vï¿½rifie la combinaison identifiant/mot de passe dans la base
 	 * 
 	 * @param user
 	 *            nom de l'utilisateur
@@ -48,18 +50,18 @@ public class AEimpl extends AEPOA {
 	private boolean authentifier(String user, String mdp) {
 		if (this.listeIdClientPorteur.containsKey(user)) {
 			if (this.listeIdClientPorteur.get(user).equals(mdp)) {
-				System.out.println(this.id + " - INFO - " + user
-						+ " authentifié avec succès");
+				System.out.println(this.nodeName + " - INFO - " + user
+						+ " authentifiï¿½ avec succï¿½s");
 
 				return true;
 			} else {
-				System.out.println(this.id + " - ERR - " + user
-						+ " echec d'authentification (mdp erroné)");
+				System.out.println(this.nodeName + " - ERR - " + user
+						+ " echec d'authentification (mdp erronï¿½)");
 				return false;
 
 			}
 		} else {
-			System.out.println(this.id + " - ERR - " + user
+			System.out.println(this.nodeName + " - ERR - " + user
 					+ " echec d'authentification (username inconnu)");
 			return false;
 
@@ -67,54 +69,54 @@ public class AEimpl extends AEPOA {
 	}
 
 	/**
-	 * Vérifie si l'utilisateur a le droit d'utiliser le certificat pour un
-	 * usage donné
+	 * Vï¿½rifie si l'utilisateur a le droit d'utiliser le certificat pour un
+	 * usage donnï¿½
 	 * 
 	 * @param user
 	 *            nom de l'utilisateur
 	 * @param certifPorteur
-	 *            certificat du porteur lié à l'utilisateur
+	 *            certificat du porteur liï¿½ ï¿½ l'utilisateur
 	 * @param usage
 	 *            type d'utilisation du certificat
 	 * @return true si OK, false si non OK
 	 */
 	private boolean verifierDroits(String user, Certificat certifPorteur,
 			String usage) {
-		// si usage certif == usage donné
+		// si usage certif == usage donnï¿½
 		if (true) {
-			System.out.println(this.id + " - INFO - " + user + " droits OK");
+			System.out.println(this.nodeName + " - INFO - " + user + " droits OK");
 			return true;
 		} else {
-			System.out.println(this.id + " - ERR - " + user + " droits NOK");
+			System.out.println(this.nodeName + " - ERR - " + user + " droits NOK");
 			return false;
 		}
 	}
 
 	/**
-	 * Authentifie l'utilisateur et envoi la demande d'enregistrement à l'AC
+	 * Authentifie l'utilisateur et envoi la demande d'enregistrement ï¿½ l'AC
 	 */
 	@Override
 	public Certificat saveCertificat(String clepublique, String proprietaire,
 			String mdp, String dateExpiration, String usage)
 			throws erreur_authent {
-		// Envoi de la demande à l'AC supérieure
+		// Envoi de la demande ï¿½ l'AC supï¿½rieure
 		Certificat newCertif = null;
 
 		if (!this.authentifier(proprietaire, mdp)) {
 			// faire afficher "ERR - Enregistrement - Echec d'authentification"
-			System.out.println(this.id + " - ERR - " + proprietaire
+			System.out.println(this.nodeName + " - ERR - " + proprietaire
 					+ " echec d'authentification (username inconnu)");
 		} else {
 			// faire enregistrer sur l'AC distant
-			System.out.println(this.id + " - INFO - " + proprietaire
-					+ " Enregistrement auprès de l'AC");
+			System.out.println(this.nodeName + " - INFO - " + proprietaire
+					+ " Enregistrement auprï¿½s de l'AC");
 		}
 
 		return null;
 	}
 
 	/**
-	 * Révoque un certificat auprès l'AC
+	 * Rï¿½voque un certificat auprï¿½s l'AC
 	 */
 	@Override
 	public void revoquer(Certificat certificatPorteur, String mdp,
@@ -122,15 +124,15 @@ public class AEimpl extends AEPOA {
 		// TODO Auto-generated method stub
 		if (!this.authentifier(certificatPorteur.proprietaire, mdp)) {
 			// faire afficher "ERR - Revocation - Echec d'authentification"
-			System.out.println(this.id + " - ERR - "
+			System.out.println(this.nodeName + " - ERR - "
 					+ certificatPorteur.proprietaire
 					+ " echec d'authentification (username inconnu)");
 
 		} else {
-			// faire révoquer sur l'AC
-			System.out.println(this.id + " - INFO - "
+			// faire rï¿½voquer sur l'AC
+			System.out.println(this.nodeName + " - INFO - "
 					+ certificatPorteur.proprietaire
-					+ " Demande de révocation envoyée à l'AC");
+					+ " Demande de rï¿½vocation envoyï¿½e ï¿½ l'AC");
 
 		}
 	}

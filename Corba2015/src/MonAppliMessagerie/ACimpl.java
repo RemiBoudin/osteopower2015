@@ -8,52 +8,50 @@ public class ACimpl extends ACPOA {
 	private Hashtable<Integer, Certificat> listeCertificats;
 	private String privateKey;
 	private String publicKey;
-	private String id;
-	private String idAVsrv;
-	private String idAEsrv;
+	private String nodeName;
+	private org.omg.CosNaming.NamingContext namingService;
 
 	/**
 	 * Constructeur de la classe ACimpl
 	 */
-	public ACimpl(String username) {
-		this.publicKey = (Tools.generateKeys(this.id))[0];
-		this.privateKey = (Tools.generateKeys(this.id))[1];
+	public ACimpl(String nodeName, org.omg.CosNaming.NamingContext namingService) {
+		this.nodeName=nodeName;
+		this.namingService=namingService;
+		
+		this.publicKey = (Tools.generateKeys(this.nodeName))[0];
+		this.privateKey = (Tools.generateKeys(this.nodeName))[1];
 
-		this.id = Tools.convertNameToId(username, EntityName.AC_SERVER);
-		this.idAVsrv = Tools.convertNameToId(username, EntityName.AV_SERVER);
-		this.idAVsrv = Tools.convertNameToId(username, EntityName.AE_SERVER);
-
-		this.certificat = new Certificat(this.id, null, (short) 1,
+		this.certificat = new Certificat(this.nodeName, null, (short) 1,
 				Tools.getDate(), "never", this.publicKey, "",
-				Tools.genererSignature(this.id));
+				Tools.genererSignature(this.nodeName));
 
 		this.listeCertificats = new Hashtable<Integer, Certificat>();
 		this.listeCertificats.put(1, this.certificat);
 	}
 
 	/**
-	 * Permet de générer un certificat
+	 * Permet de gï¿½nï¿½rer un certificat
 	 * 
 	 * @param publicKey
-	 *            clé publique de l'entité propriétaire du certificat
+	 *            clï¿½ publique de l'entitï¿½ propriï¿½taire du certificat
 	 * @param id
-	 *            Nom de l'entité propriétaire du certificat
+	 *            Nom de l'entitï¿½ propriï¿½taire du certificat
 	 * @param dateExp
 	 *            date d'expiration du certificat
 	 * @param date
-	 *            date de début de validité du certificat
+	 *            date de dï¿½but de validitï¿½ du certificat
 	 * @param usage
 	 *            type d'usage attendu pour ce certificat
-	 * @return le certificat nouvellement créé
+	 * @return le certificat nouvellement crï¿½ï¿½
 	 */
 	private Certificat creerCertificat(String publicKey, String pptaire,
 			String dateExp, String date, String usage) {
 		int nbCertificats = this.listeCertificats.size();
-		Certificat newCertif = new Certificat(pptaire, this.idAVsrv,
+		Certificat newCertif = new Certificat(pptaire, this.nodeName,
 				(short) (nbCertificats + 1), date, dateExp, publicKey, usage,
-				Tools.genererSignature(id));
+				Tools.genererSignature(nodeName));
 
-		System.out.println(this.id + " - INFO - Certificat créé pour "
+		System.out.println(this.nodeName + " - INFO - Certificat crï¿½ï¿½ pour "
 				+ pptaire);
 
 		return newCertif;
@@ -65,7 +63,7 @@ public class ACimpl extends ACPOA {
 	 */
 	public Certificat getCertificat() {
 		// TODO Auto-generated method stub
-		System.out.println(this.id + " - INFO - Certificat personnel envoyé");
+		System.out.println(this.nodeName + " - INFO - Certificat personnel envoyï¿½");
 		return this.certificat;
 	}
 
@@ -73,54 +71,58 @@ public class ACimpl extends ACPOA {
 	 * Stocke un certificat dans la liste des certificats
 	 * 
 	 * @param newCertif
-	 *            certificat à stocker dans la liste
+	 *            certificat ï¿½ stocker dans la liste
 	 */
 	private void stockerCertificat(Certificat newCertif) {
 		// TODO Auto-generated method stub
 
 		this.listeCertificats.put((int) newCertif.Num_Unique, newCertif);
-		System.out.println(this.id + " - INFO - Certificat de "
-				+ newCertif.proprietaire + " stocké avec l'id "
+		System.out.println(this.nodeName + " - INFO - Certificat de "
+				+ newCertif.proprietaire + " stockï¿½ avec l'id "
 				+ newCertif.Num_Unique);
 
 	}
 
 	/**
-	 * Génère un certificat et le stocke dans la base, suite à une demande.
+	 * Gï¿½nï¿½re un certificat et le stocke dans la base, suite ï¿½ une demande.
 	 */
 	@Override
 	public void enregistrer(String clePublique, String proprietaire,
 			String dateExpiration, String usage) {
 		// TODO Auto-generated method stub
 
-		// Création du certificat
+		// Crï¿½ation du certificat
 		Certificat newCertif = this.creerCertificat(usage, clePublique,
 				dateExpiration, Tools.getDate(), usage);
 
 		// Stockage du certificat dans la base de certificat de l'AC
 		this.stockerCertificat(newCertif);
 
-		// Publier auprès de l'AE
-		System.out.println(this.id + " - INFO - " + proprietaire
-				+ " Publication du certificat auprès de l'AE");
-
+		// Publier auprï¿½s de l'AE
+		
+		AE ae = (AE)findObjByORBName(this.nodeName, EntityName.AE_SERVER);
+		ae.publier(newCertif);
+		System.out.println(this.nodeName + " - INFO - " + proprietaire
+				+ " Publication du certificat auprï¿½s de l'AE");
 	}
 
 	/**
-	 * Revoque un certificat auprès de l'AE et fait le retour au porteur
+	 * Revoque un certificat auprï¿½s de l'AE et fait le retour au porteur
 	 */
 	@Override
 	public void revoquerCertificat(Certificat certificatPorteur, String periode)
 			throws certif_revoque {
 		// revoquer certificat sur l'AV
-		System.out.println(this.id + " - INFO - "
+		AV av = (AV)findObjByORBName(this.nodeName, EntityName.AV_SERVER);
+		av.revoquerCertificat(certificatPorteur, periode);
+		
+		System.out.println(this.nodeName + " - INFO - "
 				+ certificatPorteur.proprietaire
-				+ " Demande de révocation aurpès de l'AV");
+				+ " Demande de rï¿½vocation aurpï¿½s de l'AV");
 
-		// Faire le retour à l'AE
-		System.out.println(this.id + " - INFO - "
+		System.out.println(this.nodeName + " - INFO - "
 				+ certificatPorteur.proprietaire
-				+ " Résultat de la révocation envoyée à l'AE");
+				+ " Rï¿½sultat de la rï¿½vocation envoyï¿½e ï¿½ l'AE");
 	}
 
 }
