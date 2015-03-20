@@ -21,17 +21,14 @@ import org.omg.PortableServer.POAHelper;
 public class AppliUser {
 	
 	public static org.omg.CORBA.ORB objDistantORB = null;
-	public static org.omg.CosNaming.NamingContext objDistantNamingService = null; // Comm
+	public static org.omg.CosNaming.NamingContext objDistantNamingService = null;
+	
 
-	public void initClient() {
-		
+	public void init(org.omg.CORBA.ORB objDistantORB, org.omg.CosNaming.NamingContext objDistantNamingService) {
 	}
 	
 	public void initServer(String[] args) {
 		try {
-	        // Intialisation de l'ORB
-	        //************************
-	        org.omg.CORBA.ORB orb = org.omg.CORBA.ORB.init(args,null);
 
 	        // Gestion du POA
 	        //****************
@@ -48,11 +45,8 @@ public class AppliUser {
 	        // Activer le POA manager
 	        rootPOA.the_POAManager().activate();
 
-
 	        // Enregistrement dans le service de nommage
 	        //*******************************************
-	        // Recuperation du naming service
-	        NamingContext nameRoot=org.omg.CosNaming.NamingContextHelper.narrow(orb.resolve_initial_references("NameService"));
 
 	        // Construction du nom a enregistrer
 	        org.omg.CosNaming.NameComponent[] nameToRegister = new org.omg.CosNaming.NameComponent[1];

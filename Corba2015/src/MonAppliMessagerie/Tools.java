@@ -18,8 +18,6 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
  */
 public class Tools {
 	
-	public static org.omg.CosNaming.NamingContext objDistantNamingService = null;
-	
 	public void init() {
 	}
 	/**
