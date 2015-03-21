@@ -75,7 +75,7 @@ public class UserImpl extends UserPOA {
 		
 	}
 	
-	private boolean verifierCheminCertification(String IOR_AV_a_contacter) throws erreur_certif, certif_revoque
+	public boolean verifierCheminCertification(String IOR_AV_a_contacter) throws erreur_certif, certif_revoque
 	{
 		AV av= (AV) UserHelper.narrow(Tools.findObjByORBName(IOR_AV_a_contacter, EntityName.AV_SERVER));
 		Certificat certifAC = av.getCertificatAC();
