@@ -1,3 +1,4 @@
+package MonAppliMessagerie;
 
 
 public enum VerificationRevocation {
