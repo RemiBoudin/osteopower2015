@@ -17,6 +17,8 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
  *         communes.
  */
 public class Tools {
+	
+	public static User user = null;
 
 	public void init() {
 	}
@@ -89,7 +91,7 @@ public class Tools {
 
 		try {
 			// Conversion du destinataire en nom ORB
-			String receiverORBName = Tools.convertNameToId(name, EntityName.PORTEUR_SERVER);
+			String receiverORBName = Tools.convertNameToId(name, entity);
 			System.out.println("Tools::findObjByORBName() : receiverORBName créé : "+receiverORBName);
 
 			// Construction du nom a rechercher
@@ -100,13 +102,15 @@ public class Tools {
 			// Recherche de l'objet aupres du naming service
 			distantObj = AppliChat.objDistantNamingService.resolve(nameToFind);
 			System.out.println("Tools::findObjByORBName() : Objet '" + name + "' trouvé auprès du service de noms.");
-
+			
+			return distantObj;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Tools::findObjByORBName() : ERR : Objet '" + name + "' non trouvé auprès du service de noms.");
 		}
-
-		return distantObj;
+		
+		return null;
 	}
 
 	/**

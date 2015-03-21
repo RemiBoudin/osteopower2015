@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NamingContext;
+import org.omg.PortableServer.POA;
+import org.omg.PortableServer.POAHelper;
 
 /**
  * @author jeremy
@@ -28,12 +30,12 @@ public class AppliChat {
 			// ##########################################
 			// # Intialisation de l'environnement CORBA #
 			// ##########################################
-
+			
 			// Initialisation de l'ORB
-			AppliChat.objUserServerORB = org.omg.CORBA.ORB.init(args, null);
-			AppliChat.objPorteurServerORB = org.omg.CORBA.ORB.init(args, null);
+			objUserServerORB = org.omg.CORBA.ORB.init(args, null);
+			objPorteurServerORB = org.omg.CORBA.ORB.init(args, null);
 			// Recuperation du naming service
-			AppliChat.objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(AppliChat.objUserServerORB.resolve_initial_references("NameService"));
+			objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(objUserServerORB.resolve_initial_references("NameService"));
 
 			// ############################################
 			// # Intialisation des objets Porteur et User #
@@ -56,7 +58,7 @@ public class AppliChat {
 			threadPorteur.start();
 
 			// Initialisation du serveur de l'utilisateur
-			porteur.initServer(clientName, clientPassword);
+			user.initServer(clientName);
 			// Lancement du thread du serveur de l'utilisateur
 			Thread threadUser = new Thread(user);
 			threadUser.start();
@@ -74,7 +76,7 @@ public class AppliChat {
 				System.out.println("-> [2] Enregistrer un nouveau certificat");
 				System.out.println("-> [3] Révoquer un certificat");
 				System.out.println("-> [4] Quitter");
-				System.out.println("-> [5] Quitter");
+				System.out.println("-> [5] Debug");
 				System.out.println("-> Que veux-tu faire ?");
 
 				sChoix = in.readLine();
