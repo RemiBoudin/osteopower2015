@@ -127,15 +127,7 @@ public class AppliUser implements Runnable{
 
 	public void debug(String sender, String message, boolean chiffred, String dest) {
 		User user = UserHelper.narrow(Tools.findObjByORBName(dest, EntityName.USER_SERVER));
-		try {
-			user.afficherMessage(sender, message, chiffred);
-		} catch (erreur_certif e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (certif_revoque e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		user.afficherMessage(sender, message, chiffred);
 	}
 
 }
