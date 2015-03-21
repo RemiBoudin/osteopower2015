@@ -67,9 +67,10 @@ public abstract class ACPOA extends org.omg.PortableServer.Servant
         String arg2_in = _is.read_string();
         String arg3_in = _is.read_string();
 
-        enregistrer(arg0_in, arg1_in, arg2_in, arg3_in);
+        MonAppliMessagerie.Certificat _arg_result = enregistrer(arg0_in, arg1_in, arg2_in, arg3_in);
 
         _output = handler.createReply();
+        MonAppliMessagerie.CertificatHelper.write(_output,_arg_result);
 
         return _output;
     }

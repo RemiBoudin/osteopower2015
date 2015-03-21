@@ -72,7 +72,7 @@ public class _ACStub extends org.omg.CORBA.portable.ObjectImpl
     /**
      * Operation enregistrer
      */
-    public void enregistrer(String clePublique, String proprietaire, String dateExpiration, String usage)
+    public MonAppliMessagerie.Certificat enregistrer(String clePublique, String proprietaire, String dateExpiration, String usage)
     {
         while(true)
         {
@@ -87,7 +87,8 @@ public class _ACStub extends org.omg.CORBA.portable.ObjectImpl
                     _output.write_string(dateExpiration);
                     _output.write_string(usage);
                     _input = this._invoke(_output);
-                    return;
+                    MonAppliMessagerie.Certificat _arg_ret = MonAppliMessagerie.CertificatHelper.read(_input);
+                    return _arg_ret;
                 }
                 catch(org.omg.CORBA.portable.RemarshalException _exception)
                 {
@@ -111,8 +112,7 @@ public class _ACStub extends org.omg.CORBA.portable.ObjectImpl
                 MonAppliMessagerie.ACOperations _self = (MonAppliMessagerie.ACOperations) _so.servant;
                 try
                 {
-                    _self.enregistrer( clePublique,  proprietaire,  dateExpiration,  usage);
-                    return;
+                    return _self.enregistrer( clePublique,  proprietaire,  dateExpiration,  usage);
                 }
                 finally
                 {

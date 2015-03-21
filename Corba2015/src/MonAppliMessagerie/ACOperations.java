@@ -15,7 +15,7 @@ public interface ACOperations
     /**
      * Operation enregistrer
      */
-    public void enregistrer(String clePublique, String proprietaire, String dateExpiration, String usage);
+    public MonAppliMessagerie.Certificat enregistrer(String clePublique, String proprietaire, String dateExpiration, String usage);
 
     /**
      * Operation revoquerCertificat
