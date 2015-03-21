@@ -15,7 +15,7 @@ public class UserImpl extends UserPOA {
 	public Certificat certificatSender;
 	private String username;
 	
-	public void Userimpl(String username)
+	public void UserImpl(String username)
 	{
 		this.username= username ;
 		
