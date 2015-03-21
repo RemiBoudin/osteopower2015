@@ -18,10 +18,12 @@ import org.omg.PortableServer.POAHelper;
  *
  */
 public class AppliUser implements Runnable{
-
+	private UserImpl userLocal;
+	private String username;
+	
 	public void initServer(String username) {
 		try {
-
+			this.username=username;
 			// Gestion du POA
 			// ****************
 			// Recuperation du POA
@@ -29,7 +31,7 @@ public class AppliUser implements Runnable{
 
 			// Creation du servant
 			// *********************
-			UserImpl userLocal = new UserImpl(username);
+			this.userLocal = new UserImpl(username);
 
 			// Activer le servant au sein du POA et recuperer son ID
 			byte[] monEuroId = rootPOA.activate_object(userLocal);
@@ -59,61 +61,26 @@ public class AppliUser implements Runnable{
 		}
 	}
 
-	public void repondreToUser(String message, String receiverName) {
-
-		// #################################################################
-		// ## DEMANDE DU CERTIFICAT AU SERVEUR DU PORTEUR DU DESTINATAIRE ##
-		// #################################################################
-
-		// Recherche du (serveur du porteur) du (destinataire)
-		org.omg.CORBA.Object objDistant = Tools.findObjByORBName(receiverName, EntityName.PORTEUR_SERVER);
-
-		// Cast de l'objet distant au format Porteur
-		Porteur objDistantPorteurServer = PorteurHelper.narrow(objDistant);
-
-		// Demande du certificat au porteur
-		Certificat certificatPorteur = objDistantPorteurServer.getCertificatPorteur();
-
-		// ##################################################################
-		// ## CHECK DE LA PERIODE DU CERTIFICAT DU PORTEUR DU DESTINATAIRE ##
-		// ##################################################################
-		if (!this.checkPeriode(certificatPorteur)) {
-			return;
-		}
-
-		// ###############################################################
-		// ## CHECK DE L'USAGE DU CERTIFICAT DU PORTEUR DU DESTINATAIRE ##
-		// ###############################################################
-		if (!this.checkUsage(certificatPorteur)) {
-			System.out.println("ERR:Usage_Incorrect");
-			return;
-		}
-
-		// ###############################################################################
-		// ## CHECK DU CHEMIN DE CERTIFICATION DU CERTIFICAT DU PORTEUR DU
-		// DESTINATAIRE ##
-		// ###############################################################################
-		if (this.checkCheminCertification(certificatPorteur)) {
-			return;
-		}
-
-	}
-
-	public Certificat getCertificat() {
-
+	/*public Certificat getCertificat() {
 		return null;
-	}
+	}*/
 
 	private boolean checkPeriode(Certificat cert) {
-		return true;
+		return this.userLocal.verifierPeriode();
 	}
 
-	private boolean checkUsage(Certificat cert) {
-		return true;
+	private String checkUsage(Certificat cert) {
+		return this.userLocal.verifierUsage();
 	}
 
 	private boolean checkCheminCertification(Certificat cert) {
-		return true;
+		try {
+			return this.userLocal.verifierCheminCertification(cert.IOR_AV);
+		} catch (erreur_certif | certif_revoque e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
@@ -128,4 +95,43 @@ public class AppliUser implements Runnable{
 		//user.afficherMessage(sender, message, chiffred);
 	}
 
+	public void repondreToUser(String message, String receiverName) {
+
+		// #################################################################
+		// ## DEMANDE DU CERTIFICAT AU SERVEUR DU PORTEUR DU DESTINATAIRE ##
+		// #################################################################
+
+		// Recherche du (serveur du porteur) du (destinataire)
+		org.omg.CORBA.Object objDistant = Tools.findObjByORBName(receiverName, EntityName.PORTEUR_SERVER);
+
+		// Cast de l'objet distant au format Porteur
+		Porteur objDistantPorteurServer = PorteurHelper.narrow(objDistant);
+
+		// Demande du certificat au porteur
+		Certificat certificatDistant = objDistantPorteurServer.getCertificatPorteur();
+
+		boolean cheminCertifie;
+		try {
+			cheminCertifie = this.userLocal.verifierCheminCertification(certificatDistant.IOR_AV);
+			System.out.println("AppliUser:: PChemin de certif de l'interlocuteur distant"+receiverName+" OK");
+			if (cheminCertifie)
+			{
+				User userDistant = UserHelper.narrow(Tools.findObjByORBName(receiverName, EntityName.USER_SERVER));
+				String messageChiffre=Tools.chiffrerMessage(message, "");
+				userDistant.afficherMessage(this.username, messageChiffre, true);
+				System.out.println("AppliUser:: Message affiché chez "+receiverName);
+			}	
+			else
+			{
+				System.out.println("AppliUser:: Problème dans le chemin de certif de l'interlocuteur "+receiverName+" distant");
+			}
+		} catch (erreur_certif e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (certif_revoque e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 }

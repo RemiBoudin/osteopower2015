@@ -22,17 +22,18 @@ public class AppliPorteur implements Runnable{
 	
 	public void initServer(String username, String mdp) {
 		try {
+
 			// Gestion du POA
 			// ****************
 			// Recuperation du POA
-			POA rootPOA = POAHelper.narrow(AppliChat.objPorteurServerORB.resolve_initial_references("RootPOA"));
+			POA rootPOA = POAHelper.narrow(AppliChat.objUserServerORB.resolve_initial_references("RootPOA"));
 
 			// Creation du servant
 			// *********************
-			this.porteurLocal = new PorteurImpl(username, mdp);
+			this.porteurLocal = new PorteurImpl(username,mdp);
 
 			// Activer le servant au sein du POA et recuperer son ID
-			byte[] monEuroId = rootPOA.activate_object(this.porteurLocal);
+			byte[] monEuroId = rootPOA.activate_object(porteurLocal);
 
 			// Activer le POA manager
 			rootPOA.the_POAManager().activate();
@@ -42,32 +43,35 @@ public class AppliPorteur implements Runnable{
 
 			// Construction du nom a enregistrer
 			org.omg.CosNaming.NameComponent[] nameToRegister = new org.omg.CosNaming.NameComponent[1];
-			nameToRegister[0] = new org.omg.CosNaming.NameComponent(Tools.convertNameToId(username, EntityName.PORTEUR_SERVER), "");
+			String nomComplet = Tools.convertNameToId(username, EntityName.PORTEUR_SERVER);
+			System.out.println("CROTTE NOM COMPLET " + nomComplet);
+			nameToRegister[0] = new org.omg.CosNaming.NameComponent(nomComplet, "");
 
 			// Enregistrement de l'objet CORBA dans le service de noms
 			AppliChat.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(porteurLocal));
-			System.out.println("Appliporteur::initServer() : ==> Nom '" + nameToRegister + "' est enregistre dans le service de noms.");
+			System.out.println("AppliPorteur::initServer() : ==> Nom '" + nameToRegister + "' est enregistre dans le service de noms.");
 
 			String IORServant = AppliChat.objPorteurServerORB.object_to_string(rootPOA.servant_to_reference(porteurLocal));
-			System.out.println("Appliporteur::initServer() : L'objet possede la reference suivante :");
-			System.out.println("Appliporteur::initServer() : "+IORServant);
-
+			System.out.println("AppliPorteur::initServer() : L'objet possede la reference suivante :");
+			System.out.println("AppliPorteur::initServer() : "+IORServant);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void enregistrerCertificat(String usage, String dateExp, String nodeName) {
-		return;
+		this.porteurLocal.enregistrerCertificat(usage, dateExp, nodeName);
 	}
 	
 	public void revoquerCertificat(Certificat certificat, String mdp, String periode) {
 		System.out.println("si ca marche c cool :)");
-		return;
+		AE ae = AEHelper.narrow(Tools.findObjByORBName(this.porteurLocal.getCertificatPorteur().IOR_AV, EntityName.AE_SERVER));
+		ae.revoquer(this.porteurLocal.getCertificatPorteur(), mdp, periode);
 	}
 
 	public Certificat getCertificat() {
-		return null;
+		return this.porteurLocal.getCertificatPorteur();
 	}
 
 	@Override
