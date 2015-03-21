@@ -18,45 +18,31 @@ public class PorteurImpl  extends PorteurPOA{
 	
 	private PorteurImpl(String username,String mdp, org.omg.CosNaming.NamingContext namingService){
 		this.namingService=namingService;
-		
-		String[] keys = Tools.generateKeys(username);
-		this.publicKey=keys[0];
-		this.privateKey=keys[1];
-		
 		this.username = username;
 		this.mdp=mdp;
+		
+		String[] keys = Tools.generateKeys(this.username);
+		this.publicKey=keys[0];
+		this.privateKey=keys[1];
+	}
+	
+	public boolean enregistrerCertificat(String usage, String dateExpiration, String nodeName){
+		AE ae = AEHelper.narrow(Tools.findObjByORBName(nodeName, EntityName.AE_SERVER, this.namingService));
+		try {
+			this.monCertificat = ae.saveCertificat(this.publicKey, this.username, this.mdp, dateExpiration, usage);	
+			System.out.println(this.username + " - INFO - Certificat enregistré");
+			return true;
+		} catch (erreur_authent e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	@Override
 	public Certificat getCertificatPorteur() {
-		
+		System.out.println(this.username + " - INFO - Certificat envoyé");
 		return this.monCertificat;
-	}
-	
-	/////////////
-	// INUTILE //
-	/////////////
-	@Override
-	public void afficherMessage(String message) {
-		
-	}
-
-	/////////////
-	// INUTILE //
-	/////////////
-	@Override
-	public void receiveNewCertificat(Certificat newCertif) {
-		
-	}
-	
-	private void enregistrerCertificat(String nodeName, String dateExpiration, String usage){
-		AE ae = AEHelper.narrow(Tools.findObjByORBName(nodeName, EntityName.AE_SERVER, this.namingService));
-		try {
-			this.monCertificat=ae.saveCertificat(this.publicKey, this.username, this.mdp, dateExpiration, usage);
-		} catch (erreur_authent e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 }
