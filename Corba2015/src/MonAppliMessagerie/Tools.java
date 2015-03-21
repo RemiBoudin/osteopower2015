@@ -7,6 +7,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.omg.CosNaming.BindingIteratorHolder;
+import org.omg.CosNaming.BindingListHolder;
+import org.omg.CosNaming.BindingType;
+import org.omg.CosNaming.NameComponent;
+import org.omg.CosNaming.NamingContext;
+import org.omg.CosNaming.NamingContextHelper;
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.omg.CosNaming.NamingContextPackage.InvalidName;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
@@ -126,5 +132,30 @@ public class Tools {
 		keys[0] = "abc" + id; // Generation de la cl� public
 		keys[1] = "cba" + id; // Generation de la cl� priv�e
 		return keys;
+	}
+	
+
+
+	public static void printContext(NamingContext nc, String parent) {
+		try {
+			final int batchSize = 1000;
+			BindingListHolder bList = new BindingListHolder();
+			BindingIteratorHolder bIterator = new BindingIteratorHolder();
+
+			nc.list(batchSize, bList, bIterator);
+
+			for (int i = 0; i < bList.value.length; i++) {
+				NameComponent[] name = { bList.value[i].binding_name[0] };
+				if (bList.value[i].binding_type == BindingType.ncontext) {
+					NamingContext context = NamingContextHelper.narrow(nc.resolve(name));
+					printContext(context, parent + name[0].id + ".");
+				} else {
+					System.out.println(parent + name[0].id);
+				}
+			}
+
+		} catch (Exception e) {
+			System.out.println("ERROR : " + e);
+		}
 	}
 }
