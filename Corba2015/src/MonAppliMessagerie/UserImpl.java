@@ -56,7 +56,7 @@ public class UserImpl extends UserPOA {
 			
 		return "ok";
 		*/
-		System.out.println(message);
+		System.out.println("Si ca marche 2, c ok !!!");
 		return null;
 	}
 	
