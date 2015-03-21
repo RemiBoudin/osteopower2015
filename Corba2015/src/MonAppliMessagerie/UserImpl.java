@@ -61,21 +61,21 @@ public class UserImpl extends UserPOA {
 		System.out.println("Message reçu : [" + message+"]");
 	}
 	
-	private boolean verifierPeriode()
+	public boolean verifierPeriode()
 	{
 		
 		return true;
 		
 	}
 	
-	private String verifierUsage()
+	public String verifierUsage()
 	{
 		
 		return null;
 		
 	}
 	
-	private boolean verifierCheminCertification(String IOR_AV_a_contacter) throws erreur_certif, certif_revoque
+	public boolean verifierCheminCertification(String IOR_AV_a_contacter) throws erreur_certif, certif_revoque
 	{
 		AV av= (AV) UserHelper.narrow(Tools.findObjByORBName(IOR_AV_a_contacter, EntityName.AV_SERVER));
 		Certificat certifAC = av.getCertificatAC();
@@ -98,17 +98,17 @@ public class UserImpl extends UserPOA {
 		return false;
 	}
 	
-	private boolean verifierSignature()
+	public boolean verifierSignature()
 	{
 		return true;
 	}
 	
-	private boolean dechiffrerSignature()
+	public boolean dechiffrerSignature()
 	{
 		return true;
 	}
 
-	private String genererHash()
+	public String genererHash()
 	{
 		return null;
 	}
