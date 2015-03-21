@@ -61,14 +61,14 @@ public class UserImpl extends UserPOA {
 		System.out.println("Message reçu : [" + message+"]");
 	}
 	
-	private boolean verifierPeriode()
+	public boolean verifierPeriode()
 	{
 		
 		return true;
 		
 	}
 	
-	private String verifierUsage()
+	public String verifierUsage()
 	{
 		
 		return null;
@@ -98,17 +98,17 @@ public class UserImpl extends UserPOA {
 		return false;
 	}
 	
-	private boolean verifierSignature()
+	public boolean verifierSignature()
 	{
 		return true;
 	}
 	
-	private boolean dechiffrerSignature()
+	public boolean dechiffrerSignature()
 	{
 		return true;
 	}
 
-	private String genererHash()
+	public String genererHash()
 	{
 		return null;
 	}
