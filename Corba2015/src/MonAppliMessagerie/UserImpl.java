@@ -24,7 +24,7 @@ public class UserImpl extends UserPOA {
 	@Override
 	public String afficherMessage(String sender, String message, boolean chiffred) throws erreur_certif, certif_revoque {
 		// TODO Auto-generated method stub
-		
+		/*
 		if (chiffred)
 			{
 			Porteur porteur= (Porteur) UserHelper.narrow(Tools.findObjByORBName(sender, EntityName.PORTEUR_SERVER));
@@ -47,6 +47,9 @@ public class UserImpl extends UserPOA {
 			System.out.println("UserImpl::afficherMesssage() : Message reçu : ["+message+"]");
 			
 		return "ok";
+		*/
+		System.out.println("Si ca marche 2, c ok !!!");
+		return null;
 	}
 	
 	private boolean verifierPeriode()

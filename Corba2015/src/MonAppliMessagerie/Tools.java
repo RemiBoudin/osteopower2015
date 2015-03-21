@@ -90,10 +90,12 @@ public class Tools {
 		try {
 			// Conversion du destinataire en nom ORB
 			String receiverORBName = Tools.convertNameToId(name, EntityName.PORTEUR_SERVER);
+			System.out.println("Tools::findObjByORBName() : receiverORBName créé : "+receiverORBName);
 
 			// Construction du nom a rechercher
 			org.omg.CosNaming.NameComponent[] nameToFind = new org.omg.CosNaming.NameComponent[1];
 			nameToFind[0] = new org.omg.CosNaming.NameComponent(receiverORBName, "");
+			System.out.println("Tools::findObjByORBName() : nameToFind créé : "+nameToFind.toString());
 
 			// Recherche de l'objet aupres du naming service
 			distantObj = AppliChat.objDistantNamingService.resolve(nameToFind);

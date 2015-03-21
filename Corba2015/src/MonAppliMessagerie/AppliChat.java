@@ -56,11 +56,10 @@ public class AppliChat {
 			threadPorteur.start();
 
 			// Initialisation du serveur de l'utilisateur
-			//porteur.initServer(clientName, clientPassword);
+			porteur.initServer(clientName, clientPassword);
 			// Lancement du thread du serveur de l'utilisateur
-			//Thread threadPorteur = new Thread(porteur);
-			//threadPorteur.start();
-			//user.initServer(clientName);
+			Thread threadUser = new Thread(user);
+			threadUser.start();
 
 			// ############################################
 			// # Initialisation de l'interface graphique #
@@ -75,6 +74,7 @@ public class AppliChat {
 				System.out.println("-> [2] Enregistrer un nouveau certificat");
 				System.out.println("-> [3] Révoquer un certificat");
 				System.out.println("-> [4] Quitter");
+				System.out.println("-> [5] Quitter");
 				System.out.println("-> Que veux-tu faire ?");
 
 				sChoix = in.readLine();
@@ -102,6 +102,14 @@ public class AppliChat {
 					break;
 				case 4: // Cas quitter
 					System.exit(0);
+					break;
+				case 5: // Cas debug
+					System.out.println("-> /!\\ FONCTION DE DEBUG /!\\");
+					System.out.println("-> /!\\ Destinataire du message ?");
+					String dest = in.readLine();
+					System.out.println("-> /!\\ Message ?");
+					message = in.readLine();
+					user.debug(clientName, message, true, dest);
 					break;
 				default:
 				}
