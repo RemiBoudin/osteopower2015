@@ -12,6 +12,6 @@ public interface UserOperations
      * @throws certif_revoque 
      * @throws erreur_certif 
      */
-    public String afficherMessage(String sender, String message, boolean chiffred) throws erreur_certif, certif_revoque;
+    public String afficherMessage(String sender, String message, boolean chiffred);
 
 }
