@@ -9,6 +9,8 @@ public interface UserOperations
 {
     /**
      * Operation afficherMessage
+     * @throws certif_revoque 
+     * @throws erreur_certif 
      */
     public String afficherMessage(String sender, String message, boolean chiffred);
 
