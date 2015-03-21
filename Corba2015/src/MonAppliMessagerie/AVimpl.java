@@ -15,6 +15,7 @@ public class AVimpl extends AVPOA
 	{
 		this.listeCertifRevoque = new Hashtable<Short, Certificat>();
 		this.listeCertifSuspendus = new Hashtable<Short, Certificat>();
+		this.nodename = nodename;
 	}
 	@Override
 	public Certificat getCertificatAC() {
