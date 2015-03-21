@@ -41,7 +41,6 @@ public class AppliChat {
 
 			AppliPorteur porteur = new AppliPorteur();
 			AppliUser user = new AppliUser();
-			user.initServer();
 
 			System.out.println("## Projet CORBA ##\n");
 			System.out.println("-> T'es qui bizu ?");
@@ -50,13 +49,24 @@ public class AppliChat {
 			System.out.println("-> C'est quoi ton mdp ?");
 			String clientPassword = in.readLine();
 
+			// Initialisation du serveur du porteur
 			porteur.initServer(clientName, clientPassword);
+			// Lancement du thread du serveur du porteur
+			Thread threadPorteur = new Thread(porteur);
+			threadPorteur.start();
+
+			// Initialisation du serveur de l'utilisateur
+			//porteur.initServer(clientName, clientPassword);
+			// Lancement du thread du serveur de l'utilisateur
+			//Thread threadPorteur = new Thread(porteur);
+			//threadPorteur.start();
+			//user.initServer(clientName);
 
 			// ############################################
 			// # Initialisation de l'interface graphique #
 			// ############################################
 			
-			String sChoix = null;
+			String sChoix = "0";
 
 			while (Integer.parseInt(sChoix) != 4) {
 
@@ -65,7 +75,7 @@ public class AppliChat {
 				System.out.println("-> [2] Enregistrer un nouveau certificat");
 				System.out.println("-> [3] Révoquer un certificat");
 				System.out.println("-> [4] Quitter");
-				System.out.println("-> Que veux-tu faire ?\n");
+				System.out.println("-> Que veux-tu faire ?");
 
 				sChoix = in.readLine();
 

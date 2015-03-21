@@ -17,11 +17,9 @@ import org.omg.PortableServer.POAHelper;
  * @author jeremy
  *
  */
-public class AppliUser {
+public class AppliUser implements Runnable{
 
-	public org.omg.CORBA.ORB objDistantORB = null;
-
-	public void initServer() {
+	public void initServer(String username) {
 		try {
 
 			// Gestion du POA
@@ -31,7 +29,7 @@ public class AppliUser {
 
 			// Creation du servant
 			// *********************
-			UserImpl userLocal = new UserImpl();
+			UserImpl userLocal = new UserImpl(username);
 
 			// Activer le servant au sein du POA et recuperer son ID
 			byte[] monEuroId = rootPOA.activate_object(userLocal);
@@ -44,18 +42,15 @@ public class AppliUser {
 
 			// Construction du nom a enregistrer
 			org.omg.CosNaming.NameComponent[] nameToRegister = new org.omg.CosNaming.NameComponent[1];
-			System.out.println("Sous quel nom voulez-vous enregistrer l'objet Corba ?");
-			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-			String nomObj = in.readLine();
-			nameToRegister[0] = new org.omg.CosNaming.NameComponent(nomObj, "");
+			nameToRegister[0] = new org.omg.CosNaming.NameComponent(username, "");
 
 			// Enregistrement de l'objet CORBA dans le service de noms
 			AppliChat.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(userLocal));
-			System.out.println("==> Nom '" + nomObj + "' est enregistre dans le service de noms.");
+			System.out.println("AppliUser::initServer() : ==> Nom '" + nameToRegister + "' est enregistre dans le service de noms.");
 
 			String IORServant = AppliChat.objUserServerORB.object_to_string(rootPOA.servant_to_reference(userLocal));
-			System.out.println("L'objet possede la reference suivante :");
-			System.out.println(IORServant);
+			System.out.println("AppliUser::initServer() : L'objet possede la reference suivante :");
+			System.out.println("AppliUser::initServer() : "+IORServant);
 
 			// Lancement de l'ORB et mise en attente de requete
 			// **************************************************
@@ -121,6 +116,13 @@ public class AppliUser {
 
 	private boolean checkCheminCertification(Certificat cert) {
 		return true;
+	}
+
+	@Override
+	public void run() {
+		// Lancement de l'ORB et mise en attente de requete
+		// **************************************************
+		AppliChat.objUserServerORB.run();
 	}
 
 }
