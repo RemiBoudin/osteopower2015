@@ -11,10 +11,11 @@ public class AVimpl extends AVPOA
 	private Hashtable<Short, Certificat> listeCertifSuspendus;
 	public static org.omg.CosNaming.NamingContext NamingService;
 
-	public AVimpl()
+	public AVimpl(String nodeName)
 	{
 		this.listeCertifRevoque = new Hashtable<Short, Certificat>();
 		this.listeCertifSuspendus = new Hashtable<Short, Certificat>();
+		this.nodename = nodeName;
 	}
 	@Override
 	public Certificat getCertificatAC() {
