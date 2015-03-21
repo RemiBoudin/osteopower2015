@@ -62,4 +62,16 @@ public class AppliPorteur {
 			e.printStackTrace();
 		}
 	}
+
+	public void enregistrerCertificat(String usage, String dateExp, String nodeName) {
+		return;
+	}
+	
+	public void revoquerCertificat(Certificat certificat, String mdp, String periode) {
+		return;
+	}
+
+	public Certificat getCertificat() {
+		return null;
+	}
 }
