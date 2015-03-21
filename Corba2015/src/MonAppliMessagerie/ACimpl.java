@@ -14,9 +14,9 @@ public class ACimpl extends ACPOA {
 	/**
 	 * Constructeur de la classe ACimpl
 	 */
-	public ACimpl(String nodeName, org.omg.CosNaming.NamingContext namingService) {
+	public ACimpl(String nodeName) {
 		this.nodeName = nodeName;
-		this.namingService = namingService;
+		//this.namingService = namingService;
 
 		this.publicKey = (Tools.generateKeys(this.nodeName))[0];
 		this.privateKey = (Tools.generateKeys(this.nodeName))[1];
@@ -99,7 +99,7 @@ public class ACimpl extends ACPOA {
 	public boolean revoquerCertificat(Certificat certificatPorteur, String periode) throws certif_revoque {
 
 		// revoquer certificat sur l'AV
-		AV av = AVHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AV_SERVER, this.namingService));
+		AV av = AVHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AV_SERVER));
 		
 		System.out.println(this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Demande de révocation aurpès de l'AV");
 		if (av.revoquerCertificat(certificatPorteur, periode)) {

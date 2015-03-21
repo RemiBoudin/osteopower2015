@@ -21,17 +21,14 @@ public class AppliCertificationNode {
         
         // initialisation de l'AC
         AppliAC ac = new AppliAC(nodeName);
-        ac.initClient();
         ac.initServer(args);
 		
         // initialisation de l'AE
         AppliAE ae = new AppliAE(nodeName);
-        ae.initClient();
         ae.initServer(args);
         
         // initialisation de l'AV
         AppliAV av = new AppliAV(nodeName);
-        av.initClient();
         av.initServer(args);
 	}
 
