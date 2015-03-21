@@ -99,7 +99,7 @@ public class ACimpl extends ACPOA {
 	public boolean revoquerCertificat(Certificat certificatPorteur, String periode) throws certif_revoque {
 
 		// revoquer certificat sur l'AV
-		AV av = AVHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AV_SERVER, this.namingService));
+		AV av = AVHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AV_SERVER));
 		
 		System.out.println(this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Demande de révocation aurpès de l'AV");
 		if (av.revoquerCertificat(certificatPorteur, periode)) {

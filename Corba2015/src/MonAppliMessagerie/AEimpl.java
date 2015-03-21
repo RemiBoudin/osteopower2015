@@ -34,7 +34,7 @@ public class AEimpl extends AEPOA {
 		// Envoi du certificat à l'appli porteur
 		System.out.println(this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Demande de révocation envoyée à l'AC");
 
-		Porteur porteur = PorteurHelper.narrow(Tools.findObjByORBName(certificatPorteur.proprietaire, EntityName.PORTEUR_SERVER, this.namingService));
+		Porteur porteur = PorteurHelper.narrow(Tools.findObjByORBName(certificatPorteur.proprietaire, EntityName.PORTEUR_SERVER));
 		//porteur.receiveNewCertificat(certificatPorteur);
 	}
 
@@ -105,7 +105,7 @@ public class AEimpl extends AEPOA {
 			return null; 
 		} else {
 			// faire enregistrer sur l'AC supérieure
-			AC ac = ACHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AC_SERVER, this.namingService));
+			AC ac = ACHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AC_SERVER));
 			Certificat newCertif = ac.enregistrer(clepublique, proprietaire, dateExpiration, usage);
 
 			System.out.println(this.nodeName + " - INFO - " + proprietaire + " Enregistrement aupr�s de l'AC");
@@ -129,7 +129,7 @@ public class AEimpl extends AEPOA {
 			
 			// faire révoquer le certificat sur l'AC
 			System.out.println(this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Demande de r�vocation envoy�e � l'AC");
-			AC ac = ACHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AC_SERVER, this.namingService));
+			AC ac = ACHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AC_SERVER));
 			try {
 				return ac.revoquerCertificat(certificatPorteur, periode);
 			} catch (certif_revoque e) {
