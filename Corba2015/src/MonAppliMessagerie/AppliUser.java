@@ -42,7 +42,9 @@ public class AppliUser implements Runnable{
 
 			// Construction du nom a enregistrer
 			org.omg.CosNaming.NameComponent[] nameToRegister = new org.omg.CosNaming.NameComponent[1];
-			nameToRegister[0] = new org.omg.CosNaming.NameComponent(username, "");
+			String nomComplet = Tools.convertNameToId(username, EntityName.USER_SERVER);
+			System.out.println("CROTTE NOM COMPLET " + nomComplet);
+			nameToRegister[0] = new org.omg.CosNaming.NameComponent(nomComplet, "");
 
 			// Enregistrement de l'objet CORBA dans le service de noms
 			AppliChat.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(userLocal));
@@ -51,11 +53,7 @@ public class AppliUser implements Runnable{
 			String IORServant = AppliChat.objUserServerORB.object_to_string(rootPOA.servant_to_reference(userLocal));
 			System.out.println("AppliUser::initServer() : L'objet possede la reference suivante :");
 			System.out.println("AppliUser::initServer() : "+IORServant);
-
-			// Lancement de l'ORB et mise en attente de requete
-			// **************************************************
-			AppliChat.objUserServerORB.run();
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -127,15 +125,7 @@ public class AppliUser implements Runnable{
 
 	public void debug(String sender, String message, boolean chiffred, String dest) {
 		User user = UserHelper.narrow(Tools.findObjByORBName(dest, EntityName.USER_SERVER));
-		try {
-			user.afficherMessage(sender, message, chiffred);
-		} catch (erreur_certif e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (certif_revoque e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		user.afficherMessage(sender, message, chiffred);
 	}
 
 }
