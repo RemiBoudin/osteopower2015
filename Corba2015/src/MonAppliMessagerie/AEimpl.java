@@ -29,12 +29,13 @@ public class AEimpl extends AEPOA {
 	 * demande
 	 */
 	@Override
+	// USELESS DESORMAIS
 	public void publier(Certificat certificatPorteur) {
 		// Envoi du certificat à l'appli porteur
 		System.out.println(this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Demande de révocation envoyée à l'AC");
 
 		Porteur porteur = PorteurHelper.narrow(Tools.findObjByORBName(certificatPorteur.proprietaire, EntityName.PORTEUR_SERVER, this.namingService));
-		porteur.receiveNewCertificat(certificatPorteur);
+		//porteur.receiveNewCertificat(certificatPorteur);
 	}
 
 	/**
