@@ -12,6 +12,7 @@ import java.util.Hashtable;
 public class UserImpl extends UserPOA {
 	
 	public static org.omg.CosNaming.NamingContext NamingService;
+	public Certificat certificatSender;
 	
 	public void Userimpl(org.omg.CosNaming.NamingContext NamingService)
 	{
@@ -26,7 +27,7 @@ public class UserImpl extends UserPOA {
 			{
 			System.out.println("UserImpl::afficherMessage() : Message chiffred reçu : ["+message+"]");
 			Porteur porteur= (Porteur) UserHelper.narrow(Tools.findObjByORBName(sender, EntityName.PORTEUR_SERVER));
-			Certificat certificatSender = porteur.getCertificatPorteur();
+			certificatSender = porteur.getCertificatPorteur();
 			
 			}
 		else
@@ -37,19 +38,22 @@ public class UserImpl extends UserPOA {
 	
 	private boolean verifierPeriode()
 	{
-		return false;
+		
+		return true;
 		
 	}
 	
 	private String verifierUsage()
 	{
+		
 		return null;
 		
 	}
 	
 	private void verifierCheminCertification()
 	{
-		
+		AV av= (AV) UserHelper.narrow(Tools.findObjByORBName(certificatSender.IOR_AV, EntityName.AV_SERVER));
+		Certificat certifAC = av.getCertificatAC();
 	}
 	
 	private void verifierSignature()
