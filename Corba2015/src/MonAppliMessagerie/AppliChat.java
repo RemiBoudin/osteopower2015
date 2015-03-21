@@ -77,11 +77,13 @@ public class AppliChat {
 			while (Integer.parseInt(sChoix) != 4) {
 
 				// Affichage du contenu du service de noms
+				System.out.println("-------------------------------------------");
 				System.out.println("DEBUT - AFFICHAGE DU NAMING SERVICE - DEBUT");
 				System.out.println("-------------------------------------------");
 				Tools.printContext(objDistantNamingService, "");
 				System.out.println("-------------------------------------------");
 				System.out.println("FIN - AFFICHAGE DU NAMING SERVICE - FIN");
+				System.out.println("-------------------------------------------");
 
 				System.out.println("-> Bonjour " + clientName + " et bienvenue dans ce magnifique projet CORBA");
 				System.out.println("-> [1] Envoyer un message");
