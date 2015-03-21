@@ -23,7 +23,7 @@ public class _UserStub extends org.omg.CORBA.portable.ObjectImpl
     /**
      * Operation afficherMessage
      */
-    public String afficherMessage(String message, boolean chiffred)
+    public String afficherMessage(String sender, String message, boolean chiffred)
     {
         while(true)
         {
@@ -33,6 +33,7 @@ public class _UserStub extends org.omg.CORBA.portable.ObjectImpl
                 try
                 {
                     org.omg.CORBA.portable.OutputStream _output = this._request("afficherMessage",true);
+                    _output.write_string(sender);
                     _output.write_string(message);
                     _output.write_boolean(chiffred);
                     _input = this._invoke(_output);
@@ -61,7 +62,7 @@ public class _UserStub extends org.omg.CORBA.portable.ObjectImpl
                 MonAppliMessagerie.UserOperations _self = (MonAppliMessagerie.UserOperations) _so.servant;
                 try
                 {
-                    return _self.afficherMessage( message,  chiffred);
+                    return _self.afficherMessage( sender,  message,  chiffred);
                 }
                 finally
                 {

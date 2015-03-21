@@ -92,7 +92,7 @@ public class AEimpl extends AEPOA {
 	}
 
 	/**
-	 * Authentifie l'utilisateur et envoi la demande d'enregistrement à l'AC
+	 * Authentifie l'utilisateur et envoi la demande d'enregistrement à l'AC et retourne le certificat
 	 */
 	@Override
 	public Certificat saveCertificat(String clepublique, String proprietaire, String mdp, String dateExpiration, String usage) throws erreur_authent {

@@ -51,16 +51,12 @@ module MonAppliMessagerie {
 	};
 
 	interface User {	
-		string afficherMessage(in string message, in boolean chiffred);
+		string afficherMessage(in string sender, in string message, in boolean chiffred);
 	};
 
 	interface Porteur {	
 		Certificat getCertificatPorteur();	
 		
-		// cette méthode affiche les retours liés aux certifications
-		void afficherMessage(in string message);
-		
-		void receiveNewCertificat(in Certificat newCertif); 
 	};
 
 };
