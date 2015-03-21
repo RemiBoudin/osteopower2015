@@ -14,56 +14,47 @@ import org.omg.PortableServer.POAHelper;
  * @author jeremy
  *
  */
-public class AppliAE {
+public class AppliAE implements Runnable {
 
 	private String nodeName;
+	private AEimpl aeLocal = null;
 
 	public AppliAE(String nodeName) {
 		this.nodeName = nodeName;
 	}
 
-	public void initServer(String[] args) {
+	public void initServer(String username) {
 		try {
-	        // Intialisation de l'ORB
-	        //************************
-	        org.omg.CORBA.ORB orb = org.omg.CORBA.ORB.init(args,null);
 
-	        // Gestion du POA
-	        //****************
-	        // Recuperation du POA
-	        POA rootPOA = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
+			// Gestion du POA
+			// ****************
+			// Recuperation du POA
+			POA rootPOA = POAHelper.narrow(AppliCertificationNode.objAEServerORB.resolve_initial_references("RootPOA"));
 
-	        // Creation du servant
-	        //*********************
-	        AEimpl aeLocal = new AEimpl(this.nodeName);
+			// Creation du servant
+			// *********************
+			aeLocal = new AEimpl(username);
 
-	        // Activer le servant au sein du POA et recuperer son ID
-	        byte[] monEuroId = rootPOA.activate_object(aeLocal);
+			// Activer le servant au sein du POA et recuperer son ID
+			byte[] monEuroId = rootPOA.activate_object(aeLocal);
 
-	        // Activer le POA manager
-	        rootPOA.the_POAManager().activate();
+			// Activer le POA manager
+			rootPOA.the_POAManager().activate();
 
+			// Enregistrement dans le service de nommage
+			// *******************************************
 
-	        // Enregistrement dans le service de nommage
-	        //*******************************************
-	        // Recuperation du naming service
-	        NamingContext nameRoot=org.omg.CosNaming.NamingContextHelper.narrow(orb.resolve_initial_references("NameService"));
+			// Construction du nom a enregistrer
+			org.omg.CosNaming.NameComponent[] nameToRegister = new org.omg.CosNaming.NameComponent[1];
+			nameToRegister[0] = new org.omg.CosNaming.NameComponent(Tools.convertNameToId(username, EntityName.USER_SERVER), "");
 
-	        // Construction du nom a enregistrer
-	        org.omg.CosNaming.NameComponent[] nameToRegister = new org.omg.CosNaming.NameComponent[1];
-	        nameToRegister[0] = new org.omg.CosNaming.NameComponent(Tools.convertNameToId(this.nodeName, EntityName.AE_SERVER),"");
+			// Enregistrement de l'objet CORBA dans le service de noms
+			AppliCertificationNode.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(aeLocal));
+			System.out.println("AppliUser::initServer() : ==> Nom '" + nameToRegister + "' est enregistre dans le service de noms.");
 
-	        // Enregistrement de l'objet CORBA dans le service de noms
-	        nameRoot.rebind(nameToRegister,rootPOA.servant_to_reference(aeLocal));
-	        System.out.println("==> Nom '"+ this.nodeName + "' est enregistre dans le service de noms.");
-
-	        String IORServant = orb.object_to_string(rootPOA.servant_to_reference(aeLocal));
-	        System.out.println("L'objet possede la reference suivante :");
-	        System.out.println(IORServant);
-
-	        // Lancement de l'ORB et mise en attente de requete
-	        //**************************************************
-	        orb.run();
+			String IORServant = AppliCertificationNode.objAEServerORB.object_to_string(rootPOA.servant_to_reference(aeLocal));
+			System.out.println("AppliUser::initServer() : L'objet possede la reference suivante :");
+			System.out.println("AppliUser::initServer() : "+IORServant);
 
 	    }
 		catch (Exception e) {
@@ -71,9 +62,9 @@ public class AppliAE {
 		}
 	}
 
-	public void initClient() {
-		// TODO Auto-generated method stub
-
+	@Override
+	public void run() {
+		AppliCertificationNode.objAEServerORB.run();
 	}
 
 }
