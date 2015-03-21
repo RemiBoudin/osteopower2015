@@ -8,7 +8,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.omg.CORBA.ORBPackage.InvalidName;
+import org.omg.CosNaming.BindingIteratorHolder;
+import org.omg.CosNaming.BindingListHolder;
+import org.omg.CosNaming.BindingType;
+import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContext;
+import org.omg.CosNaming.NamingContextHelper;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAHelper;
 
@@ -30,7 +35,7 @@ public class AppliChat {
 			// ##########################################
 			// # Intialisation de l'environnement CORBA #
 			// ##########################################
-			
+
 			// Initialisation de l'ORB
 			objUserServerORB = org.omg.CORBA.ORB.init(args, null);
 			objPorteurServerORB = org.omg.CORBA.ORB.init(args, null);
@@ -66,10 +71,17 @@ public class AppliChat {
 			// ############################################
 			// # Initialisation de l'interface graphique #
 			// ############################################
-			
+
 			String sChoix = "0";
 
 			while (Integer.parseInt(sChoix) != 4) {
+
+				// Affichage du contenu du service de noms
+				System.out.println("DEBUT - AFFICHAGE DU NAMING SERVICE - DEBUT");
+				System.out.println("-------------------------------------------");
+				Tools.printContext(objDistantNamingService, "");
+				System.out.println("-------------------------------------------");
+				System.out.println("FIN - AFFICHAGE DU NAMING SERVICE - FIN");
 
 				System.out.println("-> Bonjour " + clientName + " et bienvenue dans ce magnifique projet CORBA");
 				System.out.println("-> [1] Envoyer un message");
@@ -107,11 +119,11 @@ public class AppliChat {
 					break;
 				case 5: // Cas debug
 					System.out.println("-> /!\\ FONCTION DE DEBUG /!\\");
-					//System.out.println("-> /!\\ Destinataire du message ?");
-					//String dest = in.readLine();
-					//System.out.println("-> /!\\ Message ?");
-					//message = in.readLine();
-					//user.debug(clientName, message, true, dest);
+					// System.out.println("-> /!\\ Destinataire du message ?");
+					// String dest = in.readLine();
+					// System.out.println("-> /!\\ Message ?");
+					// message = in.readLine();
+					// user.debug(clientName, message, true, dest);
 					System.out.println("Fonction fuckée");
 					break;
 				default:

@@ -43,13 +43,13 @@ public class AppliCertificationNode {
 			threadAC.start();
 
 			// Initialisation du serveur de l'AE
-			AppliAC ae = new AppliAC(nodeName);
+			AppliAE ae = new AppliAE(nodeName);
 			ae.initServer(nodeName);
 			Thread threadAE = new Thread(ae);
 			threadAE.start();
 
 			// Initialisation du serveur de l'AV
-			AppliAC av = new AppliAC(nodeName);
+			AppliAV av = new AppliAV(nodeName);
 			av.initServer(nodeName);
 			Thread threadAV = new Thread(av);
 			threadAV.start();
