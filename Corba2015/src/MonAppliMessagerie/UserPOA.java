@@ -46,9 +46,10 @@ public abstract class UserPOA extends org.omg.PortableServer.Servant
             final org.omg.CORBA.portable.ResponseHandler handler) {
         org.omg.CORBA.portable.OutputStream _output;
         String arg0_in = _is.read_string();
-        boolean arg1_in = _is.read_boolean();
+        String arg1_in = _is.read_string();
+        boolean arg2_in = _is.read_boolean();
 
-        String _arg_result = afficherMessage(arg0_in, arg1_in);
+        String _arg_result = afficherMessage(arg0_in, arg1_in, arg2_in);
 
         _output = handler.createReply();
         _output.write_string(_arg_result);

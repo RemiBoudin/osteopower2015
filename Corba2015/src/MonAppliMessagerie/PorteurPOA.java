@@ -33,12 +33,8 @@ public abstract class PorteurPOA extends org.omg.PortableServer.Servant
             final org.omg.CORBA.portable.ResponseHandler handler)
     {
 
-        if (opName.equals("afficherMessage")) {
-                return _invoke_afficherMessage(_is, handler);
-        } else if (opName.equals("getCertificatPorteur")) {
+        if (opName.equals("getCertificatPorteur")) {
                 return _invoke_getCertificatPorteur(_is, handler);
-        } else if (opName.equals("receiveNewCertificat")) {
-                return _invoke_receiveNewCertificat(_is, handler);
         } else {
             throw new org.omg.CORBA.BAD_OPERATION(opName);
         }
@@ -54,32 +50,6 @@ public abstract class PorteurPOA extends org.omg.PortableServer.Servant
 
         _output = handler.createReply();
         MonAppliMessagerie.CertificatHelper.write(_output,_arg_result);
-
-        return _output;
-    }
-
-    private org.omg.CORBA.portable.OutputStream _invoke_afficherMessage(
-            final org.omg.CORBA.portable.InputStream _is,
-            final org.omg.CORBA.portable.ResponseHandler handler) {
-        org.omg.CORBA.portable.OutputStream _output;
-        String arg0_in = _is.read_string();
-
-        afficherMessage(arg0_in);
-
-        _output = handler.createReply();
-
-        return _output;
-    }
-
-    private org.omg.CORBA.portable.OutputStream _invoke_receiveNewCertificat(
-            final org.omg.CORBA.portable.InputStream _is,
-            final org.omg.CORBA.portable.ResponseHandler handler) {
-        org.omg.CORBA.portable.OutputStream _output;
-        MonAppliMessagerie.Certificat arg0_in = MonAppliMessagerie.CertificatHelper.read(_is);
-
-        receiveNewCertificat(arg0_in);
-
-        _output = handler.createReply();
 
         return _output;
     }

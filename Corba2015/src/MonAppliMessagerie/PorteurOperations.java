@@ -12,14 +12,4 @@ public interface PorteurOperations
      */
     public MonAppliMessagerie.Certificat getCertificatPorteur();
 
-    /**
-     * Operation afficherMessage
-     */
-    public void afficherMessage(String message);
-
-    /**
-     * Operation receiveNewCertificat
-     */
-    public void receiveNewCertificat(MonAppliMessagerie.Certificat newCertif);
-
 }

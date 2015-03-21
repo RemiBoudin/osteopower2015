@@ -10,6 +10,6 @@ public interface UserOperations
     /**
      * Operation afficherMessage
      */
-    public String afficherMessage(String message, boolean chiffred);
+    public String afficherMessage(String sender, String message, boolean chiffred);
 
 }

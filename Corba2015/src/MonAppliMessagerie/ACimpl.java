@@ -15,44 +15,39 @@ public class ACimpl extends ACPOA {
 	 * Constructeur de la classe ACimpl
 	 */
 	public ACimpl(String nodeName, org.omg.CosNaming.NamingContext namingService) {
-		this.nodeName=nodeName;
-		this.namingService=namingService;
-		
+		this.nodeName = nodeName;
+		this.namingService = namingService;
+
 		this.publicKey = (Tools.generateKeys(this.nodeName))[0];
 		this.privateKey = (Tools.generateKeys(this.nodeName))[1];
 
-		this.certificat = new Certificat(this.nodeName, null, (short) 1,
-				Tools.getDate(), "never", this.publicKey, "",
-				Tools.genererSignature(this.nodeName));
+		this.certificat = new Certificat(this.nodeName, null, (short) 1, Tools.getDate(), "never", this.publicKey, "", Tools.genererSignature(this.nodeName));
 
 		this.listeCertificats = new Hashtable<Integer, Certificat>();
 		this.listeCertificats.put(1, this.certificat);
 	}
 
 	/**
-	 * Permet de g�n�rer un certificat
+	 * Permet de générer un certificat
 	 * 
 	 * @param publicKey
-	 *            cl� publique de l'entit� propri�taire du certificat
+	 *            clé publique de l'entité propriétaire du certificat
 	 * @param id
-	 *            Nom de l'entit� propri�taire du certificat
+	 *            Nom de l'entité propriétaire du certificat
 	 * @param dateExp
 	 *            date d'expiration du certificat
 	 * @param date
-	 *            date de d�but de validit� du certificat
+	 *            date de début de validité du certificat
 	 * @param usage
 	 *            type d'usage attendu pour ce certificat
-	 * @return le certificat nouvellement cr��
+	 * @return le certificat nouvellement créé
 	 */
-	private Certificat creerCertificat(String publicKey, String pptaire,
-			String dateExp, String date, String usage) {
-		int nbCertificats = this.listeCertificats.size();
-		Certificat newCertif = new Certificat(pptaire, this.nodeName,
-				(short) (nbCertificats + 1), date, dateExp, publicKey, usage,
-				Tools.genererSignature(nodeName));
+	private Certificat creerCertificat(String publicKey, String pptaire, String dateExp, String date, String usage) {
 
-		System.out.println(this.nodeName + " - INFO - Certificat cr�� pour "
-				+ pptaire);
+		int nbCertificats = this.listeCertificats.size();
+		Certificat newCertif = new Certificat(pptaire, this.nodeName, (short) (nbCertificats + 1), date, dateExp, publicKey, usage, Tools.genererSignature(nodeName));
+
+		System.out.println(this.nodeName + " - INFO - Certificat créé pour " + pptaire);
 
 		return newCertif;
 	}
@@ -62,8 +57,7 @@ public class ACimpl extends ACPOA {
 	 * renvoi le certificat de l'AC
 	 */
 	public Certificat getCertificat() {
-		// TODO Auto-generated method stub
-		System.out.println(this.nodeName + " - INFO - Certificat personnel envoy�");
+		System.out.println(this.nodeName + " - INFO - Certificat personnel envoyé");
 		return this.certificat;
 	}
 
@@ -71,59 +65,46 @@ public class ACimpl extends ACPOA {
 	 * Stocke un certificat dans la liste des certificats
 	 * 
 	 * @param newCertif
-	 *            certificat � stocker dans la liste
+	 *            certificat à stocker dans la liste
 	 */
 	private void stockerCertificat(Certificat newCertif) {
-		// TODO Auto-generated method stub
 
 		this.listeCertificats.put((int) newCertif.Num_Unique, newCertif);
-		System.out.println(this.nodeName + " - INFO - Certificat de "
-				+ newCertif.proprietaire + " stock� avec l'id "
-				+ newCertif.Num_Unique);
+		System.out.println(this.nodeName + " - INFO - Certificat de " + newCertif.proprietaire + " stocké avec l'id " + newCertif.Num_Unique);
 
 	}
 
 	/**
-	 * G�n�re un certificat et le stocke dans la base, suite � une demande.
+	 * Génère un certificat et le stocke dans la base, suite à une demande.
 	 */
 	@Override
-	public void enregistrer(String clePublique, String proprietaire,
-			String dateExpiration, String usage) {
-		// TODO Auto-generated method stub
+	public Certificat enregistrer(String clePublique, String proprietaire, String dateExpiration, String usage) {
 
-		// Cr�ation du certificat
-		Certificat newCertif = this.creerCertificat(usage, clePublique,
-				dateExpiration, Tools.getDate(), usage);
+		// Création du certificat
+		Certificat newCertif = this.creerCertificat(usage, clePublique, dateExpiration, Tools.getDate(), usage);
 
 		// Stockage du certificat dans la base de certificat de l'AC
 		this.stockerCertificat(newCertif);
 
-		// Publier aupr�s de l'AE
-		
-		AE ae = AEHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AE_SERVER, this.namingService));
-		ae.publier(newCertif);
-		System.out.println(this.nodeName + " - INFO - " + proprietaire
-				+ " Publication du certificat aupr�s de l'AE");
+		// Retour du certif
+		System.out.println(this.nodeName + " - INFO - " + proprietaire + " Publication du certificat auprès de l'AE");
+		return newCertif;
+
 	}
 
 	/**
-	 * Revoque un certificat aupr�s de l'AE et fait le retour au porteur
+	 * Revoque un certificat auprès de l'AE et fait le retour au porteur
 	 */
 	@Override
-	public boolean revoquerCertificat(Certificat certificatPorteur, String periode)
-			throws certif_revoque {
+	public boolean revoquerCertificat(Certificat certificatPorteur, String periode) throws certif_revoque {
+
 		// revoquer certificat sur l'AV
 		AV av = AVHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AV_SERVER, this.namingService));
-		if(av.revoquerCertificat(certificatPorteur, periode)){
 		
-		System.out.println(this.nodeName + " - INFO - "
-				+ certificatPorteur.proprietaire
-				+ " Demande de r�vocation aurp�s de l'AV");
-		
-		System.out.println(this.nodeName + " - INFO - "
-				+ certificatPorteur.proprietaire
-				+ " R�sultat de la r�vocation envoy�e � l'AE");
-		return true;
+		System.out.println(this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Demande de révocation aurpès de l'AV");
+		if (av.revoquerCertificat(certificatPorteur, periode)) {
+			System.out.println(this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Résultat de la révocation envoyée à l'AE");
+			return true;
 		} else {
 			return false;
 		}

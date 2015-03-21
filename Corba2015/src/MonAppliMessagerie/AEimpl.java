@@ -12,7 +12,7 @@ public class AEimpl extends AEPOA {
 	 * Constructeur de la classe AE
 	 * 
 	 * @param username
-	 *            nom � donner � l'AE
+	 *            nom à donner à l'AE
 	 */
 	public AEimpl(String nodeName, org.omg.CosNaming.NamingContext namingService) {
 		this.namingService = namingService;
@@ -25,21 +25,20 @@ public class AEimpl extends AEPOA {
 	}
 
 	/**
-	 * Relai le certificat nouvellement généré au porteur à l'origine de la demande
+	 * Relai le certificat nouvellement généré au porteur à l'origine de la
+	 * demande
 	 */
 	@Override
 	public void publier(Certificat certificatPorteur) {
 		// Envoi du certificat à l'appli porteur
-		System.out.println(this.nodeName + " - INFO - "
-				+ certificatPorteur.proprietaire
-				+ " Demande de r�vocation envoy�e � l'AC");
-		
-		Porteur porteur = PorteurHelper.narrow(Tools.findObjByORBName(certificatPorteur.proprietaire, EntityName.PORTEUR_SERVER,this.namingService));
+		System.out.println(this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Demande de révocation envoyée à l'AC");
+
+		Porteur porteur = PorteurHelper.narrow(Tools.findObjByORBName(certificatPorteur.proprietaire, EntityName.PORTEUR_SERVER, this.namingService));
 		porteur.receiveNewCertificat(certificatPorteur);
 	}
 
 	/**
-	 * V�rifie la combinaison identifiant/mot de passe dans la base
+	 * Vérifie la combinaison identifiant/mot de passe dans la base
 	 * 
 	 * @param user
 	 *            nom de l'utilisateur
@@ -48,106 +47,94 @@ public class AEimpl extends AEPOA {
 	 * @return true si OK, false si non OK
 	 */
 	private boolean authentifier(String user, String mdp) {
+		// Si le user existe dans la DB
 		if (this.listeIdClientPorteur.containsKey(user)) {
+
+			// Si le mdp est bon
 			if (this.listeIdClientPorteur.get(user).equals(mdp)) {
-				System.out.println(this.nodeName + " - INFO - " + user
-						+ " authentifi� avec succ�s");
+				System.out.println(this.nodeName + " - INFO - " + user + " authentifié avec succés");
 
 				return true;
-			} else {
-				System.out.println(this.nodeName + " - ERR - " + user
-						+ " echec d'authentification (mdp erron�)");
+			} else { // si le mdp est faux
+				System.out.println(this.nodeName + " - ERR - " + user + " echec d'authentification (mdp erron�)");
 				return false;
 
 			}
-		} else {
-			System.out.println(this.nodeName + " - ERR - " + user
-					+ " echec d'authentification (username inconnu)");
+		} else { // si le user n'existe pas
+			System.out.println(this.nodeName + " - ERR - " + user + " echec d'authentification (username inconnu)");
 			return false;
 
 		}
 	}
 
 	/**
-	 * V�rifie si l'utilisateur a le droit d'utiliser le certificat pour un
-	 * usage donn�
+	 * Vérifie si l'utilisateur a le droit d'utiliser le certificat pour un
+	 * usage donné
 	 * 
 	 * @param user
 	 *            nom de l'utilisateur
 	 * @param certifPorteur
-	 *            certificat du porteur li� � l'utilisateur
+	 *            certificat du porteur lié à l'utilisateur
 	 * @param usage
 	 *            type d'utilisation du certificat
 	 * @return true si OK, false si non OK
 	 */
-	private boolean verifierDroits(String user, Certificat certifPorteur,
-			String usage) {
-		// si usage certif == usage donn�
-		if (true) {
-			System.out.println(this.nodeName + " - INFO - " + user
-					+ " droits OK");
+	private boolean verifierDroits(String user, Certificat certifPorteur, String usage) {
+
+		// si l'usage précisé dans le certificat correspond à l'usage demandé
+		if ((certifPorteur.usage).equals(usage)) {
+			System.out.println(this.nodeName + " - INFO - " + user + " droits OK");
 			return true;
 		} else {
-			System.out.println(this.nodeName + " - ERR - " + user
-					+ " droits NOK");
+			System.out.println(this.nodeName + " - ERR - " + user + " droits NOK");
 			return false;
 		}
 	}
 
 	/**
-	 * Authentifie l'utilisateur et envoi la demande d'enregistrement � l'AC
+	 * Authentifie l'utilisateur et envoi la demande d'enregistrement à l'AC et retourne le certificat
 	 */
 	@Override
-	public Certificat saveCertificat(String clepublique, String proprietaire,
-			String mdp, String dateExpiration, String usage)
-			throws erreur_authent {
-		// Envoi de la demande � l'AC sup�rieure
-		Certificat newCertif = null;
+	public Certificat saveCertificat(String clepublique, String proprietaire, String mdp, String dateExpiration, String usage) throws erreur_authent {
 
+		// Si l'authentification n'est pas bonne
 		if (!this.authentifier(proprietaire, mdp)) {
 			// faire afficher "ERR - Enregistrement - Echec d'authentification"
-			System.out.println(this.nodeName + " - ERR - " + proprietaire
-					+ " echec d'authentification (username inconnu)");
+			System.out.println(this.nodeName + " - ERR - " + proprietaire + " echec d'authentification (username inconnu)");
+			return null; 
 		} else {
-			// faire enregistrer sur l'AC distant
+			// faire enregistrer sur l'AC supérieure
 			AC ac = ACHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AC_SERVER, this.namingService));
-			ac.enregistrer(clepublique, proprietaire, dateExpiration, usage);
+			Certificat newCertif = ac.enregistrer(clepublique, proprietaire, dateExpiration, usage);
 
-			System.out.println(this.nodeName + " - INFO - " + proprietaire
-					+ " Enregistrement aupr�s de l'AC");
+			System.out.println(this.nodeName + " - INFO - " + proprietaire + " Enregistrement aupr�s de l'AC");
+			return newCertif;
 		}
-
-		return newCertif;
 	}
 
 	/**
-	 * R�voque un certificat aupr�s l'AC
+	 * Révoque un certificat auprès l'AC
 	 */
 	@Override
-	public boolean revoquer(Certificat certificatPorteur, String mdp,
-			String periode) {
-		// TODO Auto-generated method stub
+	public boolean revoquer(Certificat certificatPorteur, String mdp, String periode) {
+
+		// Si l'authentification n'est pas OK
 		if (!this.authentifier(certificatPorteur.proprietaire, mdp)) {
 			// faire afficher "ERR - Revocation - Echec d'authentification"
-			System.out.println(this.nodeName + " - ERR - "
-					+ certificatPorteur.proprietaire
-					+ " echec d'authentification (username inconnu)");
+			System.out.println(this.nodeName + " - ERR - " + certificatPorteur.proprietaire + " echec d'authentification (username inconnu)");
 			return false;
 
-		} else {
-			// faire r�voquer sur l'AC
-			System.out.println(this.nodeName + " - INFO - "
-					+ certificatPorteur.proprietaire
-					+ " Demande de r�vocation envoy�e � l'AC");
-				AC ac = ACHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AC_SERVER,this.namingService));
-				try {
-					return ac.revoquerCertificat(certificatPorteur, periode);
-				} catch (certif_revoque e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		} else { // si l'authentification est OK
+			
+			// faire révoquer le certificat sur l'AC
+			System.out.println(this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Demande de r�vocation envoy�e � l'AC");
+			AC ac = ACHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AC_SERVER, this.namingService));
+			try {
+				return ac.revoquerCertificat(certificatPorteur, periode);
+			} catch (certif_revoque e) {
+				e.printStackTrace();
 			}
-		return false;
-
 		}
+		return false;
+	}
 }
