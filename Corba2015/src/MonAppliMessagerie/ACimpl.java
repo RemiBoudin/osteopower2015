@@ -14,9 +14,9 @@ public class ACimpl extends ACPOA {
 	/**
 	 * Constructeur de la classe ACimpl
 	 */
-	public ACimpl(String nodeName, org.omg.CosNaming.NamingContext namingService) {
+	public ACimpl(String nodeName) {
 		this.nodeName = nodeName;
-		this.namingService = namingService;
+		//this.namingService = namingService;
 
 		this.publicKey = (Tools.generateKeys(this.nodeName))[0];
 		this.privateKey = (Tools.generateKeys(this.nodeName))[1];

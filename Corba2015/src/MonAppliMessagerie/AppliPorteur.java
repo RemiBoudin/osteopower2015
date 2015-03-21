@@ -18,7 +18,7 @@ import org.omg.PortableServer.POAHelper;
  */
 public class AppliPorteur {
 	
-	public void initServer() {
+	public void initServer(String username, String mdp) {
 		try {
 
 			// Gestion du POA
@@ -28,10 +28,10 @@ public class AppliPorteur {
 
 			// Creation du servant
 			// *********************
-			UserImpl userLocal = new UserImpl();
+			PorteurImpl porteurLocal = new PorteurImpl(username, mdp);
 
 			// Activer le servant au sein du POA et recuperer son ID
-			byte[] monEuroId = rootPOA.activate_object(userLocal);
+			byte[] monEuroId = rootPOA.activate_object(porteurLocal);
 
 			// Activer le POA manager
 			rootPOA.the_POAManager().activate();
@@ -47,10 +47,10 @@ public class AppliPorteur {
 			nameToRegister[0] = new org.omg.CosNaming.NameComponent(nomObj, "");
 
 			// Enregistrement de l'objet CORBA dans le service de noms
-			AppliChat.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(userLocal));
+			AppliChat.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(porteurLocal));
 			System.out.println("==> Nom '" + nomObj + "' est enregistre dans le service de noms.");
 
-			String IORServant = AppliChat.objPorteurServerORB.object_to_string(rootPOA.servant_to_reference(userLocal));
+			String IORServant = AppliChat.objPorteurServerORB.object_to_string(rootPOA.servant_to_reference(porteurLocal));
 			System.out.println("L'objet possede la reference suivante :");
 			System.out.println(IORServant);
 

@@ -16,8 +16,8 @@ public class PorteurImpl  extends PorteurPOA{
 	private String mdp;
 	private org.omg.CosNaming.NamingContext namingService;
 	
-	private PorteurImpl(String username,String mdp, org.omg.CosNaming.NamingContext namingService){
-		this.namingService=namingService;
+	public PorteurImpl(String username,String mdp){
+		//this.namingService=namingService;
 		this.username = username;
 		this.mdp=mdp;
 		
