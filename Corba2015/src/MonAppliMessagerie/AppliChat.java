@@ -107,11 +107,12 @@ public class AppliChat {
 					break;
 				case 5: // Cas debug
 					System.out.println("-> /!\\ FONCTION DE DEBUG /!\\");
-					System.out.println("-> /!\\ Destinataire du message ?");
-					String dest = in.readLine();
-					System.out.println("-> /!\\ Message ?");
-					message = in.readLine();
-					user.debug(clientName, message, true, dest);
+					//System.out.println("-> /!\\ Destinataire du message ?");
+					//String dest = in.readLine();
+					//System.out.println("-> /!\\ Message ?");
+					//message = in.readLine();
+					//user.debug(clientName, message, true, dest);
+					System.out.println("Fonction fuckée");
 					break;
 				default:
 				}
