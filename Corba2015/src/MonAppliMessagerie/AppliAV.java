@@ -34,32 +34,27 @@ private String nodeName;
 
 	        // Creation du servant
 	        //*********************
-	        UserImpl userLocal = new UserImpl();
+	        AVimpl avLocal = new AVimpl(this.nodeName);
 
 	        // Activer le servant au sein du POA et recuperer son ID
-	        byte[] monEuroId = rootPOA.activate_object(userLocal);
+	        byte[] monEuroId = rootPOA.activate_object(avLocal);
 
 	        // Activer le POA manager
 	        rootPOA.the_POAManager().activate();
 
 
-	        // Enregistrement dans le service de nommage
-	        //*******************************************
-	        // Recuperation du naming service
+	     // Recuperation du naming service
 	        NamingContext nameRoot=org.omg.CosNaming.NamingContextHelper.narrow(orb.resolve_initial_references("NameService"));
 
 	        // Construction du nom a enregistrer
 	        org.omg.CosNaming.NameComponent[] nameToRegister = new org.omg.CosNaming.NameComponent[1];
-	        System.out.println("Sous quel nom voulez-vous enregistrer l'objet Corba ?");
-	        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-	        String nomObj = in.readLine();
-	        nameToRegister[0] = new org.omg.CosNaming.NameComponent(nomObj,"");
+	        nameToRegister[0] = new org.omg.CosNaming.NameComponent(Tools.convertNameToId(this.nodeName, EntityName.AE_SERVER),"");
 
 	        // Enregistrement de l'objet CORBA dans le service de noms
-	        nameRoot.rebind(nameToRegister,rootPOA.servant_to_reference(userLocal));
-	        System.out.println("==> Nom '"+ nomObj + "' est enregistre dans le service de noms.");
+	        nameRoot.rebind(nameToRegister,rootPOA.servant_to_reference(avLocal));
+	        System.out.println("==> Nom '"+ this.nodeName + "' est enregistre dans le service de noms.");
 
-	        String IORServant = orb.object_to_string(rootPOA.servant_to_reference(userLocal));
+	        String IORServant = orb.object_to_string(rootPOA.servant_to_reference(avLocal));
 	        System.out.println("L'objet possede la reference suivante :");
 	        System.out.println(IORServant);
 
