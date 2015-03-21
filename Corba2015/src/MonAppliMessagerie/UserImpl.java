@@ -22,14 +22,25 @@ public class UserImpl extends UserPOA {
 	}
 
 	@Override
-	public String afficherMessage(String sender, String message, boolean chiffred) {
+	public String afficherMessage(String sender, String message, boolean chiffred) throws erreur_certif, certif_revoque {
 		// TODO Auto-generated method stub
 		
 		if (chiffred)
 			{
-			System.out.println("UserImpl::afficherMessage() : Message chiffred reçu : ["+message+"]");
 			Porteur porteur= (Porteur) UserHelper.narrow(Tools.findObjByORBName(sender, EntityName.PORTEUR_SERVER));
 			certificatSender = porteur.getCertificatPorteur();
+			boolean cheminCertifie = verifierCheminCertification(certificatSender.IOR_AV);
+			
+				if (cheminCertifie)
+				{
+					System.out.println("UserImpl::afficherMessage() : Message chiffred reçu : ["+message+"]");
+					return "ok";
+				}
+				
+				else
+				{
+					return null;
+				}
 			
 			}
 		else
@@ -73,7 +84,6 @@ public class UserImpl extends UserPOA {
 			}
 		}
 		return false;
-
 	}
 	
 	private boolean verifierSignature()

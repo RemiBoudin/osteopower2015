@@ -11,11 +11,10 @@ public class AVimpl extends AVPOA
 	private Hashtable<Short, Certificat> listeCertifSuspendus;
 	public static org.omg.CosNaming.NamingContext NamingService;
 
-	public AVimpl(String nodename, org.omg.CosNaming.NamingContext NamingService)
+	public AVimpl()
 	{
 		this.listeCertifRevoque = new Hashtable<Short, Certificat>();
 		this.listeCertifSuspendus = new Hashtable<Short, Certificat>();
-		this.NamingService= NamingService;
 	}
 	@Override
 	public Certificat getCertificatAC() {
@@ -32,8 +31,8 @@ public class AVimpl extends AVPOA
 		if (listeCertifRevoque.containsKey(certifCourant.Num_Unique))
 		{
 			System.out.println("Certificat Revoque");
-			User user= UserHelper.narrow(Tools.findObjByORBName(certifCourant.proprietaire, EntityName.USER_SERVER));
-			user.afficherMessage(nodename, "ERR CERT : certificat revoque", false);
+			/*User user= UserHelper.narrow(Tools.findObjByORBName(certifCourant.proprietaire, EntityName.USER_SERVER));
+			user.afficherMessage(nodename, "ERR CERT : certificat revoque", false);*/
 			return VerificationRevocation.CERTIFICAT_REVOQUE.toString();
 		}
 		
