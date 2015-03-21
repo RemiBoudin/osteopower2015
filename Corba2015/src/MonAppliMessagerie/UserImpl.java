@@ -13,10 +13,12 @@ public class UserImpl extends UserPOA {
 	
 	public static org.omg.CosNaming.NamingContext NamingService;
 	public Certificat certificatSender;
+	private String username;
 	
-	public void Userimpl(org.omg.CosNaming.NamingContext NamingService)
+	public void Userimpl(String username)
 	{
-		this.NamingService= NamingService;
+		this.username= username ;
+		
 	}
 
 	@Override
@@ -50,24 +52,42 @@ public class UserImpl extends UserPOA {
 		
 	}
 	
-	private void verifierCheminCertification()
+	private boolean verifierCheminCertification(String IOR_AV_a_contacter) throws erreur_certif, certif_revoque
 	{
-		AV av= (AV) UserHelper.narrow(Tools.findObjByORBName(certificatSender.IOR_AV, EntityName.AV_SERVER));
+		AV av= (AV) UserHelper.narrow(Tools.findObjByORBName(IOR_AV_a_contacter, EntityName.AV_SERVER));
 		Certificat certifAC = av.getCertificatAC();
+		av.verifierRevocation(certificatSender);
+		if (av.verifierRevocation(certificatSender) == VerificationRevocation.CERTIFICAT_REVOQUE.toString() // si le certificat est révoqué ou suspendu, on bloque l'envoi de message
+				|| av.verifierRevocation(certificatSender) == VerificationRevocation.CERTIFICAT_SUSPENDU.toString())
+		{
+			return false;
+		}
+		else {
+				if (av.verifierRevocation(certificatSender) == VerificationRevocation.CERTIFICAT_VALIDE_NON_RACINE.toString()) // si le certificat valide mais que l'autorité n'est pas racine alors on contacte l'autorité supérieure
+			{
+				return verifierCheminCertification(certifAC.IOR_AV);
+			}
+			else if (av.verifierRevocation(certificatSender) == VerificationRevocation.CERTIFICAT_VALIDE_RACINE.toString()) // si le certificat est valide et l'autorité est racine, alors le chemin est complet l'envoi de message est autorisé
+			{
+				return true;
+			}
+		}
+		return false;
+
 	}
 	
-	private void verifierSignature()
+	private boolean verifierSignature()
 	{
-		
+		return true;
 	}
 	
-	private void dechiffrerSignature()
+	private boolean dechiffrerSignature()
 	{
-		
+		return true;
 	}
 
-	private void genererHash()
+	private String genererHash()
 	{
-		
+		return null;
 	}
 }

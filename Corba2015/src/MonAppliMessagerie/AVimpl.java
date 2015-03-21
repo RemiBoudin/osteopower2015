@@ -34,13 +34,13 @@ public class AVimpl extends AVPOA
 			System.out.println("Certificat Revoque");
 			User user= UserHelper.narrow(Tools.findObjByORBName(certifCourant.proprietaire, EntityName.USER_SERVER));
 			user.afficherMessage(nodename, "ERR CERT : certificat revoque", false);
-			return null;
+			return VerificationRevocation.CERTIFICAT_REVOQUE.toString();
 		}
 		
 		else if (listeCertifSuspendus.containsKey(certifCourant.Num_Unique))
 		{
 			System.out.println("Certificat Suspendu");
-			return null;
+			return VerificationRevocation.CERTIFICAT_SUSPENDU.toString();
 		}
 		else
 		{
@@ -49,7 +49,7 @@ public class AVimpl extends AVPOA
 			if (certificatAC.IOR_AV == null) //V�rif Si AC RACINE
 			{
 				System.out.println("AC Racine"); // signaler qu'on est � l'AC racine donc fin de v�rification
-				return null;
+				return VerificationRevocation.CERTIFICAT_VALIDE_RACINE.toString();
 			}
 			
 			else
