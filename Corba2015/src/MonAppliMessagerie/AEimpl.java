@@ -14,8 +14,8 @@ public class AEimpl extends AEPOA {
 	 * @param username
 	 *            nom à donner à l'AE
 	 */
-	public AEimpl(String nodeName, org.omg.CosNaming.NamingContext namingService) {
-		this.namingService = namingService;
+	public AEimpl(String nodeName) {
+		//this.namingService = namingService;
 		this.nodeName = nodeName;
 		this.listeIdClientPorteur = new Hashtable<String, String>();
 
