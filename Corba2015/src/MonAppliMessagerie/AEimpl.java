@@ -19,14 +19,20 @@ public class AEimpl extends AEPOA {
 		this.nodeName = nodeName;
 		this.listeIdClientPorteur = new Hashtable<String, String>();
 
+		this.listeIdClientPorteur.put("tata", "tata");
 		this.listeIdClientPorteur.put("titi", "titi");
 		this.listeIdClientPorteur.put("toto", "toto");
+		this.listeIdClientPorteur.put("tutu", "tutu");
+		this.listeIdClientPorteur.put("tete", "tete");
+		
 		this.listeIdClientPorteur.put("n0", "n0");
 		this.listeIdClientPorteur.put("n1", "n1");
 		this.listeIdClientPorteur.put("n2", "n2");
 		this.listeIdClientPorteur.put("n3", "n3");
 		this.listeIdClientPorteur.put("n4", "n4");
 		this.listeIdClientPorteur.put("n5", "n5");
+		this.listeIdClientPorteur.put("n6", "n6");
+		this.listeIdClientPorteur.put("n7", "n7");
 
 	}
 

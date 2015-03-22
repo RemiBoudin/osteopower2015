@@ -117,6 +117,7 @@ public class AppliChat {
 					porteur.enregistrerCertificat(usage, dateExp, nodeName);
 					break;
 				case 3: // Cas révoquer un certificat
+					
 					Certificat certificat = porteur.getCertificat();
 					porteur.revoquerCertificat(certificat, clientPassword, "");
 					break;

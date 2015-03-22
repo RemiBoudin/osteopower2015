@@ -6,45 +6,46 @@ import java.io.InputStreamReader;
 
 public class AppliCertificationNode {
 
+	public static org.omg.CosNaming.NamingContext objDistantNamingService = null;
+
 	public static org.omg.CORBA.ORB objACServerORB = null;
 	public static org.omg.CORBA.ORB objAEServerORB = null;
 	public static org.omg.CORBA.ORB objAVServerORB = null;
-	public static org.omg.CosNaming.NamingContext objDistantNamingService = null;
+
+	public static org.omg.CORBA.ORB objACServerORB2 = null;
+	public static org.omg.CORBA.ORB objAEServerORB2 = null;
+	public static org.omg.CORBA.ORB objAVServerORB2 = null;
 
 	public static void main(String[] args) {
+		try{
+		// Initialisation de l'ORB
+		objACServerORB = org.omg.CORBA.ORB.init(args, null);
+		objAEServerORB = org.omg.CORBA.ORB.init(args, null);
+		objAVServerORB = org.omg.CORBA.ORB.init(args, null);
+		objACServerORB2 = org.omg.CORBA.ORB.init(args, null);
+		objAEServerORB2 = org.omg.CORBA.ORB.init(args, null);
+		objAVServerORB2 = org.omg.CORBA.ORB.init(args, null);
+		
+		// Recuperation du naming service
+		AppliCertificationNode.objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(objACServerORB.resolve_initial_references("NameService"));
+		
+		initNode(args,"n0","");
+		initNode(args,"n1","n0");
+		initNode(args,"n2","n0");
+		initNode(args,"n3","n1");
+		initNode(args,"n4","n1");
+		initNode(args,"n5","n2");
+		initNode(args,"n6","n2");
+		initNode(args,"n7","n6");
+		
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void initNode(String[] args, String nodeName, String nodeParent) {
 		try {
-			// ##########################################
-			// # Intialisation de l'environnement CORBA #
-			// ##########################################
-
-			// Initialisation de l'ORB
-			objACServerORB = org.omg.CORBA.ORB.init(args, null);
-			objAEServerORB = org.omg.CORBA.ORB.init(args, null);
-			objAVServerORB = org.omg.CORBA.ORB.init(args, null);
-			// Recuperation du naming service
-			AppliCertificationNode.objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(objACServerORB.resolve_initial_references("NameService"));
-
-			// ##################################
-			// # Intialisation de l'application #
-			// ##################################
-
-			// Saisie du nom du noeud courant
-			System.out.println("## Projet CORBA ##\n");
-			System.out.println("-> Bonjour et bienvenue dans ce magnifique projet CORBA\n");
-			System.out.println("-> Quel est le nom du noeud à créer ?");
-			
-			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-			String nodeName = null;
-			nodeName = in.readLine();
-			//String nodeName = "niv1";
-			
-			// Saisie du noeud de raccordement
-			System.out.println("-> A quel noeud voulez vous vous raccorder ?");
-			System.out.println("-> Laisser vide pour être racine");
-			in = new BufferedReader(new InputStreamReader(System.in));
-			String nodeParent = null;
-			nodeParent = in.readLine();
-
 			// Initialisation du serveur de l'AC
 			AppliAC ac = new AppliAC(nodeName, nodeParent);
 			ac.initServer(nodeName, nodeParent);
@@ -63,9 +64,7 @@ public class AppliCertificationNode {
 			Thread threadAV = new Thread(av);
 			threadAV.start();
 
-			System.out.println("-> Le niveau de certification \""+nodeName+"\" a été créé.");
-			System.out.println("-> Les trois autorités AC, AE et AV ont été lancées.");
-			
+			System.out.println("-> Le niveau de certification \"" + nodeName + "\" a été créé.");
 
 			// Affichage du contenu du service de noms
 			System.out.println("-------------------------");
@@ -73,13 +72,7 @@ public class AppliCertificationNode {
 			System.out.println("-------------------------");
 			Tools.printContext(AppliCertificationNode.objDistantNamingService, "");
 			System.out.println("-------------------------");
-			
 
-			// Recherche du (serveur du porteur) du (destinataire)
-			//org.omg.CORBA.Object objDistant = Tools.findObjByORBName("niv1", EntityName.AE_SERVER);
-			//AE ae2 = AEHelper.narrow(objDistant);
-			
-			//ae2.saveCertificat("", "", "", "", "");
 
 		} catch (Exception e) {
 			e.printStackTrace();
