@@ -21,6 +21,12 @@ public class AEimpl extends AEPOA {
 
 		this.listeIdClientPorteur.put("titi", "titi");
 		this.listeIdClientPorteur.put("toto", "toto");
+		this.listeIdClientPorteur.put("n0", "n0");
+		this.listeIdClientPorteur.put("n1", "n1");
+		this.listeIdClientPorteur.put("n2", "n2");
+		this.listeIdClientPorteur.put("n3", "n3");
+		this.listeIdClientPorteur.put("n4", "n4");
+		this.listeIdClientPorteur.put("n5", "n5");
 
 	}
 

@@ -17,13 +17,15 @@ import org.omg.PortableServer.POAHelper;
 public class AppliAC implements Runnable {
 
 	private String nodeName;
+	private String parentNode;
 	private ACimpl acLocal = null;
 
-	public AppliAC(String nodeName) {
+	public AppliAC(String nodeName, String parentNode) {
 		this.nodeName = nodeName;
+		this.parentNode= parentNode;
 	}
 
-	public void initServer(String username) {
+	public void initServer(String username,String parentNode) {
 		try {
 
 			// Gestion du POA
@@ -33,7 +35,7 @@ public class AppliAC implements Runnable {
 
 			// Creation du servant
 			// *********************
-			acLocal = new ACimpl(username);
+			acLocal = new ACimpl(username, parentNode);
 
 			// Activer le servant au sein du POA et recuperer son ID
 			byte[] monEuroId = rootPOA.activate_object(acLocal);
