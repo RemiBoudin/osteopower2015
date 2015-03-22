@@ -21,7 +21,7 @@ public class ACimpl extends ACPOA {
 		this.publicKey = (Tools.generateKeys(this.nodeName))[0];
 		this.privateKey = (Tools.generateKeys(this.nodeName))[1];
 
-		this.certificat = new Certificat(this.nodeName, null, (short) 1, Tools.getDate(), "never", this.publicKey, "", Tools.genererSignature(this.nodeName));
+		this.certificat = new Certificat(this.nodeName, "", (short) 1, Tools.getDate(), "never", this.publicKey, "", Tools.genererSignature(this.nodeName));
 
 		this.listeCertificats = new Hashtable<Integer, Certificat>();
 		this.listeCertificats.put(1, this.certificat);

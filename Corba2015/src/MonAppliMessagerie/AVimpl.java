@@ -57,7 +57,7 @@ public class AVimpl extends AVPOA {
 		} else {
 			System.out.println("AVimpl::verifierRevocation() : "+"Certificat non Revoque");
 
-			if (certificatAC.IOR_AV == null) // Vérif Si AC RACINE
+			if (certificatAC.IOR_AV.equals("")) // Vérif Si AC RACINE
 			{
 				System.out.println("AVimpl::verifierRevocation() : "+"AC Racine"); // signaler qu'on est à l'AC
 													// racine donc fin de

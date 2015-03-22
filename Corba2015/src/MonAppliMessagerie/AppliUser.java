@@ -75,7 +75,7 @@ public class AppliUser implements Runnable{
 
 	private boolean checkCheminCertification(Certificat cert) {
 		try {
-			return this.userLocal.verifierCheminCertification(cert.IOR_AV);
+			return this.userLocal.verifierCheminCertification(cert);
 		} catch (erreur_certif | certif_revoque e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -112,7 +112,7 @@ public class AppliUser implements Runnable{
 
 		boolean cheminCertifie;
 		try {
-			cheminCertifie = this.userLocal.verifierCheminCertification(certificatDistant.IOR_AV);
+			cheminCertifie = this.userLocal.verifierCheminCertification(certificatDistant);
 			System.out.println("AppliUser:: PChemin de certif de l'interlocuteur distant"+receiverName+" OK");
 			if (cheminCertifie)
 			{
