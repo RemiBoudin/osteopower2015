@@ -50,7 +50,7 @@ public class ACimpl extends ACPOA {
 
 		System.out.println("ACimpl::creerCertificat() : " + this.nodeName + " - INFO - Certificat créé pour " + pptaire);
 
-		return newCertif;
+		return new Certificat(newCertif);
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class ACimpl extends ACPOA {
 	 * Revoque un certificat auprès de l'AE et fait le retour au porteur
 	 */
 	@Override
-	public boolean revoquerCertificat(Certificat certificatPorteur, String periode) throws certif_revoque {
+	public boolean revoquerCertificat(Certificat certificatPorteur, String periode) {
 
 		// revoquer certificat sur l'AV
 		AV av = AVHelper.narrow(Tools.findObjByORBName2(this.nodeName, EntityName.AV_SERVER));

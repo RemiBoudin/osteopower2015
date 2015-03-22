@@ -82,19 +82,11 @@ public abstract class ACPOA extends org.omg.PortableServer.Servant
         MonAppliMessagerie.Certificat arg0_in = MonAppliMessagerie.CertificatHelper.read(_is);
         String arg1_in = _is.read_string();
 
-        try
-        {
-            boolean _arg_result = revoquerCertificat(arg0_in, arg1_in);
+        boolean _arg_result = revoquerCertificat(arg0_in, arg1_in);
 
-            _output = handler.createReply();
-            _output.write_boolean(_arg_result);
+        _output = handler.createReply();
+        _output.write_boolean(_arg_result);
 
-        }
-        catch (MonAppliMessagerie.certif_revoque _exception)
-        {
-            _output = handler.createExceptionReply();
-            MonAppliMessagerie.certif_revoqueHelper.write(_output,_exception);
-        }
         return _output;
     }
 

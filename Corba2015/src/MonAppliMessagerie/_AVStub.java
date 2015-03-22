@@ -73,7 +73,6 @@ public class _AVStub extends org.omg.CORBA.portable.ObjectImpl
      * Operation verifierRevocation
      */
     public String verifierRevocation(MonAppliMessagerie.Certificat certifCourant)
-        throws MonAppliMessagerie.erreur_certif, MonAppliMessagerie.certif_revoque
     {
         while(true)
         {
@@ -95,16 +94,6 @@ public class _AVStub extends org.omg.CORBA.portable.ObjectImpl
                 catch(org.omg.CORBA.portable.ApplicationException _exception)
                 {
                     String _exception_id = _exception.getId();
-                    if (_exception_id.equals(MonAppliMessagerie.erreur_certifHelper.id()))
-                    {
-                        throw MonAppliMessagerie.erreur_certifHelper.read(_exception.getInputStream());
-                    }
-
-                    if (_exception_id.equals(MonAppliMessagerie.certif_revoqueHelper.id()))
-                    {
-                        throw MonAppliMessagerie.certif_revoqueHelper.read(_exception.getInputStream());
-                    }
-
                     throw new org.omg.CORBA.UNKNOWN("Unexpected User Exception: "+ _exception_id);
                 }
                 finally

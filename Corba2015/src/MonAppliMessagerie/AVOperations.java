@@ -15,8 +15,7 @@ public interface AVOperations
     /**
      * Operation verifierRevocation
      */
-    public String verifierRevocation(MonAppliMessagerie.Certificat certifCourant)
-        throws MonAppliMessagerie.erreur_certif, MonAppliMessagerie.certif_revoque;
+    public String verifierRevocation(MonAppliMessagerie.Certificat certifCourant);
 
     /**
      * Operation revoquerCertificat

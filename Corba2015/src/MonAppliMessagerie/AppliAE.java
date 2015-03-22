@@ -55,9 +55,9 @@ public class AppliAE implements Runnable {
 			AppliCertificationNode.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(aeLocal));
 			System.out.println("AppliUser::initServer() : ==> Nom '" + nameToRegister + "' est enregistre dans le service de noms.");
 
-			String IORServant = AppliCertificationNode.objAEServerORB.object_to_string(rootPOA.servant_to_reference(aeLocal));
-			System.out.println("AppliUser::initServer() : L'objet possede la reference suivante :");
-			System.out.println("AppliUser::initServer() : "+IORServant);
+			//String IORServant = AppliCertificationNode.objAEServerORB.object_to_string(rootPOA.servant_to_reference(aeLocal));
+			//System.out.println("AppliUser::initServer() : L'objet possede la reference suivante :");
+			//System.out.println("AppliUser::initServer() : "+IORServant);
 
 	    }
 		catch (Exception e) {
