@@ -159,12 +159,9 @@ public class AEimpl extends AEPOA {
 			// faire révoquer le certificat sur l'AC
 			System.out.println("AEImpl::revoquer() : " + this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Demande de r�vocation envoy�e � l'AC");
 			AC ac = ACHelper.narrow(Tools.findObjByORBName2(this.nodeName, EntityName.AC_SERVER));
-			try {
+			
 				return ac.revoquerCertificat(certificatPorteur, periode);
-			} catch (certif_revoque e) {
-				e.printStackTrace();
-			}
+		
 		}
-		return false;
 	}
 }

@@ -36,7 +36,7 @@ public class AVimpl extends AVPOA {
 	}
 
 	@Override
-	public String verifierRevocation(Certificat certifCourant) throws erreur_certif, certif_revoque {
+	public String verifierRevocation(Certificat certifCourant) {
 		// TODO Auto-generated method stub
 
 		if (listeCertifRevoque.containsKey(certifCourant.Num_Unique)) {

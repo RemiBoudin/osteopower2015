@@ -75,5 +75,15 @@ public final class Certificat implements org.omg.CORBA.portable.IDLEntity
         this.usage = usage;
         this.Signature = Signature;
     }
-
+    
+    public Certificat(Certificat newCertif){
+    	this.proprietaire = newCertif.proprietaire;
+        this.IOR_AV = newCertif.IOR_AV;
+        this.Num_Unique = newCertif.Num_Unique;
+        this.ValiditeDebut = newCertif.ValiditeDebut;
+        this.ValiditeFin = newCertif.ValiditeFin;
+        this.ClePubClient = newCertif.ClePubClient;
+        this.usage = newCertif.usage;
+        this.Signature = newCertif.Signature;
+    }
 }
