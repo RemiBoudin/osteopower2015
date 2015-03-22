@@ -42,11 +42,6 @@ public class UserImpl extends UserPOA {
 
 			} else
 				System.out.println("UserImpl::afficherMesssage() : Message reçu : [" + message + "]");
-		} catch (erreur_certif e) {
-			System.out.println("UserImpl::afficherMessage() : Erreur de certificat distant");
-
-		} catch (certif_revoque e) {
-			System.out.println("UserImpl::afficherMessage() : Certificat révoqué");
 
 		} catch (Exception e) {
 			System.out.println("UserImpl::afficherMessage() : Il faut d'abord générer un certificat avant de pouvoir envoyer des message");
@@ -87,7 +82,7 @@ public class UserImpl extends UserPOA {
 
 	}
 
-	public boolean verifierCheminCertification(Certificat certificatVerifier) throws erreur_certif, certif_revoque {
+	public boolean verifierCheminCertification(Certificat certificatVerifier) {
 		AV av = AVHelper.narrow(Tools.findObjByORBName(certificatVerifier.IOR_AV, EntityName.AV_SERVER));
 
 		System.out.println("UserImpl::verifierCheminCertification() : avant av.getCertificat()");
