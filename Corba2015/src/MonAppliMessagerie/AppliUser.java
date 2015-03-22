@@ -17,13 +17,13 @@ import org.omg.PortableServer.POAHelper;
  * @author jeremy
  *
  */
-public class AppliUser implements Runnable{
+public class AppliUser implements Runnable {
 	private UserImpl userLocal;
 	private String username;
-	
+
 	public void initServer(String username) {
 		try {
-			this.username=username;
+			this.username = username;
 			// Gestion du POA
 			// ****************
 			// Recuperation du POA
@@ -54,16 +54,16 @@ public class AppliUser implements Runnable{
 
 			String IORServant = AppliChat.objUserServerORB.object_to_string(rootPOA.servant_to_reference(userLocal));
 			System.out.println("AppliUser::initServer() : L'objet possede la reference suivante :");
-			System.out.println("AppliUser::initServer() : "+IORServant);
-			
+			System.out.println("AppliUser::initServer() : " + IORServant);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	/*public Certificat getCertificat() {
-		return null;
-	}*/
+	/*
+	 * public Certificat getCertificat() { return null; }
+	 */
 
 	private boolean checkPeriode(Certificat cert) {
 		return this.userLocal.verifierPeriode();
@@ -91,8 +91,9 @@ public class AppliUser implements Runnable{
 	}
 
 	public void debug(String sender, String message, boolean chiffred, String dest) {
-		//User user = UserHelper.narrow(Tools.findObjByORBName(dest, EntityName.USER_SERVER));
-		//user.afficherMessage(sender, message, chiffred);
+		// User user = UserHelper.narrow(Tools.findObjByORBName(dest,
+		// EntityName.USER_SERVER));
+		// user.afficherMessage(sender, message, chiffred);
 	}
 
 	public void repondreToUser(String message, String receiverName) {
@@ -108,29 +109,36 @@ public class AppliUser implements Runnable{
 		Porteur objDistantPorteurServer = PorteurHelper.narrow(objDistant);
 
 		// Demande du certificat au porteur
-		Certificat certificatDistant = objDistantPorteurServer.getCertificatPorteur();
-
-		boolean cheminCertifie;
 		try {
+			Certificat certificatDistant = objDistantPorteurServer.getCertificatPorteur();
+
+			boolean cheminCertifie;
+
 			cheminCertifie = this.userLocal.verifierCheminCertification(certificatDistant);
-			System.out.println("AppliUser:: PChemin de certif de l'interlocuteur distant"+receiverName+" OK");
-			if (cheminCertifie)
-			{
+			System.out.println("AppliUser:: PChemin de certif de l'interlocuteur distant" + receiverName + " OK");
+			if (cheminCertifie) {
 				User userDistant = UserHelper.narrow(Tools.findObjByORBName(receiverName, EntityName.USER_SERVER));
-				String messageChiffre=Tools.chiffrerMessage(message, "");
+				String messageChiffre = Tools.chiffrerMessage(message, "");
 				userDistant.afficherMessage(this.username, messageChiffre, true);
-				System.out.println("AppliUser:: Message affiché chez "+receiverName);
-			}	
-			else
-			{
-				System.out.println("AppliUser:: Problème dans le chemin de certif de l'interlocuteur "+receiverName+" distant");
+				System.out.println("AppliUser:: Message affiché chez " + receiverName);
+			} else {
+				System.out.println("AppliUser:: Problème dans le chemin de certif de l'interlocuteur " + receiverName + " distant");
 			}
 		} catch (erreur_certif e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// e.printStackTrace();
+			System.out.println("AppliUser:: Erreur dans le certif de " + receiverName + " distant");
+
 		} catch (certif_revoque e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// e.printStackTrace();
+			System.out.println("AppliUser:: Certif de " + receiverName + " révoqué");
+
+		} catch (java.lang.NullPointerException e) {
+			System.out.println("AppliUser:: " + receiverName + " inconnu au bataillon !");
+
+		} catch (Exception e) {
+			System.out.println("AppliUser::repondreToUser() " + receiverName + " Il faut s'enregistrer un certificat avant d'envoyer un message !");
 		}
 
 	}
@@ -139,7 +147,7 @@ public class AppliUser implements Runnable{
 		// Recherche du (serveur du porteur) du (destinataire)
 		org.omg.CORBA.Object objDistant = Tools.findObjByORBName(this.username, EntityName.PORTEUR_SERVER);
 		Porteur porteur = PorteurHelper.narrow(objDistant);
-		
+
 		porteur.getCertificatPorteur();
 	}
 }
