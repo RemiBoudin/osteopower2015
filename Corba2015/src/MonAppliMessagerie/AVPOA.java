@@ -64,24 +64,11 @@ public abstract class AVPOA extends org.omg.PortableServer.Servant
         org.omg.CORBA.portable.OutputStream _output;
         MonAppliMessagerie.Certificat arg0_in = MonAppliMessagerie.CertificatHelper.read(_is);
 
-        try
-        {
-            String _arg_result = verifierRevocation(arg0_in);
+        String _arg_result = verifierRevocation(arg0_in);
 
-            _output = handler.createReply();
-            _output.write_string(_arg_result);
+        _output = handler.createReply();
+        _output.write_string(_arg_result);
 
-        }
-        catch (MonAppliMessagerie.erreur_certif _exception)
-        {
-            _output = handler.createExceptionReply();
-            MonAppliMessagerie.erreur_certifHelper.write(_output,_exception);
-        }
-        catch (MonAppliMessagerie.certif_revoque _exception)
-        {
-            _output = handler.createExceptionReply();
-            MonAppliMessagerie.certif_revoqueHelper.write(_output,_exception);
-        }
         return _output;
     }
 

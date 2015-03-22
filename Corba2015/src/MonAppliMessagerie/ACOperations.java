@@ -20,7 +20,6 @@ public interface ACOperations
     /**
      * Operation revoquerCertificat
      */
-    public boolean revoquerCertificat(MonAppliMessagerie.Certificat certificatPorteur, String periode)
-        throws MonAppliMessagerie.certif_revoque;
+    public boolean revoquerCertificat(MonAppliMessagerie.Certificat certificatPorteur, String periode);
 
 }

@@ -38,7 +38,7 @@ module MonAppliMessagerie {
 
 	interface AV {
 		Certificat getCertificatAC();
-		string verifierRevocation(in Certificat certifCourant) raises(erreur_certif, certif_revoque);
+		string verifierRevocation(in Certificat certifCourant);
 
 		// AC pousse à l'AV la mise à jour de la LCR
 		boolean revoquerCertificat(in Certificat certificatPorteur, in string periode); 
@@ -47,7 +47,7 @@ module MonAppliMessagerie {
 	interface AC {
 		Certificat getCertificat();
 		Certificat enregistrer (in string clePublique, in string proprietaire, in string dateExpiration, in string usage);
-		boolean revoquerCertificat (in Certificat certificatPorteur, in string periode) raises(certif_revoque);	
+		boolean revoquerCertificat (in Certificat certificatPorteur, in string periode);	
 	};
 
 	interface User {	
