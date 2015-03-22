@@ -48,10 +48,13 @@ public class AppliChat {
 
 			AppliPorteur porteur = new AppliPorteur();
 			AppliUser user = new AppliUser();
+			
+			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
 			System.out.println("## Projet CORBA - Version utilisateur ##\n");
-			System.out.print("> Login : ");
-			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+			System.out.print("> Mode verbose [I]nfo / [D]ebug / [E]rr / [entrée] : ");
+			Tools.verbose = in.readLine();
+			System.out.print("\n> Login : ");
 			String clientName = in.readLine();
 			System.out.print("> Mdp : ");
 			String clientPassword = in.readLine();
@@ -74,30 +77,21 @@ public class AppliChat {
 
 			String sChoix = "0";
 
-			while (Integer.parseInt(sChoix) != 4) {
-
-				// Affichage du contenu du service de noms
-				System.out.println("-------------------------");
-				System.out.println("CONTENU DU NAMING SERVICE");
-				System.out.println("-------------------------");
-				Tools.printContext(objDistantNamingService, "");
-				System.out.println("-------------------------");
-
-				System.out.println("Bonjour " + clientName + ", voici le menu :\n");
+			while (Integer.parseInt(sChoix) != 5) {
 				System.out.println("# [1] Envoyer un message");
 				System.out.println("# [2] Enregistrer un nouveau certificat");
-				System.out.println("# [3] Révoquer un certificat");
-				System.out.println("# [4] Quitter");
-				System.out.println("# [5] Debug\n");
-				System.out.println("> Choix  ");
+				System.out.println("# [3] Révoquer un certificat\f");
+				System.out.println("# [4] Afficher contenu du serveur de noms");
+				System.out.println("# [5] Quitter\n");
+				System.out.print("> Choix : ");
 
 				sChoix = in.readLine();
 
 				switch (Integer.parseInt(sChoix)) {
 				case 1: // Cas envoi de message
-					System.out.println("-> A qui voulez vous écrire ?");
+					System.out.print("-> Nom du destinataire : ");
 					String receiverName = in.readLine();
-					System.out.println("-> Ecrivez votre message :");
+					System.out.print("-> Message : ");
 					String message = in.readLine();
 					user.repondreToUser(message, receiverName);
 					break;
@@ -106,14 +100,14 @@ public class AppliChat {
 					String usage = in.readLine();
 					System.out.println("-> Date d'expiration [aaaa/mm/jj hh:mm:ss] ?");
 					String dateExp = in.readLine();*/
-					System.out.println("-> Quelle est votre autorité de certification [au choix] ?");
+					System.out.print("-> Autorité de certification [saisie libre] : ");
 					String nodeName = in.readLine();
 					
 					String usage = "SIGNER";
 					String dateExp = "2015/12/21 12:18:34";
 					
 					//String nodeName = "niv1";
-					System.out.println("AppliChat::main() : usage=signer ; dateExp="+dateExp+" ; nodeName="+nodeName);
+					Tools.showMessage(Tools.MSG_INFO, "AppliChat", "main", "usage=signer ; dateExp="+dateExp+" ; nodeName="+nodeName);
 					porteur.enregistrerCertificat(usage, dateExp, nodeName);
 					break;
 				case 3: // Cas révoquer un certificat
@@ -121,17 +115,15 @@ public class AppliChat {
 					Certificat certificat = porteur.getCertificat();
 					porteur.revoquerCertificat(certificat, clientPassword, "");
 					break;
-				case 4: // Cas quitter
-					System.exit(0);
+				case 4: // Cas afficher contenu du serveur de noms
+					System.out.println("-------------------------");
+					System.out.println("CONTENU DU NAMING SERVICE");
+					System.out.println("-------------------------");
+					Tools.printContext(objDistantNamingService, "");
+					System.out.println("-------------------------");
 					break;
-				case 5: // Cas debug
-					System.out.println("-> /!\\ FONCTION DE DEBUG /!\\");
-					// System.out.println("-> /!\\ Destinataire du message ?");
-					// String dest = in.readLine();
-					// System.out.println("-> /!\\ Message ?");
-					// message = in.readLine();
-					//user.debugCommunication();
-					System.out.println("Fonction fuckée");
+				case 5: // Cas quitter
+					System.exit(0);
 					break;
 				default:
 				}

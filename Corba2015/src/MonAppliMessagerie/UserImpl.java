@@ -23,35 +23,32 @@ public class UserImpl extends UserPOA {
 	public String afficherMessage(String sender, String message, boolean chiffred) {
 		// TODO Auto-generated method stub
 		try {
-			System.out.println("Nous sommes dans afficherMessageUserImpl avant If");
+			Tools.showMessage(Tools.MSG_DEBUG, "UserImpl", "afficherMessage", "Nous sommes dans afficherMessageUserImpl avant If");
 
 			if (chiffred) {
-				System.out.println("Nous sommes dans afficherMessageUserImpl après If");
-				System.out.println("le system out doit s'afficher");
+				Tools.showMessage(Tools.MSG_DEBUG, "UserImpl", "afficherMessage", "Nous sommes après If");
 				Porteur porteur = PorteurHelper.narrow(Tools.findObjByORBName(sender, EntityName.PORTEUR_SERVER));
 				Certificat certificatSender = porteur.getCertificatPorteur();
 				boolean cheminCertifie;
-				System.out.println("Nous sommes dans afficherMessageUserImpl avant Try");
-
-				System.out.println("le system out doit s'afficher");
+				Tools.showMessage(Tools.MSG_DEBUG, "UserImpl", "afficherMessage", "Nous sommes avant Try");
 				cheminCertifie = verifierCheminCertification(certificatSender);
 				if (cheminCertifie) {
-					System.out.println("UserImpl::afficherMessage() : Message chiffred reçu : [" + Tools.dechiffrerMessage(message, "") + "]");
+					Tools.showMessage(Tools.MSG_INFO, "UserImpl", "afficherMessage", "Message chiffred reçu : [" + Tools.dechiffrerMessage(message, "") + "]");
 					return "ok";
 				}
 
 			} else
-				System.out.println("UserImpl::afficherMesssage() : Message reçu : [" + message + "]");
+				Tools.showMessage(Tools.MSG_INFO, "UserImpl", "afficherMessage", "Message reçu : [" + message + "]");
 
 		} catch (Exception e) {
-			System.out.println("UserImpl::afficherMessage() : Il faut d'abord générer un certificat avant de pouvoir envoyer des message");
+			Tools.showMessage(Tools.MSG_ERR, "UserImpl", "afficherMessage", "Il faut d'abord générer un certificat avant de pouvoir envoyer des message");
 		}
 		return "ok";
 
 	}
 
 	public void afficherMessageDebug(String message) {
-		System.out.println("Message reçu : [" + message + "]");
+		Tools.showMessage(Tools.MSG_INFO, "UserImpl", "afficherMessageDebug", "Message reçu : [" + message + "]");
 	}
 
 	public boolean verifierPeriode() {
@@ -84,43 +81,41 @@ public class UserImpl extends UserPOA {
 	public boolean verifierCheminCertification(Certificat certificatVerifier) {
 		AV av = AVHelper.narrow(Tools.findObjByORBName(certificatVerifier.IOR_AV, EntityName.AV_SERVER));
 
-		System.out.println("UserImpl::verifierCheminCertification() : avant av.getCertificat()");
-
 		Certificat certifAC = av.getCertificatAC();
 
 		if (certifAC == null)
-			System.out.println("UserImpl::verifierCheminCertification() : le certificat est null");
+			Tools.showMessage(Tools.MSG_DEBUG, "UserImpl", "verifierCheminCertification", "Le certificat est nul");
 		else
-			System.out.println("UserImpl::verifierCheminCertification() : le certificat n'est pas null");
+			Tools.showMessage(Tools.MSG_DEBUG, "UserImpl", "verifierCheminCertification", "Le certificat n'est pas nul");
 
 		if (verifierSignature(certificatVerifier)) {
-			System.out.println("Dechiffrer signature avec " + certificatVerifier.Signature + "  " + certifAC.ClePubClient);
+			Tools.showMessage(Tools.MSG_DEBUG, "UserImpl", "verifierCheminCertification", certificatVerifier.Signature + "  " + certifAC.ClePubClient);
 			if (dechiffrerSignature(certificatVerifier, certifAC.ClePubClient)) {
 				String hash = genererHash(certificatVerifier);
 
 				String retourVerification = av.verifierRevocation(certificatVerifier);
-				System.out.println("DANS dechiffrerSignature, retourVerif=" + retourVerification);
+				Tools.showMessage(Tools.MSG_DEBUG, "UserImpl", "verifierCheminCertification", "retourVerif=" + retourVerification);
 
 				if (retourVerification.equals(VerificationRevocation.CERTIFICAT_REVOQUE.toString()) || retourVerification.equals(VerificationRevocation.CERTIFICAT_SUSPENDU.toString())) {
-					System.out.println("Certif revoque ou suspendu");
+					Tools.showMessage(Tools.MSG_INFO, "UserImpl", "verifierCheminCertification", "Certif revoque ou suspendu");
 					return false;
 				} else {
 					if (retourVerification.equals(VerificationRevocation.CERTIFICAT_VALIDE_NON_RACINE.toString())) {
-						System.out.println("Certif valide mais non racine");
+						Tools.showMessage(Tools.MSG_INFO, "UserImpl", "verifierCheminCertification", "Certif valide mais non racine");
 						return verifierCheminCertification(certifAC);
 					} else if (retourVerification.equals(VerificationRevocation.CERTIFICAT_VALIDE_RACINE.toString())) {
-						System.out.println("Certif valide et racine");
+						Tools.showMessage(Tools.MSG_INFO, "UserImpl", "verifierCheminCertification", "Certif valide et racine");
 						return true;
 					} else {
-						System.out.println("CAS IMPROBABLE !!!!");
+						Tools.showMessage(Tools.MSG_ERR, "UserImpl", "verifierCheminCertification", "CAS IMPROBABLE !!!!");
 						return false;
 					}
 				}
 			} else
-				System.out.println("AVANT DERNIER FALSE");
+				Tools.showMessage(Tools.MSG_DEBUG, "UserImpl", "verifierCheminCertification", "AVANT DERNIER FALSE");
 			return false;
 		} else
-			System.out.println("DERNIER FALSE");
+			Tools.showMessage(Tools.MSG_DEBUG, "UserImpl", "verifierCheminCertification", "AVANT DERNIER FALSE");
 		return false;
 
 	}
@@ -133,10 +128,10 @@ public class UserImpl extends UserPOA {
 	public boolean dechiffrerSignature(Certificat certificatEnVerification, String PublicKeyAC) {
 
 		if (PublicKeyAC.equals(certificatEnVerification.Signature)) {
-			System.out.println("Dechiffrement OK - " + certificatEnVerification.Signature + " VS " + PublicKeyAC);
+			Tools.showMessage(Tools.MSG_INFO, "UserImpl", "dechiffrerSignature", "Dechiffrement OK - " + certificatEnVerification.Signature + " VS " + PublicKeyAC);
 			return true;
 		} else {
-			System.out.println("Dechiffrement NON OK - " + certificatEnVerification.Signature + " VS " + PublicKeyAC);
+			Tools.showMessage(Tools.MSG_ERR, "UserImpl", "dechiffrerSignature", "Dechiffrement NON OK - " + certificatEnVerification.Signature + " VS " + PublicKeyAC);
 			return false;
 		}
 	}

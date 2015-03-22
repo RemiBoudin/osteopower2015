@@ -49,10 +49,10 @@ public class AppliUser implements Runnable {
 
 			// Enregistrement de l'objet CORBA dans le service de noms
 			AppliChat.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(userLocal));
-			Tools.showMessage(Tools.MSG_INFO, "AppliUser", "initServer", nomComplet + "' est enregistre dans le service de noms.");
+			Tools.showMessage(Tools.MSG_INFO, "AppliUser", "initServer", nomComplet + " est enregistre dans le service de noms.");
 
 		} catch (Exception e) {
-			System.out.println("AppliUser::initServer() : Erreur d'initialisation du UserServer");
+			Tools.showMessage(Tools.MSG_ERR, "AppliUser", "initServer", "Erreur d'initialisation du UserServer");
 			e.printStackTrace();
 		}
 	}
@@ -119,10 +119,10 @@ public class AppliUser implements Runnable {
 			}
 
 		} catch (java.lang.NullPointerException e) {
-			System.out.println("AppliUser:: " + receiverName + " inconnu au bataillon !");
+			Tools.showMessage(Tools.MSG_ERR, "AppliUser", "repondreToUser", receiverName + " inconnu au bataillon !");
 
 		} catch (Exception e) {
-			System.out.println("AppliUser::repondreToUser() " + receiverName + " Il faut s'enregistrer un certificat avant d'envoyer un message !");
+			Tools.showMessage(Tools.MSG_ERR, "AppliUser", "repondreToUser", receiverName + " Il faut s'enregistrer un certificat avant d'envoyer un message !");
 		}
 
 	}

@@ -31,25 +31,25 @@ public class PorteurImpl extends PorteurPOA {
 		try {
 			this.monCertificat = ae.saveCertificat(this.publicKey, this.username, this.mdp, dateExpiration, usage);
 		} catch (Exception e) {
-			System.out.println("Erreur d'obtention du certificat aurpès de l'autorité demandée");
+			Tools.showMessage(Tools.MSG_ERR, "PorteurImpl", "enregistrerCertificat", "Erreur d'obtention du certificat aurpès de l'autorité demandée");
 		}
 		// Affichages de debug
 		if (this.monCertificat == null)
-			System.out.println("PorteurImpl::saveCertificat() : le certificat est nul");
+			Tools.showMessage(Tools.MSG_DEBUG, "PorteurImpl", "enregistrerCertificat", "le certificat est nul");
 		else
-			System.out.println("PorteurImpl::saveCertificat() : le certificat n'est pas nul");
+			Tools.showMessage(Tools.MSG_DEBUG, "PorteurImpl", "enregistrerCertificat", "le certificat n'est pas nul");
 
-		System.out.println("PorteurImpl::enregistrerCertificat() : " + this.username + " - INFO - Certificat enregistré");
+			Tools.showMessage(Tools.MSG_INFO, "PorteurImpl", "enregistrerCertificat", this.username + " - Certificat enregistré");
 		return true;
 	}
 
 	@Override
 	public Certificat getCertificatPorteur() {
 		try {
-			System.out.println("PorteurImpl::getCertificatPorteur() : " + this.username + " - INFO - Certificat envoyé");
+			Tools.showMessage(Tools.MSG_INFO, "PorteurImpl", "getCertificatPorteur", this.username + " - Certificat envoyé");
 
 		} catch (Exception e) {
-			System.out.println("PorteurImpl::getCertificatPorteur() : " + this.username + " - ERR - Impossible de récupérer le certificat du porteur distant");
+			Tools.showMessage(Tools.MSG_ERR, "PorteurImpl", "getCertificatPorteur", this.username + " - Impossible de récupérer le certificat du porteur distant");
 		}
 		return this.monCertificat;
 	}

@@ -19,18 +19,18 @@ public class AVimpl extends AVPOA {
 		this.certificatAC = new Certificat(ac.getCertificat());
 		
 		if (this.certificatAC == null)
-			System.out.println("AVimpl::AVimpl() : le certificat est null");
+			Tools.showMessage(Tools.MSG_DEBUG, "AVimpl", "AVimpl", "le certificat est nul");
 		else
-			System.out.println("AVimpl::AVimpl() : le certificat n'est pas null");
+			Tools.showMessage(Tools.MSG_DEBUG, "AVimpl", "AVimpl", "le certificat n'est pas nul");
 	}
 
 	@Override
 	public Certificat getCertificatAC() {
 		
 		if (this.certificatAC == null)
-			System.out.println("AVimpl::getCertificatAC() : le certificat est null");
+			Tools.showMessage(Tools.MSG_DEBUG, "AVimpl", "getCertificatAC", "le certificat est nul");
 		else
-			System.out.println("AVimpl::getCertificatAC() : le certificat n'est pas null");
+			Tools.showMessage(Tools.MSG_DEBUG, "AVimpl", "getCertificatAC", "le certificat n'est pas nul");
 		
 		return new Certificat(this.certificatAC);
 	}
@@ -40,33 +40,23 @@ public class AVimpl extends AVPOA {
 		// TODO Auto-generated method stub
 
 		if (listeCertifRevoque.containsKey(certifCourant.Num_Unique)) {
-			System.out.println("AVimpl::verifierRevocation() : "+"Certificat Revoque");
-			/*
-			 * User user=
-			 * UserHelper.narrow(Tools.findObjByORBName(certifCourant.
-			 * proprietaire, EntityName.USER_SERVER));
-			 * user.afficherMessage(nodename, "ERR CERT : certificat revoque",
-			 * false);
-			 */
+			Tools.showMessage(Tools.MSG_INFO, "AVimpl", "verifierRevocation", "Certificat Revoque");
 			return VerificationRevocation.CERTIFICAT_REVOQUE.toString();
 		}
 
 		else if (listeCertifSuspendus.containsKey(certifCourant.Num_Unique)) {
-			System.out.println("AVimpl::verifierRevocation() : "+"Certificat Suspendu");
+			Tools.showMessage(Tools.MSG_INFO, "AVimpl", "verifierRevocation", "Certificat suspendu");
 			return VerificationRevocation.CERTIFICAT_SUSPENDU.toString();
 		} else {
-			System.out.println("AVimpl::verifierRevocation() : "+"Certificat non Revoque");
+			Tools.showMessage(Tools.MSG_INFO, "AVimpl", "verifierRevocation", "Certificat non revoque");
 
 			if (certificatAC.IOR_AV.equals("")) // Vérif Si AC RACINE
 			{
-				System.out.println("AVimpl::verifierRevocation() : "+"AC Racine"); // signaler qu'on est à l'AC
-													// racine donc fin de
-													// vérification
+				Tools.showMessage(Tools.MSG_INFO, "AVimpl", "verifierRevocation", "AC racine");
 				return VerificationRevocation.CERTIFICAT_VALIDE_RACINE.toString();
 			}
 
 			else {
-				System.out.println("AVimpl::verifierRevocation() : "+certificatAC.IOR_AV); // A envoyer à l'user
 				return VerificationRevocation.CERTIFICAT_VALIDE_NON_RACINE.toString();
 			}
 		}
@@ -77,24 +67,24 @@ public class AVimpl extends AVPOA {
 		// TODO Auto-generated method stub
 		if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique) && periode.equals("") && !listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique)) {
 			listeCertifRevoque.put(certificatPorteur.Num_Unique, certificatPorteur);
-			System.out.println("AVimpl::revoquerCertificat() : "+this.nodename + "AV - INFO - Certificat de" + certificatPorteur.proprietaire + "ajout� dans la LCR");
+			Tools.showMessage(Tools.MSG_INFO, "AVimpl", "revoquerCertificat", this.nodename + " - Certificat de" + certificatPorteur.proprietaire + "ajouté dans la LCR");
 			return true;
 		}
 
 		else if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique) && listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique) && periode.equals("")) {
 			listeCertifSuspendus.remove(certificatPorteur.Num_Unique);
-			System.out.println("AVimpl::revoquerCertificat() : "+this.nodename + "AV - INFO - Certificat de" + certificatPorteur.proprietaire + "supprim� de la LCS");
+			Tools.showMessage(Tools.MSG_INFO, "AVimpl", "revoquerCertificat", this.nodename + " - Certificat de" + certificatPorteur.proprietaire + "supprimé de la LCS");
 			listeCertifRevoque.put(certificatPorteur.Num_Unique, certificatPorteur);
-			System.out.println("AVimpl::revoquerCertificat() : "+this.nodename + "AV - INFO - Certificat de" + certificatPorteur.proprietaire + "ajout� dans la LCR apr�s suppr LCS");
+			Tools.showMessage(Tools.MSG_INFO, "AVimpl", "revoquerCertificat", this.nodename + " - Certificat de" + certificatPorteur.proprietaire + "ajouté dans la LCR après suppr LCS");
 			return true;
 		}
 
 		else if (!listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique) && !periode.equals("") && !listeCertifRevoque.containsKey(certificatPorteur.Num_Unique)) {
 			listeCertifSuspendus.put(certificatPorteur.Num_Unique, certificatPorteur);
-			System.out.println("AVimpl::revoquerCertificat() : "+this.nodename + "AV - INFO - Certificat de" + certificatPorteur.proprietaire + "ajout� dans la LCS");
+			Tools.showMessage(Tools.MSG_INFO, "AVimpl", "revoquerCertificat", this.nodename + " - Certificat de" + certificatPorteur.proprietaire + "ajouté dans la LCS");
 			return true;
 		} else {
-			System.out.println("AVimpl::revoquerCertificat() : "+"Certificat déjà révoqué");
+			Tools.showMessage(Tools.MSG_ERR, "AVimpl", "revoquerCertificat", "Certificat déjà révoqué");
 			return true;
 		}
 	}

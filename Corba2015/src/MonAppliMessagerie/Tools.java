@@ -23,11 +23,13 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
  *         communes.
  */
 public class Tools {
-	
+
 	public static User user = null;
 	public static final String MSG_DEBUG = "DEBUG";
 	public static final String MSG_INFO = "INFO";
 	public static final String MSG_ERR = "ERR";
+
+	public static String verbose = null;
 
 	public void init() {
 	}
@@ -97,10 +99,10 @@ public class Tools {
 
 	public static org.omg.CORBA.Object findObjByORBName(String name, EntityName entity) {
 		org.omg.CORBA.Object distantObj = null;
-		
+
 		// Conversion du destinataire en nom ORB
 		String receiverORBName = Tools.convertNameToId(name, entity);
-		Tools.showMessage(Tools.MSG_DEBUG, "Tools","findObjByORBName", "receiverORBName créé : "+receiverORBName);
+		Tools.showMessage(Tools.MSG_DEBUG, "Tools", "findObjByORBName", "receiverORBName créé : " + receiverORBName);
 
 		try {
 			// Construction du nom a rechercher
@@ -109,24 +111,24 @@ public class Tools {
 
 			// Recherche de l'objet aupres du naming service
 			distantObj = AppliChat.objDistantNamingService.resolve(nameToFind);
-			Tools.showMessage(Tools.MSG_DEBUG, "Tools","findObjByORBName", "Objet '" + receiverORBName + "' trouvé auprès du service de noms.");
-			
+			Tools.showMessage(Tools.MSG_DEBUG, "Tools", "findObjByORBName", "Objet '" + receiverORBName + "' trouvé auprès du service de noms.");
+
 			return distantObj;
-			
+
 		} catch (Exception e) {
-			//e.printStackTrace();
-			Tools.showMessage(Tools.MSG_DEBUG, "Tools","findObjByORBName", "Objet '" + receiverORBName + "' non trouvé auprès du service de noms.");
+			// e.printStackTrace();
+			Tools.showMessage(Tools.MSG_DEBUG, "Tools", "findObjByORBName", "Objet '" + receiverORBName + "' non trouvé auprès du service de noms.");
 		}
-		
+
 		return null;
 	}
 
 	public static org.omg.CORBA.Object findObjByORBName2(String name, EntityName entity) {
 		org.omg.CORBA.Object distantObj = null;
-		
+
 		// Conversion du destinataire en nom ORB
 		String receiverORBName = Tools.convertNameToId(name, entity);
-		Tools.showMessage(Tools.MSG_DEBUG, "Tools","findObjByORBName2", "receiverORBName créé : "+receiverORBName);
+		Tools.showMessage(Tools.MSG_DEBUG, "Tools", "findObjByORBName2", "receiverORBName créé : " + receiverORBName);
 
 		try {
 			// Construction du nom a rechercher
@@ -135,15 +137,15 @@ public class Tools {
 
 			// Recherche de l'objet aupres du naming service
 			distantObj = AppliCertificationNode.objDistantNamingService.resolve(nameToFind);
-			Tools.showMessage(Tools.MSG_DEBUG, "Tools","findObjByORBName2", receiverORBName + " trouvé auprès du service de noms.");
-			
+			Tools.showMessage(Tools.MSG_DEBUG, "Tools", "findObjByORBName2", receiverORBName + " trouvé auprès du service de noms.");
+
 			return distantObj;
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			Tools.showMessage(Tools.MSG_DEBUG, "Tools","findObjByORBName2", receiverORBName + " non trouvé auprès du service de noms.");
+			Tools.showMessage(Tools.MSG_DEBUG, "Tools", "findObjByORBName2", receiverORBName + " non trouvé auprès du service de noms.");
 		}
-		
+
 		return null;
 	}
 
@@ -161,8 +163,6 @@ public class Tools {
 		keys[1] = "cba" + id; // Generation de la cl� priv�e
 		return keys;
 	}
-	
-
 
 	public static void printContext(NamingContext nc, String parent) {
 		try {
@@ -186,8 +186,21 @@ public class Tools {
 			System.out.println("ERROR : " + e);
 		}
 	}
-	
+
 	public static void showMessage(String type, String classe, String methode, String message) {
-		System.out.println(classe+"::"+methode+"() -> ["+type+"] : "+message);
+		if ((Tools.verbose == null) || (Tools.verbose.equals(""))) {
+			System.out.println("[" + type + "]\t- [" + classe + "::" + methode + "()]\t=> " + message);
+			return;
+		}
+
+		if ((Tools.verbose.contains("I")) && (type.equals(Tools.MSG_INFO)))
+			System.out.println("[" + type + "]\t- [" + classe + "::" + methode + "()]\t=> " + message);
+
+		if ((Tools.verbose.contains("E")) && (type.equals(Tools.MSG_ERR)))
+			System.out.println("[" + type + "]\t- [" + classe + "::" + methode + "()]\t=> " + message);
+
+		if ((Tools.verbose.contains("D")) && (type.equals(Tools.MSG_DEBUG)))
+			System.out.println("[" + type + "]\t- [" + classe + "::" + methode + "()]\t=> " + message);
+
 	}
 }
