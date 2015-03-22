@@ -24,7 +24,7 @@ public class AEimpl extends AEPOA {
 		this.listeIdClientPorteur.put("toto", "toto");
 		this.listeIdClientPorteur.put("tutu", "tutu");
 		this.listeIdClientPorteur.put("tete", "tete");
-		
+
 		this.listeIdClientPorteur.put("n0", "n0");
 		this.listeIdClientPorteur.put("n1", "n1");
 		this.listeIdClientPorteur.put("n2", "n2");
@@ -110,46 +110,51 @@ public class AEimpl extends AEPOA {
 	 */
 	@Override
 	public Certificat saveCertificat(String clepublique, String proprietaire, String mdp, String dateExpiration, String usage) {
+		try {
+			// Si l'authentification n'est pas bonne
+			if (!this.authentifier(proprietaire, mdp)) {
+				// faire afficher
+				// "ERR - Enregistrement - Echec d'authentification"
+				System.out.println("AEImpl::saveCertificat() : " + this.nodeName + " - ERR - " + proprietaire + " echec d'authentification (username inconnu)");
+			} else {
+				// faire enregistrer sur l'AC supérieure
+				System.out.println("AEImpl::saveCertificat() : Attribut nodeName : [" + this.nodeName + "]");
+				AC ac = ACHelper.narrow(Tools.findObjByORBName2(this.nodeName, EntityName.AC_SERVER));
+				System.out.println("AEImpl::saveCertificat() : Avant ac.enregistrer()");
+				System.out.println("AEimpl::saveCertificat() : nom propriétaire : " + proprietaire);
+				Certificat newCertif = ac.enregistrer(clepublique, proprietaire, dateExpiration, usage);
+				System.out.println("AEImpl::saveCertificat() : Après ac.enregistrer()");
 
-		// Si l'authentification n'est pas bonne
-		if (!this.authentifier(proprietaire, mdp)) {
-			// faire afficher "ERR - Enregistrement - Echec d'authentification"
-			System.out.println("AEImpl::saveCertificat() : " + this.nodeName + " - ERR - " + proprietaire + " echec d'authentification (username inconnu)");
-		} else {
-			// faire enregistrer sur l'AC supérieure
-			System.out.println("AEImpl::saveCertificat() : Attribut nodeName : [" + this.nodeName + "]");
-			AC ac = ACHelper.narrow(Tools.findObjByORBName2(this.nodeName, EntityName.AC_SERVER));
-			System.out.println("AEImpl::saveCertificat() : Avant ac.enregistrer()");
-			System.out.println("AEimpl::saveCertificat() : nom propriétaire : " + proprietaire);
-			Certificat newCertif = ac.enregistrer(clepublique, proprietaire, dateExpiration, usage);
-			System.out.println("AEImpl::saveCertificat() : Après ac.enregistrer()");
+				// Affichages de debug
+				if (newCertif == null)
+					System.out.println("AEimpl::saveCertificat() : le certificat est nul");
+				else
+					System.out.println("AEimpl::saveCertificat() : le certificat n'est pas nul");
 
-			// Affichages de debug
-			if (newCertif == null)
-				System.out.println("AEimpl::saveCertificat() : le certificat est nul");
-			else
-				System.out.println("AEimpl::saveCertificat() : le certificat n'est pas nul");
+				System.out.println("AEImpl::saveCertificat() : " + this.nodeName + " - INFO - " + proprietaire + " Enregistrement auprès de l'AC");
+				return new Certificat(newCertif.proprietaire, newCertif.IOR_AV, (short) 1, newCertif.ValiditeDebut, newCertif.ValiditeFin, newCertif.ClePubClient, newCertif.usage, newCertif.Signature);
 
-			System.out.println("AEImpl::saveCertificat() : " + this.nodeName + " - INFO - " + proprietaire + " Enregistrement auprès de l'AC");
-			return new Certificat(newCertif.proprietaire, newCertif.IOR_AV, (short) 1, newCertif.ValiditeDebut, newCertif.ValiditeFin, newCertif.ClePubClient, newCertif.usage, newCertif.Signature);
+				/*
+				 * AC ac = ACHelper.narrow(Tools.findObjByORBName2("niv1",
+				 * EntityName.AC_SERVER));
+				 * System.out.println("AEImpl::saveCertificat() : Après");
+				 * Certificat newCertif = ac.getCertificat();
+				 * 
+				 * 
+				 * System.out.println("AEImpl::saveCertificat() : "+this.nodeName
+				 * + " - INFO - " + proprietaire +
+				 * " Enregistrement auprès de l'AC");
+				 * 
+				 * //return newCertif; return new Certificat("", "", (short)234,
+				 * "", "", "", "", "");
+				 */
 
-			/*
-			 * AC ac = ACHelper.narrow(Tools.findObjByORBName2("niv1",
-			 * EntityName.AC_SERVER));
-			 * System.out.println("AEImpl::saveCertificat() : Après");
-			 * Certificat newCertif = ac.getCertificat();
-			 * 
-			 * 
-			 * System.out.println("AEImpl::saveCertificat() : "+this.nodeName +
-			 * " - INFO - " + proprietaire + " Enregistrement auprès de l'AC");
-			 * 
-			 * //return newCertif; return new Certificat("", "", (short)234, "",
-			 * "", "", "", "");
-			 */
+				// }
 
-			// }
-
-			// return new Certificat();
+				// return new Certificat();
+			}
+		} catch (java.lang.NullPointerException e) {
+			System.out.println("Impossible de contacter le noeud de certification demandé !");			
 		}
 		return new Certificat();
 	}
@@ -171,9 +176,9 @@ public class AEimpl extends AEPOA {
 			// faire révoquer le certificat sur l'AC
 			System.out.println("AEImpl::revoquer() : " + this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Demande de r�vocation envoy�e � l'AC");
 			AC ac = ACHelper.narrow(Tools.findObjByORBName2(this.nodeName, EntityName.AC_SERVER));
-			
-				return ac.revoquerCertificat(certificatPorteur, periode);
-		
+
+			return ac.revoquerCertificat(certificatPorteur, periode);
+
 		}
 	}
 }
