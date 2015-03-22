@@ -80,7 +80,7 @@ public class AppliChat {
 			while (Integer.parseInt(sChoix) != 5) {
 				System.out.println("# [1] Envoyer un message");
 				System.out.println("# [2] Enregistrer un nouveau certificat");
-				System.out.println("# [3] Révoquer un certificat\f");
+				System.out.println("# [3] Révoquer un certificat");
 				System.out.println("# [4] Afficher contenu du serveur de noms");
 				System.out.println("# [5] Quitter\n");
 				System.out.print("> Choix : ");
