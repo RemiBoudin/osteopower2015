@@ -5,7 +5,12 @@ package MonAppliMessagerie;
  * 
  * @author OpenORB Compiler
  */
-public final class Certificat implements org.omg.CORBA.portable.IDLEntity {
+public final class Certificat implements org.omg.CORBA.portable.IDLEntity, Cloneable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5121333938915291460L;
+
 	/**
 	 * Struct member proprietaire
 	 */
@@ -92,6 +97,22 @@ public final class Certificat implements org.omg.CORBA.portable.IDLEntity {
 		this.ClePubClient = certificat.ClePubClient;
 		this.usage = certificat.usage;
 		this.Signature = certificat.Signature;
+	}
+
+	public Object clone() {
+		Certificat certificat = null;
+		try {
+			// On récupère l'instance à renvoyer par l'appel de la
+			// méthode super.clone()
+			certificat = (Certificat) super.clone();
+		} catch (CloneNotSupportedException cnse) {
+			// Ne devrait jamais arriver car nous implémentons
+			// l'interface Cloneable
+			cnse.printStackTrace(System.err);
+		}
+
+		// on renvoie le clone
+		return certificat;
 	}
 
 }

@@ -55,9 +55,9 @@ public class AppliAC implements Runnable{
 			AppliCertificationNode.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(acLocal));
 			System.out.println("AppliUser::initServer() : ==> Nom '" + nameToRegister + "' est enregistre dans le service de noms.");
 
-			String IORServant = AppliCertificationNode.objACServerORB.object_to_string(rootPOA.servant_to_reference(acLocal));
-			System.out.println("AppliUser::initServer() : L'objet possede la reference suivante :");
-			System.out.println("AppliUser::initServer() : "+IORServant);
+			//String IORServant = AppliCertificationNode.objACServerORB.object_to_string(rootPOA.servant_to_reference(acLocal));
+			//System.out.println("AppliUser::initServer() : L'objet possede la reference suivante :");
+			//System.out.println("AppliUser::initServer() : "+IORServant);
 
 	    }
 		catch (Exception e) {

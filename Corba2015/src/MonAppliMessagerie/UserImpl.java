@@ -10,36 +10,32 @@ import java.util.Hashtable;
  *
  */
 public class UserImpl extends UserPOA {
-	
+
 	public static org.omg.CosNaming.NamingContext NamingService;
 	public Certificat certificatSender;
 	private String username;
-	
-	public UserImpl(String username)
-	{
-		this.username= username ;
-		
+
+	public UserImpl(String username) {
+		this.username = username;
+
 	}
 
 	@Override
-	public String afficherMessage(String sender, String message, boolean chiffred){
+	public String afficherMessage(String sender, String message, boolean chiffred) {
 		// TODO Auto-generated method stub
-		
-		if (chiffred)
-			{
-			Porteur porteur= (Porteur) UserHelper.narrow(Tools.findObjByORBName(sender, EntityName.PORTEUR_SERVER));
+
+		if (chiffred) {
+			Porteur porteur = (Porteur) UserHelper.narrow(Tools.findObjByORBName(sender, EntityName.PORTEUR_SERVER));
 			certificatSender = porteur.getCertificatPorteur();
 			boolean cheminCertifie;
 			try {
 				cheminCertifie = verifierCheminCertification(certificatSender.IOR_AV);
-				if (cheminCertifie)
-				{
-					System.out.println("UserImpl::afficherMessage() : Message chiffred reçu : ["+message+"]");
+				if (cheminCertifie) {
+					System.out.println("UserImpl::afficherMessage() : Message chiffred reçu : [" + message + "]");
 					return "ok";
 				}
-				
-				else
-				{
+
+				else {
 					return null;
 				}
 			} catch (erreur_certif e) {
@@ -49,76 +45,109 @@ public class UserImpl extends UserPOA {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			}
-		else
-			System.out.println("UserImpl::afficherMesssage() : Message reçu : ["+message+"]");
-			
+
+		} else
+			System.out.println("UserImpl::afficherMesssage() : Message reçu : [" + message + "]");
+
 		return "ok";
 	}
-	
+
 	public void afficherMessageDebug(String message) {
-		System.out.println("Message reçu : [" + message+"]");
+		System.out.println("Message reçu : [" + message + "]");
 	}
-	
-	public boolean verifierPeriode()
-	{
-		
+
+	public boolean verifierPeriode() {
+
 		return true;
-		
+
 	}
-	
-	public String verifierUsage()
-	{
-		
+
+	public String verifierUsage() {
+
 		return null;
-		
+
 	}
-	
-	public boolean verifierCheminCertification(String IOR_AV_a_contacter) throws erreur_certif, certif_revoque
-	{
-		AV av= AVHelper.narrow(Tools.findObjByORBName(IOR_AV_a_contacter, EntityName.AV_SERVER));
+
+	public boolean verifierCheminCertification(String IOR_AV_a_contacter) throws erreur_certif, certif_revoque {
+		AV av = AVHelper.narrow(Tools.findObjByORBName(IOR_AV_a_contacter, EntityName.AV_SERVER));
 
 		System.out.println("UserImpl::verifierCheminCertification() : avant av.getCertificat()");
-		
+
 		Certificat certifAC = av.getCertificatAC();
-		
+
 		if (certifAC == null)
 			System.out.println("UserImpl::verifierCheminCertification() : le certificat est null");
 		else
 			System.out.println("UserImpl::verifierCheminCertification() : le certificat n'est pas null");
-		
+
 		av.verifierRevocation(certificatSender);
-		if (av.verifierRevocation(certificatSender) == VerificationRevocation.CERTIFICAT_REVOQUE.toString() // si le certificat est révoqué ou suspendu, on bloque l'envoi de message
-				|| av.verifierRevocation(certificatSender) == VerificationRevocation.CERTIFICAT_SUSPENDU.toString())
-		{
+		if (av.verifierRevocation(certificatSender) == VerificationRevocation.CERTIFICAT_REVOQUE.toString() // si
+																											// le
+																											// certificat
+																											// est
+																											// révoqué
+																											// ou
+																											// suspendu,
+																											// on
+																											// bloque
+																											// l'envoi
+																											// de
+																											// message
+				|| av.verifierRevocation(certificatSender) == VerificationRevocation.CERTIFICAT_SUSPENDU.toString()) {
 			return false;
-		}
-		else {
-				if (av.verifierRevocation(certificatSender) == VerificationRevocation.CERTIFICAT_VALIDE_NON_RACINE.toString()) // si le certificat valide mais que l'autorité n'est pas racine alors on contacte l'autorité supérieure
+		} else {
+			if (av.verifierRevocation(certificatSender) == VerificationRevocation.CERTIFICAT_VALIDE_NON_RACINE.toString()) // si
+																															// le
+																															// certificat
+																															// valide
+																															// mais
+																															// que
+																															// l'autorité
+																															// n'est
+																															// pas
+																															// racine
+																															// alors
+																															// on
+																															// contacte
+																															// l'autorité
+																															// supérieure
 			{
 				return verifierCheminCertification(certifAC.IOR_AV);
-			}
-			else if (av.verifierRevocation(certificatSender) == VerificationRevocation.CERTIFICAT_VALIDE_RACINE.toString()) // si le certificat est valide et l'autorité est racine, alors le chemin est complet l'envoi de message est autorisé
+			} else if (av.verifierRevocation(certificatSender) == VerificationRevocation.CERTIFICAT_VALIDE_RACINE.toString()) // si
+																																// le
+																																// certificat
+																																// est
+																																// valide
+																																// et
+																																// l'autorité
+																																// est
+																																// racine,
+																																// alors
+																																// le
+																																// chemin
+																																// est
+																																// complet
+																																// l'envoi
+																																// de
+																																// message
+																																// est
+																																// autorisé
 			{
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	public boolean verifierSignature()
-	{
-		return true;
-	}
-	
-	public boolean dechiffrerSignature()
-	{
+
+	public boolean verifierSignature() {
 		return true;
 	}
 
-	public String genererHash()
-	{
+	public boolean dechiffrerSignature() {
+		return true;
+	}
+
+	public String genererHash() {
 		return null;
 	}
 }

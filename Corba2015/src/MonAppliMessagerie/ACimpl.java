@@ -50,7 +50,7 @@ public class ACimpl extends ACPOA {
 
 		System.out.println("ACimpl::creerCertificat() : " + this.nodeName + " - INFO - Certificat créé pour " + pptaire);
 
-		return newCertif;
+		return new Certificat(newCertif);
 	}
 
 	@Override
