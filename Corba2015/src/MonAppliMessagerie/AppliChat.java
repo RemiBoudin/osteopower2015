@@ -49,11 +49,11 @@ public class AppliChat {
 			AppliPorteur porteur = new AppliPorteur();
 			AppliUser user = new AppliUser();
 
-			System.out.println("## Projet CORBA ##\n");
-			System.out.println("-> T'es qui bizu ?");
+			System.out.println("## Projet CORBA - Version utilisateur ##\n");
+			System.out.print("> Login : ");
 			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 			String clientName = in.readLine();
-			System.out.println("-> C'est quoi ton mdp ?");
+			System.out.print("> Mdp : ");
 			String clientPassword = in.readLine();
 
 			// Initialisation du serveur du porteur
@@ -83,13 +83,13 @@ public class AppliChat {
 				Tools.printContext(objDistantNamingService, "");
 				System.out.println("-------------------------");
 
-				System.out.println("-> Bonjour " + clientName + " et bienvenue dans ce magnifique projet CORBA");
-				System.out.println("-> [1] Envoyer un message");
-				System.out.println("-> [2] Enregistrer un nouveau certificat");
-				System.out.println("-> [3] Révoquer un certificat");
-				System.out.println("-> [4] Quitter");
-				System.out.println("-> [5] Debug");
-				System.out.println("-> Que veux-tu faire ?");
+				System.out.println("Bonjour " + clientName + ", voici le menu :\n");
+				System.out.println("# [1] Envoyer un message");
+				System.out.println("# [2] Enregistrer un nouveau certificat");
+				System.out.println("# [3] Révoquer un certificat");
+				System.out.println("# [4] Quitter");
+				System.out.println("# [5] Debug\n");
+				System.out.println("> Choix  ");
 
 				sChoix = in.readLine();
 
