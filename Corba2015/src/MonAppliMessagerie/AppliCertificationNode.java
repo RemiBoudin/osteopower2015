@@ -32,9 +32,10 @@ public class AppliCertificationNode {
 			System.out.println("## Projet CORBA ##\n");
 			System.out.println("-> Bonjour et bienvenue dans ce magnifique projet CORBA\n");
 			System.out.println("-> Quel est le nom du noeud à créer ?");
-			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-			String nodeName = null;
-			nodeName = in.readLine();
+			//BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+			//String nodeName = null;
+			//nodeName = in.readLine();
+			String nodeName = "niv1";
 
 			// Initialisation du serveur de l'AC
 			AppliAC ac = new AppliAC(nodeName);
