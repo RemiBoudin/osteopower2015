@@ -105,13 +105,15 @@ public class AppliChat {
 					/*System.out.println("-> Usage [SIGNER] [CHIFFRER] [AUTHENTIFIER] ?");
 					String usage = in.readLine();
 					System.out.println("-> Date d'expiration [aaaa/mm/jj hh:mm:ss] ?");
-					String dateExp = in.readLine();
+					String dateExp = in.readLine();*/
 					System.out.println("-> Quelle est votre autorité de certification [au choix] ?");
-					String nodeName = in.readLine();*/
+					String nodeName = in.readLine();
+					
 					String usage = "SIGNER";
 					String dateExp = "2015/12/21 12:18:34";
-					String nodeName = "niv1";
-					System.out.println("AppliChat::main() : usage=signer ; dateExp=2015/12/21 12:18:34 ; nodeName=niv1");
+					
+					//String nodeName = "niv1";
+					System.out.println("AppliChat::main() : usage=signer ; dateExp="+dateExp+" ; nodeName="+nodeName);
 					porteur.enregistrerCertificat(usage, dateExp, nodeName);
 					break;
 				case 3: // Cas révoquer un certificat

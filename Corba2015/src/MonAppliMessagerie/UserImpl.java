@@ -61,20 +61,19 @@ public class UserImpl extends UserPOA {
 	}
 
 	public String verifierUsage(Certificat certificatVerifier) {
-		
+
 		String usage = certificatVerifier.usage;
-		
-		switch(usage)
-		{
+
+		switch (usage) {
 		case "SIGNER":
 			return Usages.SIGNER.toString();
-			
+
 		case "AUTHENTIFIER":
 			return Usages.AUTHENTIFIER.toString();
-			
+
 		case "CHIFFRER":
 			return Usages.CHIFFRER.toString();
-			
+
 		default:
 		}
 
@@ -93,54 +92,53 @@ public class UserImpl extends UserPOA {
 			System.out.println("UserImpl::verifierCheminCertification() : le certificat est null");
 		else
 			System.out.println("UserImpl::verifierCheminCertification() : le certificat n'est pas null");
-		
-		if(verifierSignature(certificatVerifier))
-		{
-			System.out.println("Dechiffrer signature avec " + certificatVerifier.Signature + "  "+ certifAC.ClePubClient);
-			if (dechiffrerSignature(certificatVerifier, certifAC.ClePubClient))
-			{
+
+		if (verifierSignature(certificatVerifier)) {
+			System.out.println("Dechiffrer signature avec " + certificatVerifier.Signature + "  " + certifAC.ClePubClient);
+			if (dechiffrerSignature(certificatVerifier, certifAC.ClePubClient)) {
 				String hash = genererHash(certificatVerifier);
+
 				String retourVerification = av.verifierRevocation(certificatVerifier);
-					if (retourVerification.equals(VerificationRevocation.CERTIFICAT_REVOQUE.toString()) 
-							|| retourVerification.equals(VerificationRevocation.CERTIFICAT_SUSPENDU.toString()))
-					{
-						System.out.println("Certif revoque ou suspendu");
+				System.out.println("DANS dechiffrerSignature, retourVerif=" + retourVerification);
+
+				if (retourVerification.equals(VerificationRevocation.CERTIFICAT_REVOQUE.toString()) || retourVerification.equals(VerificationRevocation.CERTIFICAT_SUSPENDU.toString())) {
+					System.out.println("Certif revoque ou suspendu");
+					return false;
+				} else {
+					if (retourVerification.equals(VerificationRevocation.CERTIFICAT_VALIDE_NON_RACINE.toString())) {
+						System.out.println("Certif valide mais non racine");
+						return verifierCheminCertification(certifAC);
+					} else if (retourVerification.equals(VerificationRevocation.CERTIFICAT_VALIDE_RACINE.toString())) {
+						System.out.println("Certif valide et racine");
+						return true;
+					} else {
+						System.out.println("CAS IMPROBABLE !!!!");
 						return false;
-					} 
-					else
-					{
-						if (retourVerification.equals(VerificationRevocation.CERTIFICAT_VALIDE_NON_RACINE.toString())) 
-						{
-							System.out.println("Certif valide mais non racine");
-							return verifierCheminCertification(certifAC);
-						}
-						else if (retourVerification.equals(VerificationRevocation.CERTIFICAT_VALIDE_RACINE.toString())) 
-						{
-							System.out.println("Certif valide et racine");
-							return true;
-						}
 					}
-			}
-			else
-				return false;
-		}
-		else
+				}
+			} else
+				System.out.println("AVANT DERNIER FALSE");
 			return false;
-		
+		} else
+			System.out.println("DERNIER FALSE");
 		return false;
+
 	}
 
 	public boolean verifierSignature(Certificat certificatEnVerification) {
 
-			return true;
+		return true;
 	}
 
 	public boolean dechiffrerSignature(Certificat certificatEnVerification, String PublicKeyAC) {
-		
-		if (PublicKeyAC.equals(certificatEnVerification.Signature))
+
+		if (PublicKeyAC.equals(certificatEnVerification.Signature)) {
+			System.out.println("Dechiffrement OK - " + certificatEnVerification.Signature + " VS " + PublicKeyAC);
 			return true;
-		else
+		} else {
+			System.out.println("Dechiffrement NON OK - " + certificatEnVerification.Signature + " VS " + PublicKeyAC);
 			return false;
+		}
 	}
 
 	public String genererHash(Certificat certificatEnVerification) {

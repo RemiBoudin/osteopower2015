@@ -32,14 +32,22 @@ public class AppliCertificationNode {
 			System.out.println("## Projet CORBA ##\n");
 			System.out.println("-> Bonjour et bienvenue dans ce magnifique projet CORBA\n");
 			System.out.println("-> Quel est le nom du noeud à créer ?");
-			//BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-			//String nodeName = null;
-			//nodeName = in.readLine();
-			String nodeName = "niv1";
+			
+			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+			String nodeName = null;
+			nodeName = in.readLine();
+			//String nodeName = "niv1";
+			
+			// Saisie du noeud de raccordement
+			System.out.println("-> A quel noeud voulez vous vous raccorder ?");
+			System.out.println("-> Laisser vide pour être racine");
+			in = new BufferedReader(new InputStreamReader(System.in));
+			String nodeParent = null;
+			nodeParent = in.readLine();
 
 			// Initialisation du serveur de l'AC
-			AppliAC ac = new AppliAC(nodeName);
-			ac.initServer(nodeName);
+			AppliAC ac = new AppliAC(nodeName, nodeParent);
+			ac.initServer(nodeName, nodeParent);
 			Thread threadAC = new Thread(ac);
 			threadAC.start();
 

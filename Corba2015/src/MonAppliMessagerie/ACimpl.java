@@ -9,20 +9,31 @@ public class ACimpl extends ACPOA {
 	private String privateKey;
 	private String publicKey;
 	private String nodeName;
+	private String parentNode;
 	private org.omg.CosNaming.NamingContext namingService;
 
 	/**
 	 * Constructeur de la classe ACimpl
 	 */
-	public ACimpl(String nodeName) {
+	public ACimpl(String nodeName, String parentNode) {
 		this.nodeName = nodeName;
+		this.parentNode = parentNode;
 		// this.namingService = namingService;
 
 		this.publicKey = (Tools.generateKeys(this.nodeName))[0];
 		this.privateKey = (Tools.generateKeys(this.nodeName))[1];
 
-		this.certificat = new Certificat(this.nodeName, "", (short) 1, Tools.getDate(), "never", this.publicKey, "", Tools.genererSignature(this.publicKey));
-
+		if (this.parentNode.equals("")) {
+			// Si je suis racine,
+			// self-certif
+			this.certificat = new Certificat(this.nodeName, "", (short) 1, Tools.getDate(), "never", this.publicKey, "", Tools.genererSignature(this.publicKey));
+		} else {
+			// si je me rattache à un parent
+			// j'enregistre mon certificat depuis ce parent
+			AE ae = AEHelper.narrow(Tools.findObjByORBName2(parentNode, EntityName.AE_SERVER));
+			this.certificat = ae.saveCertificat(this.publicKey, this.nodeName, this.nodeName, "", Usages.AUTHENTIFIER.toString());
+		}
+		
 		this.listeCertificats = new Hashtable<Integer, Certificat>();
 		this.listeCertificats.put(1, this.certificat);
 	}

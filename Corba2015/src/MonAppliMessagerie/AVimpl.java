@@ -67,7 +67,7 @@ public class AVimpl extends AVPOA {
 
 			else {
 				System.out.println("AVimpl::verifierRevocation() : "+certificatAC.IOR_AV); // A envoyer à l'user
-				return certificatAC.IOR_AV;
+				return VerificationRevocation.CERTIFICAT_VALIDE_NON_RACINE.toString();
 			}
 		}
 	}
