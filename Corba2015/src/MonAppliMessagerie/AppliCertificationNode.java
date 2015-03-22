@@ -68,10 +68,10 @@ public class AppliCertificationNode {
 			Thread threadAV = new Thread(av);
 			threadAV.start();
 
-			System.out.println("-> Le niveau de certification \"" + nodeName + "\" a été créé.");
+			Tools.showMessage(Tools.MSG_INFO, "AppliCertificationNode", "initNode", "Le niveau de certification \"" + nodeName + "\" a été créé.");
 
 			// Affichage du contenu du service de noms
-			System.out.println("-------------------------");
+			System.out.println("\n\n-------------------------");
 			System.out.println("CONTENU DU NAMING SERVICE");
 			System.out.println("-------------------------");
 			Tools.printContext(AppliCertificationNode.objDistantNamingService, "");
