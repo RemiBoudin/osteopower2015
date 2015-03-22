@@ -65,13 +65,13 @@ public class AVimpl extends AVPOA {
 	@Override
 	public boolean revoquerCertificat(Certificat certificatPorteur, String periode) {
 		// TODO Auto-generated method stub
-		if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique) && periode == null) {
+		if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique) && periode.equals("") && !listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique)) {
 			listeCertifRevoque.put(certificatPorteur.Num_Unique, certificatPorteur);
 			Tools.showMessage(Tools.MSG_INFO, "AVimpl", "revoquerCertificat", this.nodename + " - Certificat de " + certificatPorteur.proprietaire + " ajouté dans la LCR");
 			return true;
 		}
 
-		else if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique) && listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique) && periode == null) {
+		else if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique) && listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique) && periode.equals("")) {
 			listeCertifSuspendus.remove(certificatPorteur.Num_Unique);
 			Tools.showMessage(Tools.MSG_INFO, "AVimpl", "revoquerCertificat", " - Certificat de " + certificatPorteur.proprietaire + " supprimé de la LCS");
 			listeCertifRevoque.put(certificatPorteur.Num_Unique, certificatPorteur);
@@ -79,7 +79,7 @@ public class AVimpl extends AVPOA {
 			return true;
 		}
 
-		else if (!listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique) && periode != null) {
+		else if (!listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique) && !periode.equals("") && !listeCertifRevoque.containsKey(certificatPorteur.Num_Unique)) {
 			listeCertifSuspendus.put(certificatPorteur.Num_Unique, certificatPorteur);
 			Tools.showMessage(Tools.MSG_INFO, "AVimpl", "revoquerCertificat", this.nodename + " - Certificat de " + certificatPorteur.proprietaire + " ajouté dans la LCS");
 			return true;

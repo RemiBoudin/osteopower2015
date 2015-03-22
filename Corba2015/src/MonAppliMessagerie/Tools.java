@@ -114,7 +114,7 @@ public class Tools {
 			return distantObj;
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			Tools.showMessage(Tools.MSG_DEBUG, "Tools","findObjByORBName", "Objet '" + receiverORBName + "' non trouvé auprès du service de noms.");
 		}
 		

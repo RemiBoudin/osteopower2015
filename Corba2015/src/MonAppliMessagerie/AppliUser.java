@@ -52,6 +52,7 @@ public class AppliUser implements Runnable {
 			Tools.showMessage(Tools.MSG_INFO, "AppliUser", "initServer", nomComplet + "' est enregistre dans le service de noms.");
 
 		} catch (Exception e) {
+			System.out.println("AppliUser::initServer() : Erreur d'initialisation du UserServer");
 			e.printStackTrace();
 		}
 	}
@@ -65,17 +66,14 @@ public class AppliUser implements Runnable {
 	}
 
 	private String checkUsage(Certificat cert) {
-		return this.userLocal.verifierUsage();
+		return this.userLocal.verifierUsage(cert);
 	}
 
 	private boolean checkCheminCertification(Certificat cert) {
-		try {
+
+
 			return this.userLocal.verifierCheminCertification(cert);
-		} catch (erreur_certif | certif_revoque e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
+
 	}
 
 	@Override
@@ -104,10 +102,11 @@ public class AppliUser implements Runnable {
 		Porteur objDistantPorteurServer = PorteurHelper.narrow(objDistant);
 
 		// Demande du certificat au porteur
-		Certificat certificatDistant = objDistantPorteurServer.getCertificatPorteur();
-
-		boolean cheminCertifie;
 		try {
+			Certificat certificatDistant = objDistantPorteurServer.getCertificatPorteur();
+
+			boolean cheminCertifie;
+
 			cheminCertifie = this.userLocal.verifierCheminCertification(certificatDistant);
 			Tools.showMessage(Tools.MSG_INFO, "AppliUser", "repondreToUser", "Chemin de certif de l'interlocuteur distant" + receiverName + " OK");
 			if (cheminCertifie) {
@@ -118,12 +117,12 @@ public class AppliUser implements Runnable {
 			} else {
 				Tools.showMessage(Tools.MSG_INFO, "AppliUser", "repondreToUser", "Problème dans le chemin de certif de l'interlocuteur " + receiverName + " distant");
 			}
-		} catch (erreur_certif e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (certif_revoque e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		} catch (java.lang.NullPointerException e) {
+			System.out.println("AppliUser:: " + receiverName + " inconnu au bataillon !");
+
+		} catch (Exception e) {
+			System.out.println("AppliUser::repondreToUser() " + receiverName + " Il faut s'enregistrer un certificat avant d'envoyer un message !");
 		}
 
 	}
