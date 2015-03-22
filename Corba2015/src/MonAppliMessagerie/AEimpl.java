@@ -102,7 +102,7 @@ public class AEimpl extends AEPOA {
 		if (!this.authentifier(proprietaire, mdp)) {
 			// faire afficher "ERR - Enregistrement - Echec d'authentification"
 			System.out.println(this.nodeName + " - ERR - " + proprietaire + " echec d'authentification (username inconnu)");
-			return null; 
+			throw new erreur_authent(); 
 		} else {
 			// faire enregistrer sur l'AC supérieure
 			AC ac = ACHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AC_SERVER));

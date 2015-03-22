@@ -29,7 +29,12 @@ public class PorteurImpl  extends PorteurPOA{
 	public boolean enregistrerCertificat(String usage, String dateExpiration, String nodeName){
 		AE ae = AEHelper.narrow(Tools.findObjByORBName(nodeName, EntityName.AE_SERVER));
 		//try {
-			//this.monCertificat = ae.saveCertificat(this.publicKey, this.username, this.mdp, dateExpiration, usage);	
+			try {
+				this.monCertificat = ae.saveCertificat(this.publicKey, this.username, this.mdp, dateExpiration, usage);
+			} catch (erreur_authent e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
 			System.out.println("PorteurImple::enregistrerCertificat() : "+this.username + " - INFO - Certificat enregistré");
 			return true;
 		//} catch (erreur_authent e) {
