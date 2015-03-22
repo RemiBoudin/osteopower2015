@@ -32,7 +32,7 @@ public class AEimpl extends AEPOA {
 	// USELESS DESORMAIS
 	public void publier(Certificat certificatPorteur) {
 		// Envoi du certificat à l'appli porteur
-		System.out.println("AEimpl::publier() : " + this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Demande de révocation envoyée à l'AC");
+		Tools.showMessage(Tools.MSG_INFO, "AEimpl", "publier", this.nodeName + " - " + certificatPorteur.proprietaire + " Demande de révocation envoyée à l'AC");
 
 		Porteur porteur = PorteurHelper.narrow(Tools.findObjByORBName(certificatPorteur.proprietaire, EntityName.PORTEUR_SERVER));
 		// porteur.receiveNewCertificat(certificatPorteur);
@@ -53,16 +53,16 @@ public class AEimpl extends AEPOA {
 
 			// Si le mdp est bon
 			if (this.listeIdClientPorteur.get(user).equals(mdp)) {
-				System.out.println("AEImpl::authentifier() : " + this.nodeName + " - INFO - " + user + " authentifié avec succés");
+				Tools.showMessage(Tools.MSG_INFO, "AEimpl", "authentifier", this.nodeName + " - " + user + " authentifié avec succés");
 
 				return true;
 			} else { // si le mdp est faux
-				System.out.println("AEImpl::authentifier() : " + this.nodeName + " - ERR - " + user + " echec d'authentification (mdp erron�)");
+				Tools.showMessage(Tools.MSG_ERR, "AEimpl", "authentifier", this.nodeName + " - " + user + " echec d'authentification (mdp erroné)");
 				return false;
 
 			}
 		} else { // si le user n'existe pas
-			System.out.println("AEImpl::authentifier() : " + this.nodeName + " - ERR - " + user + " echec d'authentification (username inconnu)");
+			Tools.showMessage(Tools.MSG_ERR, "AEimpl", "authentifier", this.nodeName + " - " + user + " echec d'authentification (username inconnu)");
 			return false;
 
 		}
@@ -84,10 +84,10 @@ public class AEimpl extends AEPOA {
 
 		// si l'usage précisé dans le certificat correspond à l'usage demandé
 		if ((certifPorteur.usage).equals(usage)) {
-			System.out.println("AEImpl::verifierDroits() : " + this.nodeName + " - INFO - " + user + " droits OK");
+			Tools.showMessage(Tools.MSG_INFO, "AEimpl", "verifierDroits", this.nodeName + " - " + user + " droits OK");
 			return true;
 		} else {
-			System.out.println("AEImpl::verifierDroits() : " + this.nodeName + " - ERR - " + user + " droits NOK");
+			Tools.showMessage(Tools.MSG_INFO, "AEimpl", "verifierDroits", this.nodeName + " - " + user + " droits NOK");
 			return false;
 		}
 	}
@@ -98,46 +98,27 @@ public class AEimpl extends AEPOA {
 	 */
 	@Override
 	public Certificat saveCertificat(String clepublique, String proprietaire, String mdp, String dateExpiration, String usage) {
-
 		// Si l'authentification n'est pas bonne
 		if (!this.authentifier(proprietaire, mdp)) {
 			// faire afficher "ERR - Enregistrement - Echec d'authentification"
-			System.out.println("AEImpl::saveCertificat() : " + this.nodeName + " - ERR - " + proprietaire + " echec d'authentification (username inconnu)");
+			Tools.showMessage(Tools.MSG_ERR, "AEimpl", "saveCertificat", this.nodeName + " - " + proprietaire + " echec d'authentification (username inconnu)");
 		} else {
 			// faire enregistrer sur l'AC supérieure
-			System.out.println("AEImpl::saveCertificat() : Attribut nodeName : [" + this.nodeName + "]");
+			Tools.showMessage(Tools.MSG_DEBUG, "AEimpl", "saveCertificat", "Attribut nodeName : [" + this.nodeName + "]");
 			AC ac = ACHelper.narrow(Tools.findObjByORBName2(this.nodeName, EntityName.AC_SERVER));
-			System.out.println("AEImpl::saveCertificat() : Avant ac.enregistrer()");
-			System.out.println("AEimpl::saveCertificat() : nom propriétaire : " + proprietaire);
+			Tools.showMessage(Tools.MSG_DEBUG, "AEimpl", "saveCertificat", "Avant ac.enregistrer()");
+			Tools.showMessage(Tools.MSG_DEBUG, "AEimpl", "saveCertificat", "nom propriétaire : " + proprietaire);
 			Certificat newCertif = ac.enregistrer(clepublique, proprietaire, dateExpiration, usage);
-			System.out.println("AEImpl::saveCertificat() : Après ac.enregistrer()");
+			Tools.showMessage(Tools.MSG_DEBUG, "AEimpl", "saveCertificat", "Après ac.enregistrer()");
 
 			// Affichages de debug
 			if (newCertif == null)
-				System.out.println("AEimpl::saveCertificat() : le certificat est nul");
+				Tools.showMessage(Tools.MSG_DEBUG, "AEimpl", "saveCertificat", "le certificat est nul");
 			else
-				System.out.println("AEimpl::saveCertificat() : le certificat n'est pas nul");
+				Tools.showMessage(Tools.MSG_DEBUG, "AEimpl", "saveCertificat", "le certificat n'est pas nul");
 
-			System.out.println("AEImpl::saveCertificat() : " + this.nodeName + " - INFO - " + proprietaire + " Enregistrement auprès de l'AC");
-			return new Certificat(newCertif.proprietaire, newCertif.IOR_AV, (short) 1, newCertif.ValiditeDebut, newCertif.ValiditeFin, newCertif.ClePubClient, newCertif.usage, newCertif.Signature);
-
-			/*
-			 * AC ac = ACHelper.narrow(Tools.findObjByORBName2("niv1",
-			 * EntityName.AC_SERVER));
-			 * System.out.println("AEImpl::saveCertificat() : Après");
-			 * Certificat newCertif = ac.getCertificat();
-			 * 
-			 * 
-			 * System.out.println("AEImpl::saveCertificat() : "+this.nodeName +
-			 * " - INFO - " + proprietaire + " Enregistrement auprès de l'AC");
-			 * 
-			 * //return newCertif; return new Certificat("", "", (short)234, "",
-			 * "", "", "", "");
-			 */
-
-			// }
-
-			// return new Certificat();
+			Tools.showMessage(Tools.MSG_INFO, "AEimpl", "saveCertificat", this.nodeName + " - " + proprietaire + " Enregistrement auprès de l'AC");
+			return new Certificat(newCertif.proprietaire, newCertif.IOR_AV, newCertif.Num_Unique, newCertif.ValiditeDebut, newCertif.ValiditeFin, newCertif.ClePubClient, newCertif.usage, newCertif.Signature);
 		}
 		return new Certificat();
 	}
@@ -151,17 +132,17 @@ public class AEimpl extends AEPOA {
 		// Si l'authentification n'est pas OK
 		if (!this.authentifier(certificatPorteur.proprietaire, mdp)) {
 			// faire afficher "ERR - Revocation - Echec d'authentification"
-			System.out.println("AEImpl::revoquer() : " + this.nodeName + " - ERR - " + certificatPorteur.proprietaire + " echec d'authentification (username inconnu)");
+			Tools.showMessage(Tools.MSG_ERR, "AEimpl", "revoquer", this.nodeName + " - " + certificatPorteur.proprietaire + " echec d'authentification (username inconnu)");
 			return false;
 
 		} else { // si l'authentification est OK
 
 			// faire révoquer le certificat sur l'AC
-			System.out.println("AEImpl::revoquer() : " + this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Demande de r�vocation envoy�e � l'AC");
+			Tools.showMessage(Tools.MSG_INFO, "AEimpl", "revoquer", this.nodeName + " - " + certificatPorteur.proprietaire + " Demande de révocation envoyée à l'AC");
 			AC ac = ACHelper.narrow(Tools.findObjByORBName2(this.nodeName, EntityName.AC_SERVER));
-			
-				return ac.revoquerCertificat(certificatPorteur, periode);
-		
+
+			return ac.revoquerCertificat(certificatPorteur, periode);
+
 		}
 	}
 }

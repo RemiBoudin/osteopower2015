@@ -25,6 +25,9 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 public class Tools {
 	
 	public static User user = null;
+	public static final String MSG_DEBUG = "DEBUG";
+	public static final String MSG_INFO = "INFO";
+	public static final String MSG_ERR = "ERR";
 
 	public void init() {
 	}
@@ -97,23 +100,22 @@ public class Tools {
 		
 		// Conversion du destinataire en nom ORB
 		String receiverORBName = Tools.convertNameToId(name, entity);
-		System.out.println("Tools::findObjByORBName() : receiverORBName créé : "+receiverORBName);
+		Tools.showMessage(Tools.MSG_DEBUG, "Tools","findObjByORBName", "receiverORBName créé : "+receiverORBName);
 
 		try {
 			// Construction du nom a rechercher
 			org.omg.CosNaming.NameComponent[] nameToFind = new org.omg.CosNaming.NameComponent[1];
 			nameToFind[0] = new org.omg.CosNaming.NameComponent(receiverORBName, "");
-			//System.out.println("Tools::findObjByORBName() : nameToFind créé : "+nameToFind.toString());
 
 			// Recherche de l'objet aupres du naming service
 			distantObj = AppliChat.objDistantNamingService.resolve(nameToFind);
-			System.out.println("Tools::findObjByORBName() : Objet '" + receiverORBName + "' trouvé auprès du service de noms.");
+			Tools.showMessage(Tools.MSG_DEBUG, "Tools","findObjByORBName", "Objet '" + receiverORBName + "' trouvé auprès du service de noms.");
 			
 			return distantObj;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Tools::findObjByORBName() : ERR : Objet '" + receiverORBName + "' non trouvé auprès du service de noms.");
+			Tools.showMessage(Tools.MSG_DEBUG, "Tools","findObjByORBName", "Objet '" + receiverORBName + "' non trouvé auprès du service de noms.");
 		}
 		
 		return null;
@@ -124,23 +126,22 @@ public class Tools {
 		
 		// Conversion du destinataire en nom ORB
 		String receiverORBName = Tools.convertNameToId(name, entity);
-		System.out.println("Tools::findObjByORBName2() : receiverORBName créé : "+receiverORBName);
+		Tools.showMessage(Tools.MSG_DEBUG, "Tools","findObjByORBName2", "receiverORBName créé : "+receiverORBName);
 
 		try {
 			// Construction du nom a rechercher
 			org.omg.CosNaming.NameComponent[] nameToFind = new org.omg.CosNaming.NameComponent[1];
 			nameToFind[0] = new org.omg.CosNaming.NameComponent(receiverORBName, "");
-			//System.out.println("Tools::findObjByORBName2() : nameToFind créé : "+nameToFind.toString());
 
 			// Recherche de l'objet aupres du naming service
 			distantObj = AppliCertificationNode.objDistantNamingService.resolve(nameToFind);
-			System.out.println("Tools::findObjByORBName2() : Objet '" + receiverORBName + "' trouvé auprès du service de noms.");
+			Tools.showMessage(Tools.MSG_DEBUG, "Tools","findObjByORBName2", receiverORBName + " trouvé auprès du service de noms.");
 			
 			return distantObj;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Tools::findObjByORBName2() : ERR : Objet '" + receiverORBName + "' non trouvé auprès du service de noms.");
+			Tools.showMessage(Tools.MSG_DEBUG, "Tools","findObjByORBName2", receiverORBName + " non trouvé auprès du service de noms.");
 		}
 		
 		return null;
@@ -186,17 +187,7 @@ public class Tools {
 		}
 	}
 	
-	public static NamingContext getNamingContext(org.omg.CORBA.ORB orb) {
-		NamingContext nc = null;
-		
-		try {
-			nc = org.omg.CosNaming.NamingContextHelper.narrow(orb.resolve_initial_references("NameService"));
-		} catch (org.omg.CORBA.ORBPackage.InvalidName e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return nc;
+	public static void showMessage(String type, String classe, String methode, String message) {
+		System.out.println(classe+"::"+methode+"() -> ["+type+"] : "+message);
 	}
-	
 }

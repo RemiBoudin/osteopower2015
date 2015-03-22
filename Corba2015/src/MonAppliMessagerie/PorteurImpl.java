@@ -33,17 +33,17 @@ public class PorteurImpl extends PorteurPOA {
 
 		// Affichages de debug
 		if (this.monCertificat == null)
-			System.out.println("PorteurImpl::saveCertificat() : le certificat est nul");
+			Tools.showMessage(Tools.MSG_DEBUG, "PorteurImpl", "enregistrerCertificat", "le certificat est null");
 		else
-			System.out.println("PorteurImpl::saveCertificat() : le certificat n'est pas nul");
+			Tools.showMessage(Tools.MSG_DEBUG, "PorteurImpl", "enregistrerCertificat", "le certificat n'est pas null");
 
-		System.out.println("PorteurImpl::enregistrerCertificat() : " + this.username + " - INFO - Certificat enregistré");
+		Tools.showMessage(Tools.MSG_INFO, "PorteurImpl","enregistrerCertificat", this.username + " - Certificat enregistré");
 		return true;
 	}
 
 	@Override
 	public Certificat getCertificatPorteur() {
-		System.out.println("PorteurImpl::getCertificatPorteur() : "+this.username + " - INFO - Certificat envoyé");
+		Tools.showMessage(Tools.MSG_INFO, "PorteurImpl","getCertificatPorteur", this.username + " - Certificat envoyé");
 
 		return this.monCertificat;
 	}

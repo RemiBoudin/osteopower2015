@@ -29,12 +29,12 @@ public class AppliCertificationNode {
 			// ##################################
 
 			// Saisie du nom du noeud courant
-			System.out.println("## Projet CORBA ##\n");
-			System.out.println("-> Bonjour et bienvenue dans ce magnifique projet CORBA\n");
-			System.out.println("-> Quel est le nom du noeud à créer ?");
-			//BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-			//String nodeName = null;
-			//nodeName = in.readLine();
+			System.out.println("## Projet CORBA - Version autorités de certification ##\n");
+			System.out.println("> Quel est le nom du noeud à créer ?");
+			// BufferedReader in = new BufferedReader(new
+			// InputStreamReader(System.in));
+			// String nodeName = null;
+			// nodeName = in.readLine();
 			String nodeName = "niv1";
 
 			// Initialisation du serveur de l'AC
@@ -55,9 +55,8 @@ public class AppliCertificationNode {
 			Thread threadAV = new Thread(av);
 			threadAV.start();
 
-			System.out.println("-> Le niveau de certification \""+nodeName+"\" a été créé.");
-			System.out.println("-> Les trois autorités AC, AE et AV ont été lancées.");
-			
+			Tools.showMessage(Tools.MSG_INFO, "AppliCertificationNode", "main", "Le niveau de certification \"" + nodeName + "\" a été créé.");
+			Tools.showMessage(Tools.MSG_INFO, "AppliCertificationNode", "main", "Les trois autorités AC, AE et AV ont été lancées.");
 
 			// Affichage du contenu du service de noms
 			System.out.println("-------------------------");
@@ -65,13 +64,6 @@ public class AppliCertificationNode {
 			System.out.println("-------------------------");
 			Tools.printContext(AppliCertificationNode.objDistantNamingService, "");
 			System.out.println("-------------------------");
-			
-
-			// Recherche du (serveur du porteur) du (destinataire)
-			//org.omg.CORBA.Object objDistant = Tools.findObjByORBName("niv1", EntityName.AE_SERVER);
-			//AE ae2 = AEHelper.narrow(objDistant);
-			
-			//ae2.saveCertificat("", "", "", "", "");
 
 		} catch (Exception e) {
 			e.printStackTrace();

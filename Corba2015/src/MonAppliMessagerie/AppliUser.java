@@ -17,13 +17,13 @@ import org.omg.PortableServer.POAHelper;
  * @author jeremy
  *
  */
-public class AppliUser implements Runnable{
+public class AppliUser implements Runnable {
 	private UserImpl userLocal;
 	private String username;
-	
+
 	public void initServer(String username) {
 		try {
-			this.username=username;
+			this.username = username;
 			// Gestion du POA
 			// ****************
 			// Recuperation du POA
@@ -45,25 +45,20 @@ public class AppliUser implements Runnable{
 			// Construction du nom a enregistrer
 			org.omg.CosNaming.NameComponent[] nameToRegister = new org.omg.CosNaming.NameComponent[1];
 			String nomComplet = Tools.convertNameToId(username, EntityName.USER_SERVER);
-			System.out.println("CROTTE NOM COMPLET " + nomComplet);
 			nameToRegister[0] = new org.omg.CosNaming.NameComponent(nomComplet, "");
 
 			// Enregistrement de l'objet CORBA dans le service de noms
 			AppliChat.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(userLocal));
-			System.out.println("AppliUser::initServer() : ==> Nom '" + nameToRegister + "' est enregistre dans le service de noms.");
+			Tools.showMessage(Tools.MSG_INFO, "AppliUser", "initServer", nomComplet + "' est enregistre dans le service de noms.");
 
-			String IORServant = AppliChat.objUserServerORB.object_to_string(rootPOA.servant_to_reference(userLocal));
-			System.out.println("AppliUser::initServer() : L'objet possede la reference suivante :");
-			System.out.println("AppliUser::initServer() : "+IORServant);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	/*public Certificat getCertificat() {
-		return null;
-	}*/
+	/*
+	 * public Certificat getCertificat() { return null; }
+	 */
 
 	private boolean checkPeriode(Certificat cert) {
 		return this.userLocal.verifierPeriode();
@@ -91,8 +86,9 @@ public class AppliUser implements Runnable{
 	}
 
 	public void debug(String sender, String message, boolean chiffred, String dest) {
-		//User user = UserHelper.narrow(Tools.findObjByORBName(dest, EntityName.USER_SERVER));
-		//user.afficherMessage(sender, message, chiffred);
+		// User user = UserHelper.narrow(Tools.findObjByORBName(dest,
+		// EntityName.USER_SERVER));
+		// user.afficherMessage(sender, message, chiffred);
 	}
 
 	public void repondreToUser(String message, String receiverName) {
@@ -113,17 +109,14 @@ public class AppliUser implements Runnable{
 		boolean cheminCertifie;
 		try {
 			cheminCertifie = this.userLocal.verifierCheminCertification(certificatDistant);
-			System.out.println("AppliUser:: PChemin de certif de l'interlocuteur distant"+receiverName+" OK");
-			if (cheminCertifie)
-			{
+			Tools.showMessage(Tools.MSG_INFO, "AppliUser", "repondreToUser", "Chemin de certif de l'interlocuteur distant" + receiverName + " OK");
+			if (cheminCertifie) {
 				User userDistant = UserHelper.narrow(Tools.findObjByORBName(receiverName, EntityName.USER_SERVER));
-				String messageChiffre=Tools.chiffrerMessage(message, "");
+				String messageChiffre = Tools.chiffrerMessage(message, "");
 				userDistant.afficherMessage(this.username, messageChiffre, true);
-				System.out.println("AppliUser:: Message affiché chez "+receiverName);
-			}	
-			else
-			{
-				System.out.println("AppliUser:: Problème dans le chemin de certif de l'interlocuteur "+receiverName+" distant");
+				Tools.showMessage(Tools.MSG_INFO, "AppliUser", "repondreToUser", "Message affiché chez " + receiverName);
+			} else {
+				Tools.showMessage(Tools.MSG_INFO, "AppliUser", "repondreToUser", "Problème dans le chemin de certif de l'interlocuteur " + receiverName + " distant");
 			}
 		} catch (erreur_certif e) {
 			// TODO Auto-generated catch block
@@ -139,7 +132,7 @@ public class AppliUser implements Runnable{
 		// Recherche du (serveur du porteur) du (destinataire)
 		org.omg.CORBA.Object objDistant = Tools.findObjByORBName(this.username, EntityName.PORTEUR_SERVER);
 		Porteur porteur = PorteurHelper.narrow(objDistant);
-		
+
 		porteur.getCertificatPorteur();
 	}
 }

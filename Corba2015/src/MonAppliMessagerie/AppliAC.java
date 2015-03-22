@@ -14,7 +14,7 @@ import org.omg.PortableServer.POAHelper;
  * @author jeremy
  *
  */
-public class AppliAC implements Runnable{
+public class AppliAC implements Runnable {
 
 	private String nodeName;
 	private ACimpl acLocal = null;
@@ -47,20 +47,12 @@ public class AppliAC implements Runnable{
 			// Construction du nom a enregistrer
 			org.omg.CosNaming.NameComponent[] nameToRegister = new org.omg.CosNaming.NameComponent[1];
 			nameToRegister[0] = new org.omg.CosNaming.NameComponent(Tools.convertNameToId(username, EntityName.AC_SERVER), "");
-
-			// Enregistrement de l'objet CORBA dans le service de noms
-			// Recuperation du service de noms
-			//NamingContext nc = Tools.getNamingContext(AppliCertificationNode.objACServerORB);
-			//nc.rebind(nameToRegister, rootPOA.servant_to_reference(acLocal));
+			
+			// Enregistrement du nom dans l'annuaire
 			AppliCertificationNode.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(acLocal));
-			System.out.println("AppliUser::initServer() : ==> Nom '" + nameToRegister + "' est enregistre dans le service de noms.");
+			Tools.showMessage(Tools.MSG_INFO, "AppliAC", "initServer", Tools.convertNameToId(username, EntityName.AC_SERVER) + " est enregistre dans le service de noms.");
 
-			//String IORServant = AppliCertificationNode.objACServerORB.object_to_string(rootPOA.servant_to_reference(acLocal));
-			//System.out.println("AppliUser::initServer() : L'objet possede la reference suivante :");
-			//System.out.println("AppliUser::initServer() : "+IORServant);
-
-	    }
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

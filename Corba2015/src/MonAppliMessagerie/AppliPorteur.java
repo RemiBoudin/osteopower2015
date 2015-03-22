@@ -44,16 +44,11 @@ public class AppliPorteur implements Runnable{
 			// Construction du nom a enregistrer
 			org.omg.CosNaming.NameComponent[] nameToRegister = new org.omg.CosNaming.NameComponent[1];
 			String nomComplet = Tools.convertNameToId(username, EntityName.PORTEUR_SERVER);
-			System.out.println("CROTTE NOM COMPLET " + nomComplet);
 			nameToRegister[0] = new org.omg.CosNaming.NameComponent(nomComplet, "");
 
 			// Enregistrement de l'objet CORBA dans le service de noms
 			AppliChat.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(porteurLocal));
-			System.out.println("AppliPorteur::initServer() : ==> Nom '" + nameToRegister + "' est enregistre dans le service de noms.");
-
-			String IORServant = AppliChat.objPorteurServerORB.object_to_string(rootPOA.servant_to_reference(porteurLocal));
-			System.out.println("AppliPorteur::initServer() : L'objet possede la reference suivante :");
-			System.out.println("AppliPorteur::initServer() : "+IORServant);
+			Tools.showMessage(Tools.MSG_INFO, "AppliPorteur", "initServer", nomComplet + " est enregistre dans le service de noms.");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -65,7 +60,6 @@ public class AppliPorteur implements Runnable{
 	}
 	
 	public void revoquerCertificat(Certificat certificat, String mdp, String periode) {
-		System.out.println("si ca marche c cool :)");
 		AE ae = AEHelper.narrow(Tools.findObjByORBName(this.porteurLocal.getCertificatPorteur().IOR_AV, EntityName.AE_SERVER));
 		ae.revoquer(this.porteurLocal.getCertificatPorteur(), mdp, periode);
 	}

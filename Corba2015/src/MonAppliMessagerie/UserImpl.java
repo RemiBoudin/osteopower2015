@@ -23,22 +23,17 @@ public class UserImpl extends UserPOA {
 	@Override
 	public String afficherMessage(String sender, String message, boolean chiffred){
 		// TODO Auto-generated method stub
-		System.out.println("Nous sommes dans afficherMessageUserImpl avant If");
 		
 		if (chiffred)
 			{
-			System.out.println("Nous sommes dans afficherMessageUserImpl après If");
-			System.out.println("le system out doit s'afficher");
 			Porteur porteur= PorteurHelper.narrow(Tools.findObjByORBName(sender, EntityName.PORTEUR_SERVER));
 			Certificat certificatSender = porteur.getCertificatPorteur();
 			boolean cheminCertifie;
-			System.out.println("Nous sommes dans afficherMessageUserImpl avant Try");
 			try {
-				System.out.println("le system out doit s'afficher");
 				cheminCertifie = verifierCheminCertification(certificatSender);
 				if (cheminCertifie)
 				{
-					System.out.println("UserImpl::afficherMessage() : Message chiffred reçu : ["+Tools.dechiffrerMessage(message, "")+"]");
+					Tools.showMessage(Tools.MSG_INFO, "UserImpl","afficherMessage", "Message chiffred reçu : ["+Tools.dechiffrerMessage(message, "")+"]");
 					return "ok";
 				}
 				
@@ -56,13 +51,13 @@ public class UserImpl extends UserPOA {
 			
 			}
 		else
-			System.out.println("UserImpl::afficherMesssage() : Message reçu : ["+message+"]");
+			Tools.showMessage(Tools.MSG_INFO, "UserImpl","afficherMessage", "Message reçu : ["+message+"]");
 			
 		return "ok";
 	}
 	
 	public void afficherMessageDebug(String message) {
-		System.out.println("Message reçu : [" + message+"]");
+		Tools.showMessage(Tools.MSG_INFO, "UserImpl","afficherMessageDebug", "Message reçu : [" + message+"]");
 	}
 	
 	public boolean verifierPeriode()
@@ -82,32 +77,30 @@ public class UserImpl extends UserPOA {
 	public boolean verifierCheminCertification(Certificat certificatVerifier) throws erreur_certif, certif_revoque
 	{
 		AV av= AVHelper.narrow(Tools.findObjByORBName(certificatVerifier.IOR_AV, EntityName.AV_SERVER));
-
-		System.out.println("UserImpl::verifierCheminCertification() : avant av.getCertificat()");
 		
 		Certificat certifAC = av.getCertificatAC();
 		
 		if (certifAC == null)
-			System.out.println("UserImpl::verifierCheminCertification() : le certificat est null");
+			Tools.showMessage(Tools.MSG_DEBUG, "UserImpl","verifierCheminCertification", "le certificat est nul");
 		else
-			System.out.println("UserImpl::verifierCheminCertification() : le certificat n'est pas null");
+			Tools.showMessage(Tools.MSG_DEBUG, "UserImpl","verifierCheminCertification", "le certificat n'est pas nul");
 		
 		String retourVerification = av.verifierRevocation(certificatVerifier);
 		if (retourVerification.equals(VerificationRevocation.CERTIFICAT_REVOQUE.toString()) // si le certificat est révoqué ou suspendu, on bloque l'envoi de message
 				|| retourVerification.equals(VerificationRevocation.CERTIFICAT_SUSPENDU.toString()))
 		{
-			System.out.println("Certif revoque ou suspendu");
+			Tools.showMessage(Tools.MSG_DEBUG, "UserImpl","verifierCheminCertification", "certif revoque ou suspendu");
 			return false;
 		}
 		else {
 				if (retourVerification.equals(VerificationRevocation.CERTIFICAT_VALIDE_NON_RACINE.toString())) // si le certificat valide mais que l'autorité n'est pas racine alors on contacte l'autorité supérieure
 			{
-					System.out.println("Certif valide mais non racine");
+					Tools.showMessage(Tools.MSG_DEBUG, "UserImpl","verifierCheminCertification", "certif valide mais non racine");
 				return verifierCheminCertification(certifAC);
 			}
 			else if (retourVerification.equals(VerificationRevocation.CERTIFICAT_VALIDE_RACINE.toString())) // si le certificat est valide et l'autorité est racine, alors le chemin est complet l'envoi de message est autorisé
 			{
-				System.out.println("Certif valide et racine");
+				Tools.showMessage(Tools.MSG_DEBUG, "UserImpl","verifierCheminCertification", "certif valide et racine");
 				return true;
 			}
 		}

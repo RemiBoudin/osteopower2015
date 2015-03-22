@@ -44,11 +44,11 @@ public class ACimpl extends ACPOA {
 	 */
 	private Certificat creerCertificat(String publicKey, String pptaire, String dateExp, String date, String usage) {
 
-		System.out.println("ACimpl::creerCertificat() : nom propriétaire : " + pptaire);
+		Tools.showMessage(Tools.MSG_DEBUG, "ACimpl", "creerCertificat", "nom propriétaire : [" + pptaire + "]");
 		int nbCertificats = this.listeCertificats.size();
 		Certificat newCertif = new Certificat(pptaire, this.nodeName, (short) (nbCertificats + 1), date, dateExp, publicKey, usage, Tools.genererSignature(nodeName));
 
-		System.out.println("ACimpl::creerCertificat() : " + this.nodeName + " - INFO - Certificat créé pour " + pptaire);
+		Tools.showMessage(Tools.MSG_INFO, "ACimpl", "creerCertificat", this.nodeName + " Certificat créé pour " + pptaire);
 
 		return new Certificat(newCertif);
 	}
@@ -58,7 +58,7 @@ public class ACimpl extends ACPOA {
 	 * renvoi le certificat de l'AC
 	 */
 	public Certificat getCertificat() {
-		System.out.println("ACimpl::getCertificat() : " + this.nodeName + " - INFO - Certificat personnel envoyé");
+		Tools.showMessage(Tools.MSG_INFO, "ACimpl", "getCertificat", "Certificat personnel envoyé");
 		return new Certificat(this.certificat);
 	}
 
@@ -70,7 +70,7 @@ public class ACimpl extends ACPOA {
 	 */
 	private void stockerCertificat(Certificat newCertif) {
 		this.listeCertificats.put((int) newCertif.Num_Unique, newCertif);
-		System.out.println("ACimpl::stockerCertificat() : " + this.nodeName + " - INFO - Certificat de " + newCertif.proprietaire + " stocké avec l'id " + newCertif.Num_Unique);
+		Tools.showMessage(Tools.MSG_INFO, "ACimpl", "stockerCertificat", this.nodeName + " Certificat de " + newCertif.proprietaire + " stocké avec l'id " + newCertif.Num_Unique);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class ACimpl extends ACPOA {
 		this.stockerCertificat(newCertif);
 
 		// Retour du certif
-		System.out.println("ACimpl::enregistrer() : " + this.nodeName + " - INFO - " + proprietaire + " Publication du certificat auprès de l'AE");
+		Tools.showMessage(Tools.MSG_INFO, "ACimpl", "enregistrer", this.nodeName + " " + proprietaire + " Publication du certificat auprès de l'AE");
 		return new Certificat(newCertif);
 	}
 
@@ -99,9 +99,9 @@ public class ACimpl extends ACPOA {
 		// revoquer certificat sur l'AV
 		AV av = AVHelper.narrow(Tools.findObjByORBName2(this.nodeName, EntityName.AV_SERVER));
 
-		System.out.println("ACimpl::revoquerCertificat() : " + this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Demande de révocation auprès de l'AV");
+		Tools.showMessage(Tools.MSG_INFO, "ACimpl", "revoquerCertificat", this.nodeName + " " + certificatPorteur.proprietaire + " Demande de révocation auprès de l'AV");
 		if (av.revoquerCertificat(certificatPorteur, periode)) {
-			System.out.println("ACimpl::revoquerCertificat() : " + this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Résultat de la révocation envoyée à l'AE");
+			Tools.showMessage(Tools.MSG_INFO, "ACimpl", "revoquerCertificat", this.nodeName + " " + certificatPorteur.proprietaire + " Résultat de la révocation envoyée à l'AE");
 			return true;
 		} else {
 			return false;
