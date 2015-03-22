@@ -59,7 +59,7 @@ public class ACimpl extends ACPOA {
 	 */
 	public Certificat getCertificat() {
 		System.out.println("ACimpl::getCertificat() : " + this.nodeName + " - INFO - Certificat personnel envoyé");
-		return this.certificat;
+		return new Certificat(this.certificat);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class ACimpl extends ACPOA {
 		this.stockerCertificat(newCertif);
 
 		// Retour du certif
-		System.out.println(this.nodeName + " - INFO - " + proprietaire + " Publication du certificat auprès de l'AE");
+		System.out.println("ACimpl::enregistrer() : " + this.nodeName + " - INFO - " + proprietaire + " Publication du certificat auprès de l'AE");
 		return new Certificat(newCertif);
 	}
 

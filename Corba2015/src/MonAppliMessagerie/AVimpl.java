@@ -14,11 +14,25 @@ public class AVimpl extends AVPOA {
 		this.listeCertifRevoque = new Hashtable<Short, Certificat>();
 		this.listeCertifSuspendus = new Hashtable<Short, Certificat>();
 		this.nodename = nodeName;
+		
+		AC ac = ACHelper.narrow(Tools.findObjByORBName2(nodeName, EntityName.AC_SERVER));
+		this.certificatAC = new Certificat(ac.getCertificat());
+		
+		if (this.certificatAC == null)
+			System.out.println("AVimpl::AVimpl() : le certificat est null");
+		else
+			System.out.println("AVimpl::AVimpl() : le certificat n'est pas null");
 	}
 
 	@Override
 	public Certificat getCertificatAC() {
-		return certificatAC;
+		
+		if (this.certificatAC == null)
+			System.out.println("AVimpl::getCertificatAC() : le certificat est null");
+		else
+			System.out.println("AVimpl::getCertificatAC() : le certificat n'est pas null");
+		
+		return new Certificat(this.certificatAC);
 	}
 
 	@Override
@@ -43,16 +57,16 @@ public class AVimpl extends AVPOA {
 		} else {
 			System.out.println("AVimpl::verifierRevocation() : "+"Certificat non Revoque");
 
-			if (certificatAC.IOR_AV == null) // V�rif Si AC RACINE
+			if (certificatAC.IOR_AV == null) // Vérif Si AC RACINE
 			{
-				System.out.println("AVimpl::verifierRevocation() : "+"AC Racine"); // signaler qu'on est � l'AC
+				System.out.println("AVimpl::verifierRevocation() : "+"AC Racine"); // signaler qu'on est à l'AC
 													// racine donc fin de
-													// v�rification
+													// vérification
 				return VerificationRevocation.CERTIFICAT_VALIDE_RACINE.toString();
 			}
 
 			else {
-				System.out.println("AVimpl::verifierRevocation() : "+certificatAC.IOR_AV); // A envoyer � l'user
+				System.out.println("AVimpl::verifierRevocation() : "+certificatAC.IOR_AV); // A envoyer à l'user
 				return certificatAC.IOR_AV;
 			}
 		}

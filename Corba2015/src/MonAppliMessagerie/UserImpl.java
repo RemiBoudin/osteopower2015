@@ -78,7 +78,16 @@ public class UserImpl extends UserPOA {
 	public boolean verifierCheminCertification(String IOR_AV_a_contacter) throws erreur_certif, certif_revoque
 	{
 		AV av= AVHelper.narrow(Tools.findObjByORBName(IOR_AV_a_contacter, EntityName.AV_SERVER));
+
+		System.out.println("UserImpl::verifierCheminCertification() : avant av.getCertificat()");
+		
 		Certificat certifAC = av.getCertificatAC();
+		
+		if (certifAC == null)
+			System.out.println("UserImpl::verifierCheminCertification() : le certificat est null");
+		else
+			System.out.println("UserImpl::verifierCheminCertification() : le certificat n'est pas null");
+		
 		av.verifierRevocation(certificatSender);
 		if (av.verifierRevocation(certificatSender) == VerificationRevocation.CERTIFICAT_REVOQUE.toString() // si le certificat est révoqué ou suspendu, on bloque l'envoi de message
 				|| av.verifierRevocation(certificatSender) == VerificationRevocation.CERTIFICAT_SUSPENDU.toString())
