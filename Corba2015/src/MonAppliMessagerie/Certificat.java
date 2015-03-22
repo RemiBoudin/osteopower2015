@@ -52,17 +52,6 @@ public final class Certificat implements org.omg.CORBA.portable.IDLEntity {
 	public Certificat() {
 	}
 
-	public Certificat(Certificat c) {
-		this.proprietaire = c.proprietaire;
-		this.IOR_AV = c.IOR_AV;
-		this.Num_Unique = c.Num_Unique;
-		this.ValiditeDebut = c.ValiditeDebut;
-		this.ValiditeFin = c.ValiditeFin;
-		this.ClePubClient = c.ClePubClient;
-		this.usage = c.usage;
-		this.Signature = c.Signature;
-	}
-
 	/**
 	 * Constructor with fields initialization
 	 * 
@@ -93,5 +82,16 @@ public final class Certificat implements org.omg.CORBA.portable.IDLEntity {
 		this.usage = usage;
 		this.Signature = Signature;
 	}
+    
+    public Certificat(Certificat certificat){
+    	this.proprietaire = certificat.proprietaire;
+        this.IOR_AV = certificat.IOR_AV;
+        this.Num_Unique = certificat.Num_Unique;
+        this.ValiditeDebut = certificat.ValiditeDebut;
+        this.ValiditeFin = certificat.ValiditeFin;
+        this.ClePubClient = certificat.ClePubClient;
+        this.usage = certificat.usage;
+        this.Signature = certificat.Signature;
+    }
 
 }
