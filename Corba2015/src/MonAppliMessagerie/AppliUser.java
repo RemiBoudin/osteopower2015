@@ -57,13 +57,11 @@ public class AppliUser implements Runnable {
 			System.out.println("AppliUser::initServer() : " + IORServant);
 
 		} catch (Exception e) {
+			System.out.println("AppliUser::initServer() : Erreur d'initialisation du UserServer");
 			e.printStackTrace();
 		}
 	}
 
-	/*
-	 * public Certificat getCertificat() { return null; }
-	 */
 
 	private boolean checkPeriode(Certificat cert) {
 		return this.userLocal.verifierPeriode();
@@ -74,13 +72,9 @@ public class AppliUser implements Runnable {
 	}
 
 	private boolean checkCheminCertification(Certificat cert) {
-		try {
+
 			return this.userLocal.verifierCheminCertification(cert);
-		} catch (erreur_certif | certif_revoque e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
+
 	}
 
 	@Override
@@ -124,15 +118,6 @@ public class AppliUser implements Runnable {
 			} else {
 				System.out.println("AppliUser:: Problème dans le chemin de certif de l'interlocuteur " + receiverName + " distant");
 			}
-		} catch (erreur_certif e) {
-			// TODO Auto-generated catch block
-			// e.printStackTrace();
-			System.out.println("AppliUser:: Erreur dans le certif de " + receiverName + " distant");
-
-		} catch (certif_revoque e) {
-			// TODO Auto-generated catch block
-			// e.printStackTrace();
-			System.out.println("AppliUser:: Certif de " + receiverName + " révoqué");
 
 		} catch (java.lang.NullPointerException e) {
 			System.out.println("AppliUser:: " + receiverName + " inconnu au bataillon !");
