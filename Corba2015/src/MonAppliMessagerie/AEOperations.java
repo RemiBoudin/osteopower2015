@@ -10,8 +10,7 @@ public interface AEOperations
     /**
      * Operation saveCertificat
      */
-    public MonAppliMessagerie.Certificat saveCertificat(String clepublique, String proprietaire, String mdp, String dateExpiration, String usage)
-        throws MonAppliMessagerie.erreur_authent;
+    public MonAppliMessagerie.Certificat saveCertificat(String clepublique, String proprietaire, String mdp, String dateExpiration, String usage);
 
     /**
      * Operation revoquer

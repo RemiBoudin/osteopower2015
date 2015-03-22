@@ -55,19 +55,11 @@ public abstract class AEPOA extends org.omg.PortableServer.Servant
         String arg3_in = _is.read_string();
         String arg4_in = _is.read_string();
 
-        try
-        {
-            MonAppliMessagerie.Certificat _arg_result = saveCertificat(arg0_in, arg1_in, arg2_in, arg3_in, arg4_in);
+        MonAppliMessagerie.Certificat _arg_result = saveCertificat(arg0_in, arg1_in, arg2_in, arg3_in, arg4_in);
 
-            _output = handler.createReply();
-            MonAppliMessagerie.CertificatHelper.write(_output,_arg_result);
+        _output = handler.createReply();
+        MonAppliMessagerie.CertificatHelper.write(_output,_arg_result);
 
-        }
-        catch (MonAppliMessagerie.erreur_authent _exception)
-        {
-            _output = handler.createExceptionReply();
-            MonAppliMessagerie.erreur_authentHelper.write(_output,_exception);
-        }
         return _output;
     }
 

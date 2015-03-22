@@ -27,7 +27,7 @@ module MonAppliMessagerie {
 
 
 	interface AE {
-		Certificat saveCertificat(in string clepublique, in string proprietaire, in string mdp, in string dateExpiration, in string usage) raises (erreur_authent);
+		Certificat saveCertificat(in string clepublique, in string proprietaire, in string mdp, in string dateExpiration, in string usage);
 		
 		// l'AE authentifie puis relaye la demande de revocation
 		boolean revoquer(in Certificat certificatPorteur, in string mdp, in string periode);
