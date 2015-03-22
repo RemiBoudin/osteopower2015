@@ -70,7 +70,7 @@ public class AppliUser implements Runnable {
 	}
 
 	private String checkUsage(Certificat cert) {
-		return this.userLocal.verifierUsage();
+		return this.userLocal.verifierUsage(cert);
 	}
 
 	private boolean checkCheminCertification(Certificat cert) {

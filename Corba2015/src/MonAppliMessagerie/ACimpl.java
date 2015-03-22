@@ -21,7 +21,7 @@ public class ACimpl extends ACPOA {
 		this.publicKey = (Tools.generateKeys(this.nodeName))[0];
 		this.privateKey = (Tools.generateKeys(this.nodeName))[1];
 
-		this.certificat = new Certificat(this.nodeName, "", (short) 1, Tools.getDate(), "never", this.publicKey, "", Tools.genererSignature(this.nodeName));
+		this.certificat = new Certificat(this.nodeName, "", (short) 1, Tools.getDate(), "never", this.publicKey, "", Tools.genererSignature(this.publicKey));
 
 		this.listeCertificats = new Hashtable<Integer, Certificat>();
 		this.listeCertificats.put(1, this.certificat);
@@ -46,7 +46,7 @@ public class ACimpl extends ACPOA {
 
 		System.out.println("ACimpl::creerCertificat() : nom propriétaire : " + pptaire);
 		int nbCertificats = this.listeCertificats.size();
-		Certificat newCertif = new Certificat(pptaire, this.nodeName, (short) (nbCertificats + 1), date, dateExp, publicKey, usage, Tools.genererSignature(nodeName));
+		Certificat newCertif = new Certificat(pptaire, this.nodeName, (short) (nbCertificats + 1), date, dateExp, publicKey, usage, Tools.genererSignature(this.publicKey));
 
 		System.out.println("ACimpl::creerCertificat() : " + this.nodeName + " - INFO - Certificat créé pour " + pptaire);
 
