@@ -43,8 +43,12 @@ public class PorteurImpl extends PorteurPOA {
 
 	@Override
 	public Certificat getCertificatPorteur() {
+		try {
 		System.out.println("PorteurImpl::getCertificatPorteur() : "+this.username + " - INFO - Certificat envoyé");
 
+		} catch (Exception e){
+			System.out.println("PorteurImpl::getCertificatPorteur() : "+this.username + " - ERR - Impossible de récupérer le certificat du porteur distant");
+		}
 		return this.monCertificat;
 	}
 

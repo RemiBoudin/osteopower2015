@@ -112,7 +112,7 @@ public class Tools {
 			return distantObj;
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			System.out.println("Tools::findObjByORBName() : ERR : Objet '" + receiverORBName + "' non trouvé auprès du service de noms.");
 		}
 		
