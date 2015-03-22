@@ -7,7 +7,7 @@ package MonAppliMessagerie;
  * @author Rémi
  *
  */
-public class PorteurImpl  extends PorteurPOA{
+public class PorteurImpl extends PorteurPOA {
 
 	private Certificat monCertificat;
 	private String publicKey;
@@ -15,38 +15,36 @@ public class PorteurImpl  extends PorteurPOA{
 	private String username;
 	private String mdp;
 	private org.omg.CosNaming.NamingContext namingService;
-	
-	public PorteurImpl(String username,String mdp){
-		//this.namingService=namingService;
+
+	public PorteurImpl(String username, String mdp) {
+		// this.namingService=namingService;
 		this.username = username;
-		this.mdp=mdp;
-		
+		this.mdp = mdp;
+
 		String[] keys = Tools.generateKeys(this.username);
-		this.publicKey=keys[0];
-		this.privateKey=keys[1];
+		this.publicKey = keys[0];
+		this.privateKey = keys[1];
 	}
-	
-	public boolean enregistrerCertificat(String usage, String dateExpiration, String nodeName){
+
+	public boolean enregistrerCertificat(String usage, String dateExpiration, String nodeName) {
 		AE ae = AEHelper.narrow(Tools.findObjByORBName(nodeName, EntityName.AE_SERVER));
-		//try {
-			try {
-				this.monCertificat = ae.saveCertificat(this.publicKey, this.username, this.mdp, dateExpiration, usage);
-			} catch (erreur_authent e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
-			System.out.println("PorteurImple::enregistrerCertificat() : "+this.username + " - INFO - Certificat enregistré");
-			return true;
-		//} catch (erreur_authent e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-			//return false;
-		//}
+
+		this.monCertificat = ae.saveCertificat(this.publicKey, this.username, this.mdp, dateExpiration, usage);
+
+		// Affichages de debug
+		if (this.monCertificat == null)
+			System.out.println("PorteurImpl::saveCertificat() : le certificat est nul");
+		else
+			System.out.println("PorteurImpl::saveCertificat() : le certificat n'est pas nul");
+
+		System.out.println("PorteurImpl::enregistrerCertificat() : " + this.username + " - INFO - Certificat enregistré");
+		return true;
 	}
-	
+
 	@Override
 	public Certificat getCertificatPorteur() {
-		System.out.println(this.username + " - INFO - Certificat envoyé");
+		System.out.println("PorteurImpl::getCertificatPorteur() : "+this.username + " - INFO - Certificat envoyé");
+
 		return this.monCertificat;
 	}
 

@@ -49,6 +49,9 @@ public class AppliAE implements Runnable {
 			nameToRegister[0] = new org.omg.CosNaming.NameComponent(Tools.convertNameToId(username, EntityName.AE_SERVER), "");
 
 			// Enregistrement de l'objet CORBA dans le service de noms
+			// Recuperation du service de noms
+			//NamingContext nc = Tools.getNamingContext(AppliCertificationNode.objAEServerORB);
+			//nc.rebind(nameToRegister, rootPOA.servant_to_reference(aeLocal));
 			AppliCertificationNode.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(aeLocal));
 			System.out.println("AppliUser::initServer() : ==> Nom '" + nameToRegister + "' est enregistre dans le service de noms.");
 

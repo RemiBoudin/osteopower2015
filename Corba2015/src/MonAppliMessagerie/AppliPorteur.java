@@ -71,7 +71,7 @@ public class AppliPorteur implements Runnable{
 	}
 
 	public Certificat getCertificat() {
-		return this.porteurLocal.getCertificatPorteur();
+		return new Certificat(this.porteurLocal.getCertificatPorteur());
 	}
 
 	@Override

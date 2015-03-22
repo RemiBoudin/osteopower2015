@@ -33,7 +33,7 @@ public class AppliAC implements Runnable{
 
 			// Creation du servant
 			// *********************
-			this.acLocal = new ACimpl(username);
+			acLocal = new ACimpl(username);
 
 			// Activer le servant au sein du POA et recuperer son ID
 			byte[] monEuroId = rootPOA.activate_object(acLocal);
@@ -49,6 +49,9 @@ public class AppliAC implements Runnable{
 			nameToRegister[0] = new org.omg.CosNaming.NameComponent(Tools.convertNameToId(username, EntityName.AC_SERVER), "");
 
 			// Enregistrement de l'objet CORBA dans le service de noms
+			// Recuperation du service de noms
+			//NamingContext nc = Tools.getNamingContext(AppliCertificationNode.objACServerORB);
+			//nc.rebind(nameToRegister, rootPOA.servant_to_reference(acLocal));
 			AppliCertificationNode.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(acLocal));
 			System.out.println("AppliUser::initServer() : ==> Nom '" + nameToRegister + "' est enregistre dans le service de noms.");
 

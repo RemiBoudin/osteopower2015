@@ -22,7 +22,7 @@ public class AppliCertificationNode {
 			objAEServerORB = org.omg.CORBA.ORB.init(args, null);
 			objAVServerORB = org.omg.CORBA.ORB.init(args, null);
 			// Recuperation du naming service
-			objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(objACServerORB.resolve_initial_references("NameService"));
+			AppliCertificationNode.objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(objACServerORB.resolve_initial_references("NameService"));
 
 			// ##################################
 			// # Intialisation de l'application #
@@ -57,9 +57,24 @@ public class AppliCertificationNode {
 
 			System.out.println("-> Le niveau de certification \""+nodeName+"\" a été créé.");
 			System.out.println("-> Les trois autorités AC, AE et AV ont été lancées.");
+			
+
+			// Affichage du contenu du service de noms
+			System.out.println("-------------------------");
+			System.out.println("CONTENU DU NAMING SERVICE");
+			System.out.println("-------------------------");
+			Tools.printContext(AppliCertificationNode.objDistantNamingService, "");
+			System.out.println("-------------------------");
+			
+
+			// Recherche du (serveur du porteur) du (destinataire)
+			//org.omg.CORBA.Object objDistant = Tools.findObjByORBName("niv1", EntityName.AE_SERVER);
+			//AE ae2 = AEHelper.narrow(objDistant);
+			
+			//ae2.saveCertificat("", "", "", "", "");
 
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 	}
 }

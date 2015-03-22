@@ -134,4 +134,12 @@ public class AppliUser implements Runnable{
 		}
 
 	}
+
+	public void debugCommunication() {
+		// Recherche du (serveur du porteur) du (destinataire)
+		org.omg.CORBA.Object objDistant = Tools.findObjByORBName(this.username, EntityName.PORTEUR_SERVER);
+		Porteur porteur = PorteurHelper.narrow(objDistant);
+		
+		porteur.getCertificatPorteur();
+	}
 }

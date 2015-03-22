@@ -16,7 +16,7 @@ public class ACimpl extends ACPOA {
 	 */
 	public ACimpl(String nodeName) {
 		this.nodeName = nodeName;
-		//this.namingService = namingService;
+		// this.namingService = namingService;
 
 		this.publicKey = (Tools.generateKeys(this.nodeName))[0];
 		this.privateKey = (Tools.generateKeys(this.nodeName))[1];
@@ -44,10 +44,11 @@ public class ACimpl extends ACPOA {
 	 */
 	private Certificat creerCertificat(String publicKey, String pptaire, String dateExp, String date, String usage) {
 
+		System.out.println("ACimpl::creerCertificat() : nom propriétaire : " + pptaire);
 		int nbCertificats = this.listeCertificats.size();
 		Certificat newCertif = new Certificat(pptaire, this.nodeName, (short) (nbCertificats + 1), date, dateExp, publicKey, usage, Tools.genererSignature(nodeName));
 
-		System.out.println(this.nodeName + " - INFO - Certificat créé pour " + pptaire);
+		System.out.println("ACimpl::creerCertificat() : " + this.nodeName + " - INFO - Certificat créé pour " + pptaire);
 
 		return newCertif;
 	}
@@ -57,7 +58,7 @@ public class ACimpl extends ACPOA {
 	 * renvoi le certificat de l'AC
 	 */
 	public Certificat getCertificat() {
-		System.out.println(this.nodeName + " - INFO - Certificat personnel envoyé");
+		System.out.println("ACimpl::getCertificat() : " + this.nodeName + " - INFO - Certificat personnel envoyé");
 		return this.certificat;
 	}
 
@@ -68,10 +69,8 @@ public class ACimpl extends ACPOA {
 	 *            certificat à stocker dans la liste
 	 */
 	private void stockerCertificat(Certificat newCertif) {
-
 		this.listeCertificats.put((int) newCertif.Num_Unique, newCertif);
-		System.out.println(this.nodeName + " - INFO - Certificat de " + newCertif.proprietaire + " stocké avec l'id " + newCertif.Num_Unique);
-
+		System.out.println("ACimpl::stockerCertificat() : " + this.nodeName + " - INFO - Certificat de " + newCertif.proprietaire + " stocké avec l'id " + newCertif.Num_Unique);
 	}
 
 	/**
@@ -81,15 +80,14 @@ public class ACimpl extends ACPOA {
 	public Certificat enregistrer(String clePublique, String proprietaire, String dateExpiration, String usage) {
 
 		// Création du certificat
-		Certificat newCertif = this.creerCertificat(usage, clePublique, dateExpiration, Tools.getDate(), usage);
+		Certificat newCertif = this.creerCertificat(clePublique, proprietaire, dateExpiration, Tools.getDate(), usage);
 
 		// Stockage du certificat dans la base de certificat de l'AC
 		this.stockerCertificat(newCertif);
 
 		// Retour du certif
 		System.out.println(this.nodeName + " - INFO - " + proprietaire + " Publication du certificat auprès de l'AE");
-		return newCertif;
-
+		return new Certificat(newCertif);
 	}
 
 	/**
@@ -99,11 +97,11 @@ public class ACimpl extends ACPOA {
 	public boolean revoquerCertificat(Certificat certificatPorteur, String periode) throws certif_revoque {
 
 		// revoquer certificat sur l'AV
-		AV av = AVHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AV_SERVER));
-		
-		System.out.println(this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Demande de révocation aurpès de l'AV");
+		AV av = AVHelper.narrow(Tools.findObjByORBName2(this.nodeName, EntityName.AV_SERVER));
+
+		System.out.println("ACimpl::revoquerCertificat() : " + this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Demande de révocation auprès de l'AV");
 		if (av.revoquerCertificat(certificatPorteur, periode)) {
-			System.out.println(this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Résultat de la révocation envoyée à l'AE");
+			System.out.println("ACimpl::revoquerCertificat() : " + this.nodeName + " - INFO - " + certificatPorteur.proprietaire + " Résultat de la révocation envoyée à l'AE");
 			return true;
 		} else {
 			return false;

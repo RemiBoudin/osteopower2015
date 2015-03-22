@@ -40,7 +40,7 @@ public class AppliChat {
 			objUserServerORB = org.omg.CORBA.ORB.init(args, null);
 			objPorteurServerORB = org.omg.CORBA.ORB.init(args, null);
 			// Recuperation du naming service
-			objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(objUserServerORB.resolve_initial_references("NameService"));
+			AppliChat.objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(objUserServerORB.resolve_initial_references("NameService"));
 
 			// ############################################
 			// # Intialisation des objets Porteur et User #
@@ -116,7 +116,7 @@ public class AppliChat {
 					break;
 				case 3: // Cas révoquer un certificat
 					Certificat certificat = porteur.getCertificat();
-					porteur.revoquerCertificat(certificat, clientPassword, null);
+					porteur.revoquerCertificat(certificat, clientPassword, "");
 					break;
 				case 4: // Cas quitter
 					System.exit(0);
@@ -127,7 +127,7 @@ public class AppliChat {
 					// String dest = in.readLine();
 					// System.out.println("-> /!\\ Message ?");
 					// message = in.readLine();
-					// user.debug(clientName, message, true, dest);
+					//user.debugCommunication();
 					System.out.println("Fonction fuckée");
 					break;
 				default:
