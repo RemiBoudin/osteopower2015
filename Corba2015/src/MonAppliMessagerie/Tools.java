@@ -203,4 +203,8 @@ public class Tools {
 			System.out.println("[" + type + "]\t- [" + classe + "::" + methode + "()]\t=> " + message);
 
 	}
+	
+	public static void clearScreen() {
+		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+	}
 }
