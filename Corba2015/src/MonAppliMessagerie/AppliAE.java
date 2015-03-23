@@ -20,7 +20,6 @@ public class AppliAE {
 		//private String parentNode;
 		//private ACimpl acLocal = null;
 		public static org.omg.CORBA.ORB objServerORB;
-		public static org.omg.CosNaming.NamingContext objDistantNamingService;
 		
 		public static void main(String[] args){
 			try {

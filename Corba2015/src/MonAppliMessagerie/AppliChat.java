@@ -26,7 +26,6 @@ public class AppliChat {
 	//public static org.omg.CORBA.ORB objUserServerORB = null;
 	//public static org.omg.CORBA.ORB objPorteurServerORB = null;
 	public static org.omg.CORBA.ORB objServerORB = null;
-	public static org.omg.CosNaming.NamingContext objDistantNamingService = null;
 
 	/**
 	 * @param args
