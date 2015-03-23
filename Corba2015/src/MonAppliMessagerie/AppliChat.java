@@ -17,6 +17,11 @@ import org.omg.CosNaming.NamingContextHelper;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAHelper;
 
+import outils.Tools;
+import porteur.AppliPorteur;
+import user.AppliUser;
+import certificat.Certificat;
+
 /**
  * @author jeremy
  *

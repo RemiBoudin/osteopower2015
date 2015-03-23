@@ -10,6 +10,10 @@ import org.omg.CosNaming.NamingContext;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAHelper;
 
+import outils.EntityName;
+import outils.Tools;
+import ac.ACimpl;
+
 /**
  * @author jeremy
  *
