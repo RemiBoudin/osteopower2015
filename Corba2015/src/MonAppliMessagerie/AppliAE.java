@@ -23,6 +23,12 @@ public class AppliAE {
 		
 		public static void main(String[] args){
 			try {
+				if (args.length == 0) {
+					System.out.println("Usage : AppliAC [corbaloc_naming_service]");
+					System.exit(-1);
+				}
+				Tools.corbalocNamingService = args[0];
+				
 				// Choix du niveau de Logs
 				BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 				System.out.print("> Mode verbose [I]nfo / [D]ebug / [E]rr / [entrée] : ");

@@ -118,7 +118,7 @@ public class AEimpl extends AEPOA {
 			} else {
 				// faire enregistrer sur l'AC supérieure
 				Tools.showMessage(Tools.MSG_DEBUG, "AEimpl", "saveCertificat", "Attribut nodeName : [" + this.nodeName + "]");
-				AC ac = ACHelper.narrow(Tools.findObjByORBName2(this.nodeName, EntityName.AC_SERVER));
+				AC ac = ACHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AC_SERVER));
 				Tools.showMessage(Tools.MSG_DEBUG, "AEimpl", "saveCertificat", "Avant ac.enregistrer()");
 				Tools.showMessage(Tools.MSG_DEBUG, "AEimpl", "saveCertificat", "nom propriétaire : " + proprietaire);
 				Certificat newCertif = ac.enregistrer(clepublique, proprietaire, dateExpiration, usage);
@@ -155,7 +155,7 @@ public class AEimpl extends AEPOA {
 
 			// faire révoquer le certificat sur l'AC
 			Tools.showMessage(Tools.MSG_INFO, "AEimpl", "saveCertificat", this.nodeName + " - " + certificatPorteur.proprietaire + " Demande de révocation envoyée à l'AC");
-			AC ac = ACHelper.narrow(Tools.findObjByORBName2(this.nodeName, EntityName.AC_SERVER));
+			AC ac = ACHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AC_SERVER));
 
 			return ac.revoquerCertificat(certificatPorteur, periode);
 

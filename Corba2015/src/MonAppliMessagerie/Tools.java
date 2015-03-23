@@ -30,7 +30,7 @@ public class Tools {
 	public static final String MSG_ERR = "ERR";
 
 	public static String verbose = null;
-	
+	public static String corbalocNamingService = null;
 	public static org.omg.CosNaming.NamingContext objDistantNamingService;
 
 	public void init() {
@@ -125,32 +125,6 @@ public class Tools {
 		return null;
 	}
 
-	public static org.omg.CORBA.Object findObjByORBName2(String name, EntityName entity) {
-		org.omg.CORBA.Object distantObj = null;
-
-		// Conversion du destinataire en nom ORB
-		String receiverORBName = Tools.convertNameToId(name, entity);
-		Tools.showMessage(Tools.MSG_DEBUG, "Tools", "findObjByORBName2", "receiverORBName créé : " + receiverORBName);
-
-		try {
-			// Construction du nom a rechercher
-			org.omg.CosNaming.NameComponent[] nameToFind = new org.omg.CosNaming.NameComponent[1];
-			nameToFind[0] = new org.omg.CosNaming.NameComponent(receiverORBName, "");
-
-			// Recherche de l'objet aupres du naming service
-			distantObj = Tools.objDistantNamingService.resolve(nameToFind);
-			Tools.showMessage(Tools.MSG_DEBUG, "Tools", "findObjByORBName2", receiverORBName + " trouvé auprès du service de noms.");
-
-			return distantObj;
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			Tools.showMessage(Tools.MSG_DEBUG, "Tools", "findObjByORBName2", receiverORBName + " non trouvé auprès du service de noms.");
-		}
-
-		return null;
-	}
-
 	/**
 	 * G�n�re le jeu de cl� publique/priv�e � partir de l'identifiant CORBA
 	 * 
@@ -211,6 +185,7 @@ public class Tools {
 	}
 	
 	public static void initNamingService(org.omg.CORBA.ORB orb) {
-		 Tools.objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(orb.string_to_object("corbaloc:iiop:1.2@localhost:2001/NameService"));
+		if ((Tools.corbalocNamingService != null) || (!Tools.corbalocNamingService.equals("")))
+				Tools.objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(orb.string_to_object(Tools.corbalocNamingService));
 	}
 }

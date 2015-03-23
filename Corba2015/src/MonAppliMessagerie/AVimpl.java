@@ -15,7 +15,7 @@ public class AVimpl extends AVPOA {
 		this.listeCertifSuspendus = new Hashtable<Short, Certificat>();
 		this.nodename = nodeName;
 		
-		AC ac = ACHelper.narrow(Tools.findObjByORBName2(nodeName, EntityName.AC_SERVER));
+		AC ac = ACHelper.narrow(Tools.findObjByORBName(nodeName, EntityName.AC_SERVER));
 		this.certificatAC = new Certificat(ac.getCertificat());
 		
 		if (this.certificatAC == null)

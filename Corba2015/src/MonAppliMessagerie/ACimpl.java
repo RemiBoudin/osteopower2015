@@ -30,7 +30,7 @@ public class ACimpl extends ACPOA {
 		} else {
 			// si je me rattache à un parent
 			// j'enregistre mon certificat depuis ce parent
-			AE ae = AEHelper.narrow(Tools.findObjByORBName2(parentNode, EntityName.AE_SERVER));
+			AE ae = AEHelper.narrow(Tools.findObjByORBName(parentNode, EntityName.AE_SERVER));
 			this.certificat = ae.saveCertificat(this.publicKey, this.nodeName, this.nodeName, "", Usages.AUTHENTIFIER.toString());
 		}
 		
@@ -108,7 +108,7 @@ public class ACimpl extends ACPOA {
 	public boolean revoquerCertificat(Certificat certificatPorteur, String periode) {
 
 		// revoquer certificat sur l'AV
-		AV av = AVHelper.narrow(Tools.findObjByORBName2(this.nodeName, EntityName.AV_SERVER));
+		AV av = AVHelper.narrow(Tools.findObjByORBName(this.nodeName, EntityName.AV_SERVER));
 
 		Tools.showMessage(Tools.MSG_INFO, "ACimpl", "revoquerCertificat", this.nodeName + " " + certificatPorteur.proprietaire + " Demande de révocation auprès de l'AV");
 		if (av.revoquerCertificat(certificatPorteur, periode)) {
