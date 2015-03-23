@@ -14,52 +14,74 @@ import org.omg.PortableServer.POAHelper;
  * @author jeremy
  *
  */
-public class AppliAV implements Runnable {
+public class AppliAV {
 
-	private String nodeName;
-	private AVimpl avLocal = null;
+	//private String nodeName;
+		//private String parentNode;
+		//private ACimpl acLocal = null;
+		public static org.omg.CORBA.ORB objServerORB;
+		public static org.omg.CosNaming.NamingContext objDistantNamingService;
+		
+		public static void main(String[] args){
+			try {
+				// Choix du niveau de Logs
+				BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+				System.out.print("> Mode verbose [I]nfo / [D]ebug / [E]rr / [entrée] : ");
+				Tools.verbose = in.readLine();
 
-	public AppliAV(String nodeName) {
-		this.nodeName = nodeName;
-	}
+				// Initialisation de l'ORB
+				objServerORB = org.omg.CORBA.ORB.init(args, null);
 
-	public void initServer(String username) {
-		try {
+				// Recuperation du naming service
+				 objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(objServerORB.string_to_object("corbaloc:iiop:1.2@192.168.43.154:2001/NameService"));
+				
+				// Récupération du nom du noeud
+				System.out.print("A quel noeud appartient cet AV ?");
+				String nodeName = in.readLine();
 			
-			// Gestion du POA
-			// ****************
-			// Recuperation du POA
-			POA rootPOA = POAHelper.narrow(AppliCertificationNode.objAVServerORB.resolve_initial_references("RootPOA"));
-
-			// Creation du servant
-			// *********************
-			avLocal = new AVimpl(username);
-
-			// Activer le servant au sein du POA et recuperer son ID
-			byte[] monEuroId = rootPOA.activate_object(avLocal);
-
-			// Activer le POA manager
-			rootPOA.the_POAManager().activate();
-
-			// Enregistrement dans le service de nommage
-			// *******************************************
-
-			// Construction du nom a enregistrer
-			org.omg.CosNaming.NameComponent[] nameToRegister = new org.omg.CosNaming.NameComponent[1];
-			nameToRegister[0] = new org.omg.CosNaming.NameComponent(Tools.convertNameToId(username, EntityName.AV_SERVER), "");
-
-			// Enregistrement de l'objet CORBA dans le service de noms
-			AppliCertificationNode.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(avLocal));
-			Tools.showMessage(Tools.MSG_INFO, "AppliAV", "initServer", Tools.convertNameToId(username, EntityName.AV_SERVER) + " est enregistre dans le service de noms.");
-
-		} catch (Exception e) {
-			e.printStackTrace();
+				// initialisation du serveur AV
+				initServer(nodeName);
+				
+				objServerORB.run();
+				
+			} catch (Exception e){
+				e.printStackTrace();
+			}	
 		}
-	}
+		
+		public static void initServer(String username) {
+			try {
+				
+				// Gestion du POA
+				// ****************
+				// Recuperation du POA
+				POA rootPOA = POAHelper.narrow(objServerORB.resolve_initial_references("RootPOA"));
 
-	@Override
-	public void run() {
-		AppliCertificationNode.objAVServerORB.run();
-	}
+				// Creation du servant
+				// *********************
+				AVimpl avLocal = new AVimpl(username);
 
+				// Activer le servant au sein du POA et recuperer son ID
+				byte[] monEuroId = rootPOA.activate_object(avLocal);
+
+				// Activer le POA manager
+				rootPOA.the_POAManager().activate();
+
+				// Enregistrement dans le service de nommage
+				// *******************************************
+
+				// Construction du nom a enregistrer
+				org.omg.CosNaming.NameComponent[] nameToRegister = new org.omg.CosNaming.NameComponent[1];
+				nameToRegister[0] = new org.omg.CosNaming.NameComponent(Tools.convertNameToId(username, EntityName.AV_SERVER), "");
+				
+				// Enregistrement du nom dans l'annuaire
+				objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(avLocal));
+				Tools.showMessage(Tools.MSG_INFO, "AppliAV", "initServer", Tools.convertNameToId(username, EntityName.AV_SERVER) + " est enregistre dans le service de noms.");
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				
+			}
+
+		}
 }
