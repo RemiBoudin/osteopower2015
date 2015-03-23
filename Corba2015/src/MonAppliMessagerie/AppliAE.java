@@ -24,7 +24,7 @@ public class AppliAE {
 		public static void main(String[] args){
 			try {
 				if (args.length == 0) {
-					System.out.println("Usage : AppliAC [corbaloc_naming_service]");
+					System.out.println("Usage : AppliAE [corbaloc_naming_service]");
 					System.exit(-1);
 				}
 				Tools.corbalocNamingService = args[0];
