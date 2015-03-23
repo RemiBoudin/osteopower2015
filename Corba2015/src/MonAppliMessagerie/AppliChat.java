@@ -22,9 +22,6 @@ import org.omg.PortableServer.POAHelper;
  *
  */
 public class AppliChat {
-
-	//public static org.omg.CORBA.ORB objUserServerORB = null;
-	//public static org.omg.CORBA.ORB objPorteurServerORB = null;
 	public static org.omg.CORBA.ORB objServerORB = null;
 
 	/**
@@ -43,12 +40,8 @@ public class AppliChat {
 			// ##########################################
 
 			// Initialisation de l'ORB
-			//objUserServerORB = org.omg.CORBA.ORB.init(args, null);
-			//objPorteurServerORB = org.omg.CORBA.ORB.init(args, null);
-			//objPorteurServerORB = org.omg.CORBA.ORB.init(args, null);
 			objServerORB = org.omg.CORBA.ORB.init(args, null);
 			// Recuperation du naming service
-			//AppliChat.objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(objUserServerORB.string_to_object("corbaloc:iiop:1.2@192.168.43.242:2001/NameService"));
 			Tools.initNamingService(objServerORB);
 			
 			// ############################################

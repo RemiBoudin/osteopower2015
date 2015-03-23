@@ -64,7 +64,6 @@ public class AVimpl extends AVPOA {
 
 	@Override
 	public boolean revoquerCertificat(Certificat certificatPorteur, String periode) {
-		// TODO Auto-generated method stub
 		if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique) && periode.equals("") && !listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique)) {
 			listeCertifRevoque.put(certificatPorteur.Num_Unique, certificatPorteur);
 			Tools.showMessage(Tools.MSG_INFO, "AVimpl", "revoquerCertificat", this.nodename + " - Certificat de" + certificatPorteur.proprietaire + "ajouté dans la LCR");

@@ -15,10 +15,6 @@ import org.omg.PortableServer.POAHelper;
  *
  */
 public class AppliAE {
-
-	//private String nodeName;
-		//private String parentNode;
-		//private ACimpl acLocal = null;
 		public static org.omg.CORBA.ORB objServerORB;
 		
 		public static void main(String[] args){
@@ -38,7 +34,6 @@ public class AppliAE {
 				objServerORB = org.omg.CORBA.ORB.init(args, null);
 
 				// Recuperation du naming service
-				//objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(objServerORB.string_to_object("corbaloc:iiop:1.2@localhost:2001/NameService"));
 				Tools.initNamingService(objServerORB);
 
 				// Récupération du nom du noeud

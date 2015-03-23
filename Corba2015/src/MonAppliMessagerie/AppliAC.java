@@ -15,10 +15,6 @@ import org.omg.PortableServer.POAHelper;
  *
  */
 public class AppliAC {
-
-	//private String nodeName;
-	//private String parentNode;
-	//private ACimpl acLocal = null;
 	public static org.omg.CORBA.ORB objServerORB;
 	
 	public static void main(String[] args){
