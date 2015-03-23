@@ -37,10 +37,7 @@ public class AppliChat {
 				System.exit(-1);
 			}
 			Tools.corbalocNamingService = args[0];
-<<<<<<< HEAD
 			
-=======
->>>>>>> branch 'master' of https://github.com/RemiBoudin/osteopower2015.git
 			// ##########################################
 			// # Intialisation de l'environnement CORBA #
 			// ##########################################
