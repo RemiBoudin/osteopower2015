@@ -14,28 +14,56 @@ import org.omg.PortableServer.POAHelper;
  * @author jeremy
  *
  */
-public class AppliAC implements Runnable {
+public class AppliAC {
 
-	private String nodeName;
-	private String parentNode;
-	private ACimpl acLocal = null;
-
-	public AppliAC(String nodeName, String parentNode) {
-		this.nodeName = nodeName;
-		this.parentNode= parentNode;
-	}
-
-	public void initServer(String username,String parentNode) {
+	//private String nodeName;
+	//private String parentNode;
+	//private ACimpl acLocal = null;
+	public static org.omg.CORBA.ORB objServerORB;
+	public static org.omg.CosNaming.NamingContext objDistantNamingService;
+	
+	public static void main(String[] args){
 		try {
+			// Choix du niveau de Logs
+			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+			System.out.print("> Mode verbose [I]nfo / [D]ebug / [E]rr / [entrée] : ");
+			Tools.verbose = in.readLine();
 
+			// Initialisation de l'ORB
+			objServerORB = org.omg.CORBA.ORB.init(args, null);
+
+			// Recuperation du naming service
+			 objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(objServerORB.string_to_object("corbaloc:iiop:1.2@192.168.43.154:2001/NameService"));
+			
+			// Récupération du nom du noeud
+			System.out.print("A quel noeud appartient cet AC ?");
+			String nodeName = in.readLine();
+			
+			// Récupération du nom du noeud parent
+			System.out.print("A quel noeud supérieur voulez-vous le rattacher ? (Laissez vide si racine)");
+			String parentNode = in.readLine();
+			
+			// initialisation du serveur AC
+			initServer(nodeName, parentNode);
+			
+			objServerORB.run();
+			
+		} catch (Exception e){
+			e.printStackTrace();
+		}	
+	}
+	
+	public static void initServer(String username,String parentNode) {
+		try {
+			
 			// Gestion du POA
 			// ****************
 			// Recuperation du POA
-			POA rootPOA = POAHelper.narrow(AppliCertificationNode.objACServerORB.resolve_initial_references("RootPOA"));
+			POA rootPOA = POAHelper.narrow(objServerORB.resolve_initial_references("RootPOA"));
 
 			// Creation du servant
 			// *********************
-			acLocal = new ACimpl(username, parentNode);
+			ACimpl acLocal = new ACimpl(username, parentNode);
 
 			// Activer le servant au sein du POA et recuperer son ID
 			byte[] monEuroId = rootPOA.activate_object(acLocal);
@@ -51,17 +79,13 @@ public class AppliAC implements Runnable {
 			nameToRegister[0] = new org.omg.CosNaming.NameComponent(Tools.convertNameToId(username, EntityName.AC_SERVER), "");
 			
 			// Enregistrement du nom dans l'annuaire
-			AppliCertificationNode.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(acLocal));
+			objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(acLocal));
 			Tools.showMessage(Tools.MSG_INFO, "AppliAC", "initServer", Tools.convertNameToId(username, EntityName.AC_SERVER) + " est enregistre dans le service de noms.");
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			
 		}
-	}
-
-	@Override
-	public void run() {
-		AppliCertificationNode.objACServerORB.run();
 	}
 
 }
