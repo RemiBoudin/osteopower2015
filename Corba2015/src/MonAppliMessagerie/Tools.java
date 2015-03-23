@@ -30,6 +30,8 @@ public class Tools {
 	public static final String MSG_ERR = "ERR";
 
 	public static String verbose = null;
+	
+	public static org.omg.CosNaming.NamingContext objDistantNamingService;
 
 	public void init() {
 	}
@@ -110,7 +112,7 @@ public class Tools {
 			nameToFind[0] = new org.omg.CosNaming.NameComponent(receiverORBName, "");
 
 			// Recherche de l'objet aupres du naming service
-			distantObj = AppliChat.objDistantNamingService.resolve(nameToFind);
+			distantObj = Tools.objDistantNamingService.resolve(nameToFind);
 			Tools.showMessage(Tools.MSG_DEBUG, "Tools", "findObjByORBName", "Objet '" + receiverORBName + "' trouvé auprès du service de noms.");
 
 			return distantObj;
@@ -136,7 +138,7 @@ public class Tools {
 			nameToFind[0] = new org.omg.CosNaming.NameComponent(receiverORBName, "");
 
 			// Recherche de l'objet aupres du naming service
-			distantObj = AppliCertificationNode.objDistantNamingService.resolve(nameToFind);
+			distantObj = Tools.objDistantNamingService.resolve(nameToFind);
 			Tools.showMessage(Tools.MSG_DEBUG, "Tools", "findObjByORBName2", receiverORBName + " trouvé auprès du service de noms.");
 
 			return distantObj;
@@ -206,5 +208,9 @@ public class Tools {
 	
 	public static void clearScreen() {
 		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+	}
+	
+	public static void initNamingService(org.omg.CORBA.ORB orb) {
+		 Tools.objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(orb.string_to_object("corbaloc:iiop:1.2@localhost:2001/NameService"));
 	}
 }

@@ -27,7 +27,7 @@ public class AppliUser implements Runnable {
 			// Gestion du POA
 			// ****************
 			// Recuperation du POA
-			POA rootPOA = POAHelper.narrow(AppliChat.objUserServerORB.resolve_initial_references("RootPOA"));
+			POA rootPOA = POAHelper.narrow(AppliChat.objServerORB.resolve_initial_references("RootPOA"));
 
 			// Creation du servant
 			// *********************
@@ -48,7 +48,7 @@ public class AppliUser implements Runnable {
 			nameToRegister[0] = new org.omg.CosNaming.NameComponent(nomComplet, "");
 
 			// Enregistrement de l'objet CORBA dans le service de noms
-			AppliChat.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(userLocal));
+			Tools.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(userLocal));
 			Tools.showMessage(Tools.MSG_INFO, "AppliUser", "initServer", nomComplet + " est enregistre dans le service de noms.");
 
 		} catch (Exception e) {
@@ -80,7 +80,7 @@ public class AppliUser implements Runnable {
 	public void run() {
 		// Lancement de l'ORB et mise en attente de requete
 		// **************************************************
-		AppliChat.objUserServerORB.run();
+		AppliChat.objServerORB.run();
 	}
 
 	public void debug(String sender, String message, boolean chiffred, String dest) {

@@ -24,6 +24,7 @@ public class AppliAC {
 	
 	public static void main(String[] args){
 		try {
+			
 			// Choix du niveau de Logs
 			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 			System.out.print("> Mode verbose [I]nfo / [D]ebug / [E]rr / [entrée] : ");
@@ -33,18 +34,27 @@ public class AppliAC {
 			objServerORB = org.omg.CORBA.ORB.init(args, null);
 
 			// Recuperation du naming service
-			 objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(objServerORB.string_to_object("corbaloc:iiop:1.2@192.168.43.154:2001/NameService"));
+			//objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(objServerORB.string_to_object("corbaloc:iiop:1.2@localhost:2001/NameService"));
+			Tools.initNamingService(objServerORB);
 			
 			// Récupération du nom du noeud
-			System.out.print("A quel noeud appartient cet AC ?");
+			System.out.print("A quel noeud appartient cet AC ? ");
 			String nodeName = in.readLine();
 			
 			// Récupération du nom du noeud parent
-			System.out.print("A quel noeud supérieur voulez-vous le rattacher ? (Laissez vide si racine)");
+			System.out.print("A quel noeud supérieur voulez-vous le rattacher ? (Laissez vide si racine) ");
 			String parentNode = in.readLine();
 			
 			// initialisation du serveur AC
 			initServer(nodeName, parentNode);
+			
+
+			// Affichage du contenu du service de noms
+			System.out.println("\n\n-------------------------");
+			System.out.println("CONTENU DU NAMING SERVICE");
+			System.out.println("-------------------------");
+			Tools.printContext(Tools.objDistantNamingService, "");
+			System.out.println("-------------------------");
 			
 			objServerORB.run();
 			
@@ -79,7 +89,7 @@ public class AppliAC {
 			nameToRegister[0] = new org.omg.CosNaming.NameComponent(Tools.convertNameToId(username, EntityName.AC_SERVER), "");
 			
 			// Enregistrement du nom dans l'annuaire
-			objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(acLocal));
+			Tools.objDistantNamingService.rebind(nameToRegister, rootPOA.servant_to_reference(acLocal));
 			Tools.showMessage(Tools.MSG_INFO, "AppliAC", "initServer", Tools.convertNameToId(username, EntityName.AC_SERVER) + " est enregistre dans le service de noms.");
 
 		} catch (Exception e) {
