@@ -36,10 +36,11 @@ public class PorteurImpl extends PorteurPOA {
 		// Affichages de debug
 		if (this.monCertificat == null)
 			Tools.showMessage(Tools.MSG_DEBUG, "PorteurImpl", "enregistrerCertificat", "le certificat est nul");
-		else
+		else {
 			Tools.showMessage(Tools.MSG_DEBUG, "PorteurImpl", "enregistrerCertificat", "le certificat n'est pas nul");
-
 			Tools.showMessage(Tools.MSG_INFO, "PorteurImpl", "enregistrerCertificat", this.username + " - Certificat enregistré");
+		}
+
 		return true;
 	}
 

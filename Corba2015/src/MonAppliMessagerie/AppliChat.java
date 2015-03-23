@@ -87,7 +87,7 @@ public class AppliChat {
 			String sChoix = "0";
 
 			while (Integer.parseInt(sChoix) != 5) {
-				System.out.println("\n\n\n#########################################");
+				System.out.println("\n\n#########################################");
 				System.out.println("##                MENU                 ##");
 				System.out.println("#########################################");
 				System.out.println("# [1] Envoyer un message");
@@ -95,7 +95,7 @@ public class AppliChat {
 				System.out.println("# [3] Révoquer un certificat");
 				System.out.println("# [4] Afficher contenu du serveur de noms");
 				System.out.println("# [5] Quitter\n");
-				System.out.print("> Choix : ");
+				System.out.print("> "+clientName+", saisi ton choix : ");
 
 				sChoix = in.readLine();
 
