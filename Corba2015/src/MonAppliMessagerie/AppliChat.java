@@ -40,7 +40,7 @@ public class AppliChat {
 			objUserServerORB = org.omg.CORBA.ORB.init(args, null);
 			objPorteurServerORB = org.omg.CORBA.ORB.init(args, null);
 			// Recuperation du naming service
-			AppliChat.objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(objUserServerORB.resolve_initial_references("NameService"));
+			AppliChat.objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(objUserServerORB.string_to_object("corbaloc:iiop:1.2@192.168.43.242:2001/NameService"));
 
 			// ############################################
 			// # Intialisation des objets Porteur et User #
