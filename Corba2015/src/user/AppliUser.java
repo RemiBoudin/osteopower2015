@@ -120,7 +120,7 @@ public class AppliUser implements Runnable {
 				User userDistant = UserHelper.narrow(Tools.findObjByORBName(receiverName, EntityName.USER_SERVER));
 				String messageChiffre = Tools.chiffrerMessage(message, "");
 				userDistant.afficherMessage(this.username, messageChiffre, true);
-				Tools.showMessage(Tools.MSG_INFO, "AppliUser", "repondreToUser", "Message affiché chez " + receiverName);
+				Tools.showMessage(Tools.MSG_INFO, "AppliUser", "repondreToUser", "Message envoyé à " + receiverName);
 			} else {
 				Tools.showMessage(Tools.MSG_INFO, "AppliUser", "repondreToUser", "Problème dans le chemin de certif de l'interlocuteur " + receiverName + " distant");
 			}
