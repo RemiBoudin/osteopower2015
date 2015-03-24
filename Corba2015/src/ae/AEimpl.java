@@ -45,7 +45,7 @@ public class AEimpl extends AEPOA {
 	}
 
 	/**
-	 * Relai le certificat nouvellement généré au porteur à l'origine de la
+	 * Méthode relayant le certificat nouvellement généré au porteur à l'origine de la
 	 * demande
 	 */
 	@Override
@@ -58,7 +58,7 @@ public class AEimpl extends AEPOA {
 	}
 
 	/**
-	 * Vérifie la combinaison identifiant/mot de passe dans la base
+	 * Méthode vérifiant la combinaison identifiant/mot de passe dans la base
 	 * 
 	 * @param user
 	 *            nom de l'utilisateur
@@ -88,7 +88,7 @@ public class AEimpl extends AEPOA {
 	}
 
 	/**
-	 * Vérifie si l'utilisateur a le droit d'utiliser le certificat pour un
+	 * Méthode vérifiant si l'utilisateur a le droit d'utiliser le certificat pour un
 	 * usage donné
 	 * 
 	 * @param user
@@ -112,8 +112,8 @@ public class AEimpl extends AEPOA {
 	}
 
 	/**
-	 * Authentifie l'utilisateur et envoi la demande d'enregistrement à l'AC et
-	 * retourne le certificat
+	 * Méthode authentifiant l'utilisateur, envoyant la demande d'enregistrement à l'AC et
+	 * retournant le certificat
 	 */
 	@Override
 	public Certificat saveCertificat(String clepublique, String proprietaire, String mdp, String dateExpiration, String usage) {
@@ -148,7 +148,7 @@ public class AEimpl extends AEPOA {
 	}
 
 	/**
-	 * Révoque un certificat auprès l'AC
+	 * Méthode révoquant un certificat auprès de l'AC
 	 */
 	@Override
 	public boolean revoquer(Certificat certificatPorteur, String mdp, String periode) {

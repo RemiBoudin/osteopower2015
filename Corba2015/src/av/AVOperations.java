@@ -9,18 +9,27 @@ import certificat.Certificat;
  */
 public interface AVOperations
 {
-    /**
-     * Operation getCertificatAC
-     */
+	/**
+	 * Récupére le certificat de l'AC
+	 * @return
+	 */
     public certificat.Certificat getCertificatAC();
 
     /**
-     * Operation verifierRevocation
+     * Méthode vérifiant si le certificat testé est révoqué, suspendu ou valide
+     * @param certifCourant 
+     * 						Certificat à tester
+     * @return
      */
     public String verifierRevocation(certificat.Certificat certifCourant);
 
     /**
-     * Operation revoquerCertificat
+     * Méthode permettant de révoquer un certificat en l'ajoutant à la liste de certificats révoqués ou la liste de certificat suspendus
+     * @param certificatPorteur 
+     * 						Certificat à révoquer
+     * @param periode 
+     * 				période à spécifier dans le cas d'une suspension
+     * @return
      */
     public boolean revoquerCertificat(certificat.Certificat certificatPorteur, String periode);
 

@@ -9,6 +9,11 @@ import certificat.Certificat;
 import ac.AC;
 import ac.ACHelper;
 
+/**
+ * 
+ * @author Serge_lpv
+ *
+ */
 public class AVimpl extends AVPOA {
 
 	private Hashtable<Short, Certificat> listeCertifRevoque;
@@ -17,6 +22,10 @@ public class AVimpl extends AVPOA {
 	private Hashtable<Short, Certificat> listeCertifSuspendus;
 	public static org.omg.CosNaming.NamingContext NamingService;
 
+	/**
+	 * 
+	 * @param nodeName
+	 */
 	public AVimpl(String nodeName) {
 		this.listeCertifRevoque = new Hashtable<Short, Certificat>();
 		this.listeCertifSuspendus = new Hashtable<Short, Certificat>();
@@ -32,6 +41,9 @@ public class AVimpl extends AVPOA {
 	}
 
 	@Override
+	/**
+	 * Méthode permettant de récupérer le certificat de l'Autorité de Certification
+	 */
 	public Certificat getCertificatAC() {
 		
 		if (this.certificatAC == null)
@@ -43,6 +55,9 @@ public class AVimpl extends AVPOA {
 	}
 
 	@Override
+	/**
+	 * Méthode permettant de vérifier sur l'Autorité de Validation si un certificat est révoqué, suspendu ou valide
+	 */
 	public String verifierRevocation(Certificat certifCourant) {
 		// TODO Auto-generated method stub
 
@@ -70,6 +85,9 @@ public class AVimpl extends AVPOA {
 	}
 
 	@Override
+	/**
+	 * Méthode permettant de révoquer un certificat sur l'Autorité de Validation
+	 */
 	public boolean revoquerCertificat(Certificat certificatPorteur, String periode) {
 		if (!listeCertifRevoque.containsKey(certificatPorteur.Num_Unique) && periode.equals("") && !listeCertifSuspendus.containsKey(certificatPorteur.Num_Unique)) {
 			listeCertifRevoque.put(certificatPorteur.Num_Unique, certificatPorteur);
