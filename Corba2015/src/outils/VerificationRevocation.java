@@ -1,6 +1,10 @@
 package outils;
 
-
+/**
+ * Enumeration des différents etats d'un certificat
+ * @author Rémi
+ *
+ */
 public enum VerificationRevocation {
 	
 	CERTIFICAT_REVOQUE,

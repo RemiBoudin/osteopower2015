@@ -21,12 +21,17 @@ import ae.AEHelper;
 
 /**
  * @author jeremy
- *
+ * Application du porteur
  */
 public class AppliPorteur implements Runnable{
 	
 	private PorteurImpl porteurLocal = null;
 	
+	/**
+	 * Fonction d'initialisation de l'application Porteur
+	 * @param username nom de l'utilisateur 
+	 * @param mdp mot de passe de l'utilisateur 
+	 */
 	public void initServer(String username, String mdp) {
 		try {
 
@@ -62,15 +67,31 @@ public class AppliPorteur implements Runnable{
 		}
 	}
 
+	/**
+	 * Enregistre un certificat aurpès d'un noeud de certification
+	 * @param usage 
+	 * @param dateExp
+	 * @param nodeName
+	 */
 	public void enregistrerCertificat(String usage, String dateExp, String nodeName) {
 		this.porteurLocal.enregistrerCertificat(usage, dateExp, nodeName);
 	}
 	
+	/**
+	 * Fait une demande de révocation d'un certificat donné, pour une période donnée
+	 * @param certificat
+	 * @param mdp
+	 * @param periode
+	 */
 	public void revoquerCertificat(Certificat certificat, String mdp, String periode) {
 		AE ae = AEHelper.narrow(Tools.findObjByORBName(this.porteurLocal.getCertificatPorteur().IOR_AV, EntityName.AE_SERVER));
 		ae.revoquer(this.porteurLocal.getCertificatPorteur(), mdp, periode);
 	}
 
+	/**
+	 * retourne le certificat du porteur
+	 * @return le certificat du porteur
+	 */
 	public Certificat getCertificat() {
 		return new Certificat(this.porteurLocal.getCertificatPorteur());
 	}
