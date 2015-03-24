@@ -10,7 +10,11 @@ import ae.AE;
 import ae.AEHelper;
 import av.AV;
 import av.AVHelper;
-
+/**
+ * 
+ * @author Serge_lpv
+ *
+ */
 public class ACimpl extends ACPOA {
 
 	private Certificat certificat;
