@@ -20,7 +20,10 @@ import ac.ACimpl;
  */
 public class AppliAC {
 	public static org.omg.CORBA.ORB objServerORB;
-	
+	/**
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args){
 		try {
 			if (args.length == 0) {
@@ -66,7 +69,13 @@ public class AppliAC {
 			e.printStackTrace();
 		}	
 	}
-	
+	/**
+	 * Méthode d'initialisation  du server
+	 * @param username
+	 * 				 nom de l'utilisateur
+	 * @param parentNode 
+	 * 					nom du noeud parent
+	 */
 	public static void initServer(String username,String parentNode) {
 		try {
 			

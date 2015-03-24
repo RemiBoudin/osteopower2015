@@ -15,7 +15,8 @@ import outils.Tools;
 import ae.AEimpl;
 
 /**
- * @author jeremy
+ * 
+ * @author Serge_lpv
  *
  */
 public class AppliAE {
@@ -59,7 +60,11 @@ public class AppliAE {
 				e.printStackTrace();
 			}	
 		}
-		
+		/**
+		 * Méthode d'initialistion du serveur
+		 * @param username
+		 * 				 nom de l'utilisateur
+		 */
 		public static void initServer(String username) {
 			try {
 				
