@@ -43,12 +43,12 @@ public class UserImpl extends UserPOA {
 				Tools.showMessage(Tools.MSG_DEBUG, "UserImpl", "afficherMessage", "Nous sommes avant Try");
 				cheminCertifie = verifierCheminCertification(certificatSender);
 				if (cheminCertifie) {
-					Tools.showMessage(Tools.MSG_INFO, "UserImpl", "afficherMessage", "Message chiffred reçu : [" + Tools.dechiffrerMessage(message, "") + "]");
+					Tools.showMessage(Tools.MSG_INFO, "UserImpl", "afficherMessage", "Message chiffred reçu de la part de "+sender+" : [" + Tools.dechiffrerMessage(message, "") + "]");
 					return "ok";
 				}
 
 			} else
-				Tools.showMessage(Tools.MSG_INFO, "UserImpl", "afficherMessage", "Message reçu : [" + message + "]");
+				Tools.showMessage(Tools.MSG_INFO, "UserImpl", "afficherMessage", "Message reçu de la part de"+sender+": [" + message + "]");
 
 		} catch (Exception e) {
 			Tools.showMessage(Tools.MSG_ERR, "UserImpl", "afficherMessage", "Il faut d'abord générer un certificat avant de pouvoir envoyer des message");
