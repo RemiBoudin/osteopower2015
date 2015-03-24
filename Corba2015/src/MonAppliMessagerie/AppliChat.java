@@ -24,12 +24,13 @@ import certificat.Certificat;
 
 /**
  * @author jeremy
- *
+ * Classe permettant de lancer l'application de chat cliente, utilisée par un utilisateur final
  */
 public class AppliChat {
 	public static org.omg.CORBA.ORB objServerORB = null;
 
 	/**
+	 * Main du programme
 	 * @param args
 	 */
 	public static void main(String[] args) {

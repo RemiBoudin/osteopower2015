@@ -11,7 +11,7 @@ import ae.AEHelper;
 
 /**
  * @author Rémi
- *
+ * Classe implémentant la fonction de PORTEUR
  */
 public class PorteurImpl extends PorteurPOA {
 
@@ -22,6 +22,11 @@ public class PorteurImpl extends PorteurPOA {
 	private String mdp;
 	private org.omg.CosNaming.NamingContext namingService;
 
+	/**
+	 * Constructeur de PorteurImpl
+	 * @param username le nom de l'utilisateur
+	 * @param mdp le mot de passe de l'utilisateur
+	 */
 	public PorteurImpl(String username, String mdp) {
 		this.username = username;
 		this.mdp = mdp;
@@ -31,6 +36,13 @@ public class PorteurImpl extends PorteurPOA {
 		this.privateKey = keys[1];
 	}
 
+	/**
+	 * Méthode permetant d'enregistrer un nouveau certificat aurpès d'un noeud de certification
+	 * @param usage l'usage auquel est destiné le certificat
+	 * @param dateExpiration la date à laquelle le certificat doit expirer
+	 * @param nodeName nom du noeud auquel on veut se raccrocher
+	 * @return TRUE si la demande d'enregistrement a été transmise à l'IDE
+	 */
 	public boolean enregistrerCertificat(String usage, String dateExpiration, String nodeName) {
 		AE ae = AEHelper.narrow(Tools.findObjByORBName(nodeName, EntityName.AE_SERVER));
 		try {

@@ -16,7 +16,7 @@ import av.AVimpl;
 
 /**
  * @author jeremy
- *
+ * Classe permettant de lancer l'applciation correspondante à une AV
  */
 public class AppliAV {
 		public static org.omg.CORBA.ORB objServerORB;
@@ -60,6 +60,10 @@ public class AppliAV {
 			}	
 		}
 		
+		/**
+		 * Fonction d'initialisation de l'AV
+		 * @param username nom de l'AV
+		 */
 		public static void initServer(String username) {
 			try {
 				

@@ -20,8 +20,8 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 import user.User;
 
 /**
- * @author jeremy Classe faisant office de "bo�te � outils" pour les diff�rentes
- *         entit�s du syst�me global. Elle contient les m�thodes utiles et
+ * @author jeremy Classe faisant office de "boite à outils" pour les différentes
+ *         entités du système global. Elle contient les méthodes utiles et
  *         communes.
  */
 public class Tools {
@@ -39,14 +39,14 @@ public class Tools {
 	}
 
 	/**
-	 * Donne l'identifiant CORBA normalis� d'une entit� � partir de son nom et
-	 * du type d'entit�
+	 * Donne l'identifiant CORBA normalisé d'une entité é partir de son nom et
+	 * du type d'entité
 	 * 
 	 * @param username
-	 *            nom personnalis� de l'entit�
+	 *            nom personnalisé de l'entité
 	 * @param entity
-	 *            type d'entit� (AC, AV, Client ...)
-	 * @return le nom CORBA normalis� de l'entit�
+	 *            type d'entité (AC, AV, Client ...)
+	 * @return le nom CORBA normalisé de l'entité
 	 */
 	public static String convertNameToId(String username, EntityName entity) {
 		return (username + "_" + entity.toString());
@@ -64,38 +64,38 @@ public class Tools {
 	}
 
 	/**
-	 * Donne la signature d'une entit� � partir de son identifiant CORBA
-	 * normalis�
+	 * Donne la signature d'une entité é partir de son identifiant CORBA
+	 * normalisé
 	 * 
 	 * @param id
-	 *            identifiant CORBA normalis�
-	 * @return signature de l'entit�
+	 *            identifiant CORBA normalisé
+	 * @return signature de l'entité
 	 */
 	public static String genererSignature(String id) {
 		return id;
 	}
 
 	/**
-	 * Chiffre un message � partir d'une cl� publique
+	 * Chiffre un message é partir d'une clé publique
 	 * 
 	 * @param message
-	 *            message en clair � chiffrer
+	 *            message en clair é chiffrer
 	 * @param publicKey
-	 *            cl� de chiffrement
-	 * @return message chiffr�
+	 *            clé de chiffrement
+	 * @return message chiffré
 	 */
 	public static String chiffrerMessage(String message, String publicKey) {
-		return "[crypt�]" + message;
+		return "[crypté]" + message;
 	}
 
 	/**
-	 * D�chiffre un message � partir d'une cl� priv�e
+	 * Déchiffre un message é partir d'une clé privée
 	 * 
 	 * @param message
-	 *            message chiffr� � d�chiffrer
+	 *            message chiffré é déchiffrer
 	 * @param privateKey
-	 *            cl� de d�chiffrement
-	 * @return message d�chiffr�, en clair
+	 *            clé de déchiffrement
+	 * @return message déchiffré, en clair
 	 */
 	public static String dechiffrerMessage(String message, String privateKey) {
 		return message.substring(8);
@@ -128,17 +128,17 @@ public class Tools {
 	}
 
 	/**
-	 * G�n�re le jeu de cl� publique/priv�e � partir de l'identifiant CORBA
+	 * Génére le jeu de clé publique/privée é partir de l'identifiant CORBA
 	 * 
 	 * @param id
-	 *            identifiant CORBA de l'entit� g�n�rant son jeu de cl�
-	 * @return tableau contenant les cl�s g�n�r�es [0]= cl� publique et [1]=cl�
-	 *         priv�e
+	 *            identifiant CORBA de l'entité générant son jeu de clé
+	 * @return tableau contenant les clés générées [0]= clé publique et [1]=clé
+	 *         privée
 	 */
 	public static String[] generateKeys(String id) {
 		String[] keys = new String[2];
-		keys[0] = "abc" + id; // Generation de la cl� public
-		keys[1] = "cba" + id; // Generation de la cl� priv�e
+		keys[0] = "abc" + id; // Generation de la clé public
+		keys[1] = "cba" + id; // Generation de la clé privée
 		return keys;
 	}
 
@@ -186,6 +186,10 @@ public class Tools {
 		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 	}
 	
+	/**
+	 * Methode d'initialisation du naming service
+	 * @param orb
+	 */
 	public static void initNamingService(org.omg.CORBA.ORB orb) {
 		if ((Tools.corbalocNamingService != null) || (!Tools.corbalocNamingService.equals("")))
 				Tools.objDistantNamingService = org.omg.CosNaming.NamingContextHelper.narrow(orb.string_to_object(Tools.corbalocNamingService));

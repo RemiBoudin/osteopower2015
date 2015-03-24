@@ -10,7 +10,8 @@ import certificat.Certificat;
 public interface PorteurOperations
 {
     /**
-     * Operation getCertificatPorteur
+     * Retourne le certificat du client (entité porteur)
+     * @return certificat du porteur
      */
     public certificat.Certificat getCertificatPorteur();
 

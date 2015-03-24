@@ -22,12 +22,16 @@ import porteur.PorteurHelper;
 
 /**
  * @author jeremy
- *
+ * Classe permettant de lancer l'application "Utilisateur"
  */
 public class AppliUser implements Runnable {
 	private UserImpl userLocal;
 	private String username;
 
+	/**
+	 * Methode d'initialisation de l'objet CORBA User
+	 * @param username nom de l'utilisateur en question
+	 */
 	public void initServer(String username) {
 		try {
 			this.username = username;
@@ -64,18 +68,30 @@ public class AppliUser implements Runnable {
 		}
 	}
 
-	/*
-	 * public Certificat getCertificat() { return null; }
-	 */
 
+	/**
+	 * Vérifie la validité temporelle du certificat
+	 * @param cert certificat à vérifier
+	 * @return VRAI si le certificat n'est pas périmé
+	 */
 	private boolean checkPeriode(Certificat cert) {
 		return this.userLocal.verifierPeriode();
 	}
 
+	/**
+	 * Vérifie l'usage d'un certificat
+	 * @param cert certificat a vérifier
+	 * @return VRAI si l'usage est correct
+	 */
 	private String checkUsage(Certificat cert) {
 		return this.userLocal.verifierUsage(cert);
 	}
 
+	/**
+	 * Vérifie le chemin de certification d'un certificat
+	 * @param cert certificat à vérifier
+	 * @return VRAI si le chemin de certiication est valide
+	 */
 	private boolean checkCheminCertification(Certificat cert) {
 
 
@@ -90,12 +106,11 @@ public class AppliUser implements Runnable {
 		AppliChat.objServerORB.run();
 	}
 
-	public void debug(String sender, String message, boolean chiffred, String dest) {
-		// User user = UserHelper.narrow(Tools.findObjByORBName(dest,
-		// EntityName.USER_SERVER));
-		// user.afficherMessage(sender, message, chiffred);
-	}
-
+/**
+ * Methode permettant d'afficher un message
+ * @param message message à afficher
+ * @param receiverName nom du destinataire
+ */
 	public void repondreToUser(String message, String receiverName) {
 
 		// #################################################################
@@ -134,6 +149,9 @@ public class AppliUser implements Runnable {
 
 	}
 
+	/**
+	 * Fonction de debug
+	 */
 	public void debugCommunication() {
 		// Recherche du (serveur du porteur) du (destinataire)
 		org.omg.CORBA.Object objDistant = Tools.findObjByORBName(this.username, EntityName.PORTEUR_SERVER);

@@ -17,18 +17,23 @@ import av.AVHelper;
 
 /**
  * @author jeremy
- *
+ *Classe implémentant les méthodes du User
  */
 public class UserImpl extends UserPOA {
 
 	public static org.omg.CosNaming.NamingContext NamingService;
 	private String username;
 
+/**
+ * Constructeur de UserImpl
+ * @param username le nom de l'utilisateur
+ */
 	public UserImpl(String username) {
 		this.username = username;
 
 	}
-
+	 
+	
 	@Override
 	public String afficherMessage(String sender, String message, boolean chiffred) {
 		// TODO Auto-generated method stub
@@ -67,6 +72,11 @@ public class UserImpl extends UserPOA {
 
 	}
 
+	/**
+	 * Vérifie si l'usage demandé d'un certificat donné
+	 * @param certificatVerifier certificat dont on veut vérifier l'usage
+	 * @return VRAI si le certificat correspond au bon usage, FAUX sinon
+	 */
 	public String verifierUsage(Certificat certificatVerifier) {
 
 		String usage = certificatVerifier.usage;
@@ -88,6 +98,11 @@ public class UserImpl extends UserPOA {
 
 	}
 
+	/**
+	 * Vérifie le chemin de certification d'un certificat donné
+	 * @param certificatVerifier le certificat dont on veut vérifier le chemin
+	 * @return VRAI si le chemin de certification est bon
+	 */
 	public boolean verifierCheminCertification(Certificat certificatVerifier) {
 		AV av = AVHelper.narrow(Tools.findObjByORBName(certificatVerifier.IOR_AV, EntityName.AV_SERVER));
 
@@ -130,11 +145,22 @@ public class UserImpl extends UserPOA {
 
 	}
 
+	/**
+	 * Vérifie la signature d'un certificat
+	 * @param certificatEnVerification certificat à vérifier
+	 * @return VRAI si la signature est OK
+	 */
 	public boolean verifierSignature(Certificat certificatEnVerification) {
 
 		return true;
 	}
 
+	/**
+	 * Déchiffre la signature d'un certificat
+	 * @param certificatEnVerification certificat dont on souhaite déchiffrer la signature
+	 * @param PublicKeyAC clé publique de l'AC servant à déchiffrer
+	 * @return VRAI si la signature est OK
+	 */
 	public boolean dechiffrerSignature(Certificat certificatEnVerification, String PublicKeyAC) {
 
 		if (PublicKeyAC.equals(certificatEnVerification.Signature)) {
@@ -146,6 +172,11 @@ public class UserImpl extends UserPOA {
 		}
 	}
 
+	/**
+	 * Génère un HASH d'un certificat
+	 * @param certificatEnVerification certificat à hasher
+	 * @return le hash du certificat
+	 */
 	public String genererHash(Certificat certificatEnVerification) {
 		return "hash";
 	}
